@@ -37,6 +37,20 @@ class Configuration:
         },
     )
 
+    default_ad_tone: str = field(
+        default="minimalist",
+        metadata={
+            "description": "Default tone for advertisement generation."
+        },
+    )
+
+    default_temperature: float = field(
+        default=0.7,
+        metadata={
+            "description": "Default temperature parameter for LLM sampling."
+        },
+    )
+
     @classmethod
     def from_runnable_config(
         cls, config: Optional[RunnableConfig] = None
