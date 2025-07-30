@@ -34,4 +34,3 @@ if __name__ == "__main__":
     except Exception as e:
         logger.debug(f"\nLauncher error：{str(e)}")
         sys.exit(1)
-print(sys.executable)
