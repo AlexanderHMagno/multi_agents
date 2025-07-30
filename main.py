@@ -2,7 +2,7 @@ import os
 import sys
 from dotenv import load_dotenv
 from loguru import logger
-from webui import demo
+
 
 load_dotenv()
 
@@ -13,9 +13,10 @@ if SRC_PATH not in sys.path:
 
 def main():
     try:
+        from webui import demo
         demo.launch(
             server_name="0.0.0.0",
-            server_port=7860,
+            server_port=7861,
             debug=True
         )
 

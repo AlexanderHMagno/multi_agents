@@ -44,7 +44,7 @@ def generate_from_raw(raw_text: str,
     except Exception as e:
         return f"ERROR：{str(e)}"
 
-# 构建 Gradio 页面
+# Gradio
 with gr.Blocks(title="Intelligent Ad Generation System", theme=gr.themes.Soft()) as demo:
     gr.Markdown("# Intelligent Ad Generation System")
     gr.Markdown("Enter a user comment or conversation and the system will automatically extract the information and generate ad copy.")
