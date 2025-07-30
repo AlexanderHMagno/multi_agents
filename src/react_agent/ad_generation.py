@@ -1,3 +1,5 @@
+import json
+import re
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
 from enum import Enum
@@ -6,6 +8,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
 
 
+# Enumeration definitions
 class ToneStyle(Enum):
     PROFESSIONAL = "professional"
     PLAYFUL = "playful"
@@ -24,6 +27,7 @@ class EmotionType(Enum):
     CURIOUS = "curious"
 
 
+# Data classes
 @dataclass
 class UserProfile:
     emotion: EmotionType
@@ -43,6 +47,7 @@ class AdRequest:
     temperature: float = 0.7
 
 
+# Prompt Generator
 class AdPromptGenerator:
 
     @staticmethod
@@ -79,27 +84,22 @@ class AdPromptGenerator:
 
         return f"""You are a professional advertising copywriter.
 
-{tone_prompt}
-{emotion_prompt}
-{budget_hint}
-{interests_hint}
+        {tone_prompt}
+        {emotion_prompt}
+        {budget_hint}
+        {interests_hint}
 
-Product Information:
-- Product Name：{request.product_name}
-- Product Description：{request.product_description}
-- Target Audience：{request.target_audience}
+        Product Information:
+        - Product Name: {request.product_name}
+        - Product Description: {request.product_description}
+        - Target Audience: {request.target_audience}
 
-Create a short, engaging piece of advertising copy that is no longer than{request.max_length}word.
-Copywriting should:
-1. Highlight the core value of the product 
-2. Meet the characteristics of the target audience
-3. use a specified tone of voice
-4. Contains a call to action (CTA)
-5. be concise, powerful and easy to remember
-
-Please output the ad copy directly without additional instructions."""
+        Please write an engaging advertising copy within {request.max_length} words.
+        Only output the final ad copy content. Do not include any explanation, description, or introduction.
+        """
 
 
+# Ad Generator
 class AdGenerator:
 
     def __init__(self, model_name: str = "meta-llama/llama-3.1-8b-instruct"):
@@ -117,7 +117,7 @@ class AdGenerator:
 
         messages = [
             SystemMessage(content=prompt),
-            HumanMessage(content=f"Please make a request for the product'{request.product_name}'Generate ad copy.")
+            HumanMessage(content=f"Please make a request for the product '{request.product_name}' and generate ad copy.")
         ]
 
         try:
@@ -126,10 +126,67 @@ class AdGenerator:
         except Exception as e:
             return f"Error when generating ads：{str(e)}"
 
+class UserInputParser:
+    def __init__(self, model: ChatOpenAI):
+        self.model = model
 
+    def extract_info(self, raw_text: str) -> Dict[str, Any]:
+        prompt = f"""
+You are an information extraction assistant and a user gives you a paragraph and asks you to extract the following information:
+1. product name
+2. product description
+3. the user's mood (happy, excited, calm, anxious, confident, curious) six choose one
+4. user's interest keywords (e.g. fitness, photography, etc.) [make a list of keywords
+5. whether the user is price-conscious (yes/no)
+6. Possible age groups of users (e.g. 18-25, 26-35, 36-50, 50+)
+
+The original content is as follows:
+{raw_text}
+
+Please return with the following JSON:
+{{
+    "product_name": "...",
+    "product_description": "...",
+    "emotion": "...",
+    "interests": ["...", "..."],
+    "budget_conscious": true,
+    "age_group": "..."
+}}
+"""
+        try:
+            messages = [SystemMessage(content=prompt)]
+            response = self.model.invoke(messages)
+
+            # 从响应中提取 JSON 块（防止多余解释文字）
+            match = re.search(r"\{.*\}", response.content.strip(), re.DOTALL)
+            if not match:
+                return {"error": "Failed to find a valid JSON structure", "raw": response.content}
+
+            content = match.group(0)
+
+            content = (
+                content.replace("false", "False")
+                       .replace("true", "True")
+                       .replace("null", "None")
+            )
+
+            return eval(content)
+
+        except Exception as e:
+            return {"error": str(e)}
+
+
+
+# Advertising agency: master control process
 class AdAgent:
-
     def __init__(self):
+        self.llm = ChatOpenAI(
+            openai_api_key=os.getenv("OPENROUTER_API_KEY"),
+            openai_api_base=os.getenv("OPENROUTER_BASE_URL"),
+            model_name="gpt-4",
+            temperature=0.3,
+        )
+        self.parser = UserInputParser(self.llm)
         self.generator = AdGenerator()
 
     def analyze_user_profile(self, user_input: Dict[str, Any]) -> UserProfile:
@@ -155,27 +212,34 @@ class AdAgent:
         else:
             return ToneStyle.PROFESSIONAL
 
-    def generate_personalized_ad(self, user_input: Dict[str, Any]) -> Dict[str, Any]:
-        user_profile = self.analyze_user_profile(user_input)
+    def generate_ad_from_raw_text(
+        self,
+        raw_text: str,
+        tone_style: Optional[ToneStyle] = None,
+        temperature: float = 0.7,
+        max_length: int = 1000
+    ) -> Dict[str, Any]:
+        parsed_data = self.parser.extract_info(raw_text)
+        if "error" in parsed_data:
+            return {"error": parsed_data["error"]}
+
+        user_profile = self.analyze_user_profile(parsed_data)
+        tone = tone_style or self.select_optimal_tone(user_profile, parsed_data["product_name"])
 
         request = AdRequest(
-            product_name=user_input["product_name"],
-            product_description=user_input.get("product_description", ""),
-            target_audience=user_input.get("target_audience", "一般用户"),
+            product_name=parsed_data["product_name"],
+            product_description=parsed_data.get("product_description", ""),
+            target_audience="general user",
             user_profile=user_profile,
-            tone_style=user_input.get("tone_style") or self.select_optimal_tone(user_profile, user_input["product_name"]),
-            temperature=user_input.get("temperature", 0.7),
-            max_length=user_input.get("max_length", 100)
+            tone_style=tone,
+            temperature=temperature,
+            max_length=max_length
         )
-
         ad_text = self.generator.generate_ad(request)
 
         return {
             "ad_text": ad_text,
+            "extracted_info": parsed_data,
             "user_profile": user_profile,
-            "selected_tone": request.tone_style,
-            "generation_params": {
-                "temperature": request.temperature,
-                "max_length": request.max_length
-            }
+            "selected_tone": tone
         }
