@@ -2,9 +2,8 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from io import BytesIO
 import requests
-from agentic_ad_generation import State
 
-def generate_campaign_pdf(state: State, filename="campaign_report.pdf"):
+def generate_campaign_pdf(state, filename="campaign_report.pdf"):
     c = canvas.Canvas(filename, pagesize=letter)
     width, height = letter
     x_margin = 40

@@ -166,7 +166,7 @@ class ReviewTeam(BaseAgent):
         artifacts = state['artifacts']
         messages = self.get_messages(f"Review these campaign elements: {artifacts}")
         response = self.llm.invoke(messages)
-        return self.return_state(state, response, new_feedback=[response.content])
+        return self.return_state(state, response, feedback=[response.content])
 
 # Analytics class
 class CampaignAnalytics:
