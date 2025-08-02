@@ -10,6 +10,8 @@ from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 from langchain_core.tools import tool
 from langgraph.graph import StateGraph, END, START
 from langgraph.graph.message import add_messages
+import langgraph
+
 from langgraph.prebuilt import ToolNode
 from langgraph.checkpoint.memory import MemorySaver
 from openai import OpenAI # for DALL-E API
@@ -42,8 +44,8 @@ llm = ChatOpenAI(
 class State(TypedDict):
     messages: Annotated[list, add_messages]
     campaign_brief: dict
-    artifacts: dict
-    feedback: list
+    artifacts: Annotated[dict, {}]
+    feedback: Annotated[list, add_messages]
     revision_count: int
 
 # Base Agent class
@@ -60,13 +62,14 @@ class BaseAgent:
     @staticmethod
     def return_state(state: State, response, new_artifacts: dict = None, feedback: list = None) -> dict:
         return {
-            **state,  # keep existing state
             "messages": [response],
             "artifacts": {
                 **state.get("artifacts", {}),
                 **(new_artifacts or {})  # merge only if new_artifacts is provided
             },
-            "feedback": state.get("feedback", []) + (feedback or [])
+            "feedback": [*state.get("feedback", []), *(feedback or [])],
+            "revision_count": state.get("revision_count", 0),
+            "campaign_brief": state["campaign_brief"],
         }
 
 # Project Manager Agent
@@ -243,40 +246,40 @@ def create_workflow():
     workflow.add_edge("strategy", "creative")
     workflow.add_edge("creative", "copy")
     workflow.add_edge("copy", "visual")
-    workflow.add_edge("visual", "review")
-    workflow.add_edge("review", "project_manager")
+    workflow.add_edge("visual", END)
+    # workflow.add_edge("review", "project_manager")
     
-    # Add conditional edges for feedback loops
-    def needs_revision(state):
-        feedback = state.get("feedback", [])
-        revision_count = state.get("revision_count", 0)
+    # # Add conditional edges for feedback loops
+    # def needs_revision(state):
+    #     feedback = state.get("feedback", [])
+    #     revision_count = state.get("revision_count", 0)
 
-        if revision_count >= 3:
-            print("⚠️ Max revisions reached. Completing workflow.")
-            return "complete"
+    #     if revision_count >= 3:
+    #         print("⚠️ Max revisions reached. Completing workflow.")
+    #         return "complete"
 
-        if feedback:
-            last = feedback[-1].lower()
+    #     if feedback:
+    #         last = feedback[-1].lower()
 
-            if "copy" in last:
-                return "copy"
-            elif "visual" in last:
-                return "visual"
-            elif "strategy" in last or "revise" in last:
-                return "strategy"
+    #         if "copy" in last:
+    #             return "copy"
+    #         elif "visual" in last:
+    #             return "visual"
+    #         elif "strategy" in last or "revise" in last:
+    #             return "strategy"
 
-        return "complete"
+    #     return "complete"
     
-    workflow.add_conditional_edges(
-        "project_manager",
-        needs_revision,
-        {
-            "strategy": "strategy",
-            "copy": "copy",
-            "visual": "visual",
-            "complete": END
-        }
-    )
+    # workflow.add_conditional_edges(
+    #     "project_manager",
+    #     needs_revision,
+    #     {
+    #         "strategy": "strategy",
+    #         "copy": "copy",
+    #         "visual": "visual",
+    #         "complete": END
+    #     }
+    # )
 
     return workflow
 
@@ -313,7 +316,7 @@ def main():
     config = {"configurable": {"thread_id": "eco-bottle-campaign"}}
     try:
   
-        result = workflow_with_memory.invoke(initial_state, config={"thread_id": "campaign_001"})
+        result = workflow_with_memory.invoke(initial_state, config={"thread_id": "campaign_001", "recursion_limit": 100})
         
         # ⬇️ At the end, after review is done
         visual_prompt = result["artifacts"].get("visual", {}).get("image_prompt", "")
