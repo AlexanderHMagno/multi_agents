@@ -19,7 +19,8 @@ dependencies = [
     "tavily-python>=0.4.0",
     "langchain-experimental>=0.0.49",
     "langgraph-cli[inmem]>=0.1.71",
-    "ipykernel"
+    "ipykernel",
+    "openai"
 ]
 
 
