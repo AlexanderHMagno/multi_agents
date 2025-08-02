@@ -12,7 +12,8 @@ from langgraph.graph import StateGraph, END, START
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode
 from langgraph.checkpoint.memory import MemorySaver
-import openai # for DALL-E API
+from openai import OpenAI # for DALL-E API
+from PDFgenerator import generate_campaign_pdf
 
 # Load environment variables
 load_dotenv()
@@ -22,11 +23,13 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 DALLE_API_KEY = os.getenv("DALLE_API_KEY")
 RATIONAL_MODEL = os.getenv("RATIONAL_MODEL")
 IMAGE_MODEL = os.getenv("IMAGE_MODEL")
-openai.api_key = DALLE_API_KEY
+client = OpenAI(api_key=DALLE_API_KEY)
 
 # Verify API keys are loaded
-if not OPENAI_API_KEY or not DALLE_API_KEY:
+if not OPENAI_API_KEY or not DALLE_API_KEY or not RATIONAL_MODEL or not IMAGE_MODEL:
     raise ValueError("Please ensure both OPENAI_API_KEY and DALLE_API_KEY are set in your .env file")
+
+print(f"RATIONAL_MODEL: {RATIONAL_MODEL}")
 
 # Initialize LLM
 llm = ChatOpenAI(
@@ -55,13 +58,15 @@ class BaseAgent:
             HumanMessage(content=content)
         ]
     @staticmethod
-    def return_state(state: State, response, new_artifacts: dict = None) -> dict:
+    def return_state(state: State, response, new_artifacts: dict = None, feedback: list = None) -> dict:
         return {
+            **state,  # keep existing state
             "messages": [response],
             "artifacts": {
                 **state.get("artifacts", {}),
                 **(new_artifacts or {})  # merge only if new_artifacts is provided
-            }
+            },
+            "feedback": state.get("feedback", []) + (feedback or [])
         }
 
 # Project Manager Agent
@@ -76,6 +81,12 @@ class ProjectManager(BaseAgent):
     def run(self, state: State) -> dict:
         messages = self.get_messages(f"Current state: {state}. What should be our next action?")
         response = self.llm.invoke(messages)
+        # Increment revision_count if feedback exists
+        if state.get("feedback"):
+            state["revision_count"] = state.get("revision_count", 0) + 1
+
+        print(f"Revision count: {state['revision_count']}")
+        print(f"Feedback: {state['feedback']}")
         return self.return_state(state, response)
 
 # Strategy Team
@@ -126,37 +137,21 @@ class CopyTeam(BaseAgent):
 
 class VisualTeam(BaseAgent):
     def __init__(self):
-        super().__init__(system_prompt="""
-        You are the visual team responsible for creating ad imagery.
-        Generate detailed image prompts that align with the creative concept and copy.
-        Focus on creating visually striking and memorable imagery.
-        """
+        super().__init__(
+            system_prompt="""You are the visual design lead for this campaign. 
+            Your job is to create an image prompt for DALL·E that describes the ad in vivid visual terms.
+            The prompt should be no more than 3800 characters."""
         )
 
     def run(self, state: State) -> dict:
-        copy = state['artifacts'].get('copy', '')
-        concepts = state['artifacts'].get('creative_concepts', '')
-
-        # Generate the image prompt
+        copy = state["artifacts"].get("copy", "")
+        concepts = state["artifacts"].get("creative_concepts", "")
         messages = self.get_messages(
             f"Based on this copy: {copy} and concepts: {concepts}, create a detailed image prompt."
         )
-        prompt_response = self.llm.invoke(messages)
-        prompt = prompt_response.content
+        response = self.llm.invoke(messages)
 
-        # Call DALL·E API
-        try:
-            dalle_image = openai.Image.create(
-                prompt=prompt,
-                n=1,
-                size="1024x1024"
-            )
-            image_url = dalle_image["data"][0]["url"]
-        except Exception as e:
-            image_url = None
-            print(f"[❌ VisualTeam] Failed to generate image: {e}")
-
-        return self.return_state(state, prompt_response, {"visual": {"image_prompt": prompt, "image_url": image_url}})
+        return self.return_state(state, response, {"visual": {"image_prompt": response.content}})
 
 # Review Team
 class ReviewTeam(BaseAgent):
@@ -171,7 +166,7 @@ class ReviewTeam(BaseAgent):
         artifacts = state['artifacts']
         messages = self.get_messages(f"Review these campaign elements: {artifacts}")
         response = self.llm.invoke(messages)
-        return self.return_state(state, response, {"feedback": [response.content]})
+        return self.return_state(state, response, new_feedback=[response.content])
 
 # Analytics class
 class CampaignAnalytics:
@@ -262,7 +257,7 @@ def create_workflow():
 
         if feedback:
             last = feedback[-1].lower()
-            state["revision_count"] += 1
+
             if "copy" in last:
                 return "copy"
             elif "visual" in last:
@@ -317,7 +312,38 @@ def main():
     # Run workflow
     config = {"configurable": {"thread_id": "eco-bottle-campaign"}}
     try:
-        result = workflow_with_memory.invoke(initial_state, config)
+  
+        result = workflow_with_memory.invoke(initial_state, config={"thread_id": "campaign_001"})
+        
+        # ⬇️ At the end, after review is done
+        visual_prompt = result["artifacts"].get("visual", {}).get("image_prompt", "")
+   
+        if visual_prompt:
+            print("[🎨] Generating image from visual prompt...")
+            if len(visual_prompt) > 3800:
+                visual_prompt = visual_prompt[:3800] + "..."
+
+            try:
+                image_response = client.images.generate(
+                    model="dall-e-3",
+                    prompt=visual_prompt,
+                    size="1024x1024",
+                    quality="standard",
+                    n=1,
+                )
+                image_url = image_response.data[0].url
+                result["artifacts"]["visual"] = {
+                    "image_prompt": visual_prompt,
+                    "image_url": image_url
+                }
+                download_image(image_url)  # Optional
+                print("[✅] Image generated successfully.")
+            except Exception as e:
+                result["artifacts"]["visual"] = {
+                    "image_prompt": visual_prompt,
+                    "image_url": None
+                }
+                print(f"[❌ Visual] Failed to generate image: {e}")
 
         # Track analytics
         analytics = CampaignAnalytics()
@@ -338,16 +364,16 @@ def main():
         print("\nFeedback:")
         print(result.get('feedback', []))
 
-        image_url = result['artifacts'].get('visual', {}).get('image_url', '')
-        if image_url:
-            download_image(image_url)
-
         # Display analytics
         print("="*40)
         print("📈 Campaign Analytics Report")
         print("="*40)
         report = analytics.generate_report()
         print(report)
+
+        # Include revision_count in artifacts for PDF
+        result['artifacts']['revision_count'] = result.get('revision_count', 0)
+        generate_campaign_pdf(result , "final_campaign.pdf")
 
     except Exception as e:
         print(f"An error occurred: {str(e)}")
