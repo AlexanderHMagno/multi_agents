@@ -104,12 +104,19 @@ const App = () => {
               value={rawText}
               onChange={(e) => setRawText(e.target.value)}
             />
-            <input
-              placeholder="Advertising tone style (optional)"
+            <select
               value={toneStyle}
               onChange={(e) => setToneStyle(e.target.value)}
               style={{ width: '100%', marginBottom: 10 }}
-            />
+            >
+              <option value="">Select a tone style (optional)</option>
+              <option value="professional">Professional</option>
+              <option value="playful">Playful</option>
+              <option value="minimalist">Minimalist</option>
+              <option value="emotional">Emotional</option>
+              <option value="urgent">Urgent</option>
+              <option value="luxury">Luxury</option>
+            </select>
             <label>temperature coefficient: {temperature}</label>
             <input
               type="range"

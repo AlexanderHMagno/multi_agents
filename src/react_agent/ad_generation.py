@@ -240,6 +240,11 @@ class AdAgent:
         return {
             "ad_text": ad_text,
             "extracted_info": parsed_data,
-            "user_profile": user_profile,
-            "selected_tone": tone
+            "user_profile": {
+                "emotion": user_profile.emotion.value,
+                "interests": user_profile.interests,
+                "budget_conscious": user_profile.budget_conscious,
+                "age_group": user_profile.age_group
+            },
+            "selected_tone": tone.value
         }
