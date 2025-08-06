@@ -16,3 +16,5 @@ typing-extensions>=4.7.1
 # Optional: for CLI color, logs, or pretty printing
 rich>=13.7.0
 reportlab>=4.4.3
+
+graphviz>=0.21
