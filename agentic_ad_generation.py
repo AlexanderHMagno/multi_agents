@@ -476,7 +476,15 @@ class WebDeveloper(BaseAgent):
         2. Design as a professional campaign presentation website, not a landing page
         3. Use modern CSS with gradients, shadows, animations, and professional styling
         4. Include all campaign sections: Executive Summary, Strategy, Audience, Creative, Copy, CTA, Media, Impact
-        5. Incorporate the visual image prominently if available
+        5. PROMINENTLY DISPLAY THE GENERATED IMAGE in multiple ways:
+           - Hero section with the image as background or featured element
+           - Visual concepts section showcasing the image with description
+           - Creative assets section highlighting the image
+           - Use the image URL: {image_url}
+           - Include the image description: {image_prompt}
+           - Add visual storytelling around the image
+           - Create interactive image galleries or carousels
+           - Include image analysis and creative insights
         6. Make it mobile-responsive with CSS Grid/Flexbox
         7. Include interactive elements, hover effects, and smooth transitions
         8. Add proper meta tags for SEO
@@ -487,6 +495,14 @@ class WebDeveloper(BaseAgent):
         13. Include campaign metrics and performance indicators
         14. Add professional presentation elements like slides and sections
         15. Use modern UI components like cards, modals, and tooltips
+        16. Create a dedicated "Visual Concepts" or "Creative Assets" section
+        17. Include image analysis and creative direction insights
+        18. Add visual storytelling elements around the campaign image
+
+        IMPORTANT: The generated image should be a central visual element throughout the website, not just a small thumbnail. 
+        Use it prominently in the hero section, creative concepts section, and as a key visual asset in the presentation.
+        Include the image description and creative insights as part of the visual storytelling.
+        for other images use pixabay.com to find images that are relevant to the campaign.
 
         Generate a complete, professional campaign presentation website that showcases the entire campaign comprehensively.
         The website should look like a modern, beautiful presentation suitable for client meetings and stakeholder reviews.
@@ -843,6 +859,7 @@ def create_campaign_website(result, filename="campaign_website.html"):
             sections_count = campaign_website_content.count('<section') + campaign_website_content.count('<div class="section')
             cta_count = campaign_website_content.count('button') + campaign_website_content.count('cta')
             presentation_elements = campaign_website_content.count('presentation') + campaign_website_content.count('campaign')
+            visual_elements = campaign_website_content.count('img') + campaign_website_content.count('image') + campaign_website_content.count('visual')
             
             print(f"✅ Comprehensive campaign presentation website saved as {filename}")
             print(f"📊 Website Statistics:")
@@ -850,7 +867,14 @@ def create_campaign_website(result, filename="campaign_website.html"):
             print(f"   - Sections: {sections_count}")
             print(f"   - Interactive Elements: {cta_count}")
             print(f"   - Presentation Elements: {presentation_elements}")
+            print(f"   - Visual Elements: {visual_elements}")
             print(f"   - Campaign Data Used: {len(result.get('artifacts', {}))} artifacts")
+            
+            # Check for image integration
+            if result.get('artifacts', {}).get('visual', {}).get('image_url'):
+                print(f"   - 🎨 Visual Concepts: Image integrated prominently")
+            else:
+                print(f"   - ⚠️ Visual Concepts: No image URL found")
             
         except Exception as e:
             print(f"❌ Failed to save campaign website: {e}")

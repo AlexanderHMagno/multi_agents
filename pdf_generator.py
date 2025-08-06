@@ -70,18 +70,35 @@ def generate_campaign_pdf(state, filename="campaign_report.pdf"):
 
     # Section 2: Embed Image if available
     image_url = artifacts.get("visual", {}).get("image_url")
+    image_prompt = artifacts.get("visual", {}).get("image_prompt", "")
+    
     if image_url:
         try:
             response = requests.get(image_url)
             if response.status_code == 200:
                 img_data = BytesIO(response.content)
                 y -= 30
-                c.setFont("Helvetica-Bold", 14)
-                c.drawString(x_margin, y, "🖼️ Generated Visual")
+                c.setFont("Helvetica-Bold", 16)
+                c.drawString(x_margin, y, "🎨 Visual Concepts & Creative Assets")
+                y -= 20
+                c.setFont("Helvetica", 12)
+                c.drawString(x_margin, y, f"Image Description: {image_prompt}")
                 y -= 310
                 c.drawImage(img_data, x_margin, y, width=400, height=300, preserveAspectRatio=True)
+                y -= 20
+                c.drawString(x_margin, y, f"Image URL: {image_url}")
+                print("✅ Visual concepts image embedded successfully in PDF")
+            else:
+                draw_text_block("⚠️ Failed to load image", f"HTTP {response.status_code}")
         except Exception as e:
             draw_text_block("⚠️ Failed to load image", str(e))
+            # Still include the image description even if image fails to load
+            if image_prompt:
+                draw_text_block("📝 Visual Concept Description", image_prompt)
+    else:
+        # Include image description even if no URL
+        if image_prompt:
+            draw_text_block("📝 Visual Concept Description", image_prompt)
 
     # Section 3: Web Developer Output
     web_dev = artifacts.get("web_developer", {})
