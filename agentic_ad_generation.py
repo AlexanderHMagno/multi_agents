@@ -15,7 +15,9 @@ import langgraph
 from langgraph.prebuilt import ToolNode
 from langgraph.checkpoint.memory import MemorySaver
 from openai import OpenAI # for DALL-E API
-from PDFgenerator import generate_campaign_pdf
+from pdf_generator import generate_formatted_pdf
+
+
 
 # Load environment variables
 load_dotenv()
@@ -23,9 +25,13 @@ load_dotenv()
 # Access environment variables
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 DALLE_API_KEY = os.getenv("DALLE_API_KEY")
-RATIONAL_MODEL = os.getenv("RATIONAL_MODEL")
+# RATIONAL_MODEL = os.getenv("RATIONAL_MODEL")
+RATIONAL_MODEL = "google/gemini-2.5-flash-lite"
 IMAGE_MODEL = os.getenv("IMAGE_MODEL")
 client = OpenAI(api_key=DALLE_API_KEY)
+
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+OPENROUTER_BASE_URL = os.getenv("OPENROUTER_BASE_URL")
 
 # Verify API keys are loaded
 if not OPENAI_API_KEY or not DALLE_API_KEY or not RATIONAL_MODEL or not IMAGE_MODEL:
@@ -33,9 +39,19 @@ if not OPENAI_API_KEY or not DALLE_API_KEY or not RATIONAL_MODEL or not IMAGE_MO
 
 print(f"RATIONAL_MODEL: {RATIONAL_MODEL}")
 
-# Initialize LLM
+# # Initialize LLM
+# llm = ChatOpenAI(
+#     openai_api_key=OPENAI_API_KEY,
+#     model_name=RATIONAL_MODEL,
+#     temperature=0.7
+# )
+
+#Open router for LLM
+
+
 llm = ChatOpenAI(
-    openai_api_key=OPENAI_API_KEY,
+    api_key=OPENROUTER_API_KEY,
+    base_url=OPENROUTER_BASE_URL,
     model_name=RATIONAL_MODEL,
     temperature=0.7
 )
@@ -156,6 +172,145 @@ class VisualTeam(BaseAgent):
 
         return self.return_state(state, response, {"visual": {"image_prompt": response.content}})
 
+
+# Final Visual Agent - Image Generator using DALL·E
+class DesignerTeam(BaseAgent):
+    def __init__(self, openai_client):
+        super().__init__(
+            system_prompt="""You are the senior designer team responsible for creating the ad design.
+            Your task is to generate a high-quality marketing image based on the final visual prompt."""
+        )
+        self.client = openai_client
+
+    def run(self, state: State) -> dict:
+        visual_data = state['artifacts'].get("visual", {})
+        visual_prompt = visual_data.get("image_prompt", "")
+
+        if not visual_prompt:
+            print("[⚠️] No visual prompt found. Skipping image generation.")
+            return self.return_state(state, None)
+
+        if len(visual_prompt) > 3800:
+            visual_prompt = visual_prompt[:3800] + "..."
+
+        print("[🎨] Generating image from visual prompt...")
+
+        try:
+            # image_response = self.client.images.generate(
+            #     model="dall-e-3",
+            #     prompt=visual_prompt,
+            #     size="1024x1024",
+            #     quality="standard",
+            #     n=1,
+            # )
+            # image_url = image_response.data[0].url
+            # image_url = '''
+            # https://oaidalleapiprodscus.blob.core.windows.net/private/org-EPwhekFzkmZauhpAEjYQWB5V/user-nHwQx7jjxRTOVfCFQ0oXrqjN/img-kX3x8OgE3UhZ1MTZRDXJ07dw.png?st=2025-08-03T02%3A18%3A56Z&se=2025-08-03T04%3A18%3A56Z&sp=r&sv=2024-08-04&sr=b&rscd=inline&rsct=image/png&skoid=cc612491-d948-4d2e-9821-2683df3719f5&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-08-02T16%3A50%3A41Z&ske=2025-08-03T16%3A50%3A41Z&sks=b&skv=2024-08-04&sig=mjboHnd%2BSbEEZS7yeCiepb2E7m6H0C3uTe78gfJjR%2Bs%3D
+            # '''
+            image_url = '''20250802_212312_landing_page.html'''
+            print("[✅] Image generated successfully.")
+            print(f"Image URL: {image_url}")
+            return self.return_state(
+                state,
+                response="Image generation successful",
+                new_artifacts={
+                    "visual": {
+                        "image_prompt": visual_prompt,
+                        "image_url": image_url
+                    }
+                }
+            )
+
+        except Exception as e:
+            print(f"[❌ VisualAgent] Failed to generate image: {e}")
+            return self.return_state(
+                state,
+                response="Image generation  Failed",
+                new_artifacts={
+                    "visual": {
+                        "image_prompt": visual_prompt,
+                        "image_url": None
+                    }
+                }
+            )
+
+
+class CampaignSummaryAgent(BaseAgent):
+    def __init__(self):
+        super().__init__(
+            system_prompt="""You are the campaign summarizer. Your job is to take all campaign elements
+            (strategy, concepts, copy, visuals, feedback) and create a beautiful, structured summary
+            that can be used by both web developers and reporting tools."""
+        )
+
+    def run(self, state: State) -> dict:
+        strategy = state["artifacts"].get("strategy", "")
+        concepts = state["artifacts"].get("creative_concepts", "")
+        copy = state["artifacts"].get("copy", "")
+        feedback = state.get("feedback", [])
+        image_url = state["artifacts"].get("visual", {}).get("image_url", "")
+
+        prompt = f"""
+            Create a structured summary of the campaign. Include:
+
+            1. A headline title for the campaign
+            2. A one-paragraph summary
+            3. A sectioned breakdown:
+              - Strategy
+              - Creative Concepts
+              - Copy Highlights
+              - Key Feedback Points
+            4. Visual Asset URL: {image_url}
+
+            Here is the data:
+            Strategy: {strategy}
+            Creative Concepts: {concepts}
+            Copy: {copy}
+            Feedback: {" | ".join([msg.content if hasattr(msg, "content") else str(msg) for msg in feedback])}
+            """
+
+        messages = self.get_messages(prompt)
+        response = self.llm.invoke(messages)
+        return self.return_state(state, response, {"campaign_summary": response.content})
+
+class WebDeveloper(BaseAgent):
+    def __init__(self):
+        super().__init__(
+            system_prompt="""You are the web developer responsible for creating the ad landing page.
+            Create a landing page for the ad that is responsive and mobile-friendly.
+            Using HTML, CSS, and JavaScript, create a landing page for the ad that is responsive and mobile-friendly."""
+        )
+    
+    def run(self, state: State) -> dict:
+        visual_data = state['artifacts'].get("visual", {})
+        visual_prompt = visual_data.get("image_prompt", "")
+        image_url = visual_data.get("image_url", "")
+        campaign_summary = state['artifacts'].get('campaign_summary', '')
+        messages = self.get_messages(f"Create a landing page for the ad with this campaign summary: {campaign_summary} as the content. The ad image is {image_url}.")
+        response = self.llm.invoke(messages)
+        print(f"Landing page: {response.content}")
+        return self.return_state(state, response, {"web_developer": {"landing_page": response.content}})
+
+class PDFGeneratorTeam(BaseAgent):
+    def __init__(self):
+        super().__init__(
+            system_prompt="""You are a PDF generation assistant. Based on the full campaign summary, generate a polished, professional summary suitable for sharing with stakeholders. Format the content cleanly and prepare it for layout."""
+        )
+
+    def run(self, state: State) -> dict:
+        summary = state['artifacts'].get('campaign_summary', '')
+        image_url = state['artifacts'].get('visual', {}).get('image_url', '')
+        messages = self.get_messages(f"Generate a PDF-ready report from this campaign summary:\n\n{summary}. The ad image is src {image_url}. generate the pdf using reportlab python library syntax")
+        response = self.llm.invoke(messages)    
+
+        # Save formatted content or HTML as artifact for rendering
+        return self.return_state(state, response, {
+            "pdf_report": {
+                "formatted_content": response.content
+            }
+        })
+
+
 # Review Team
 class ReviewTeam(BaseAgent):
     def __init__(self):
@@ -214,11 +369,35 @@ class CampaignAnalytics:
 def download_image(url, filename="generated_ad.png"):
     response = requests.get(url)
     if response.status_code == 200:
+        # Add timestamp to filename
+        from datetime import datetime
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"{timestamp}_{filename}"
         with open(filename, "wb") as f:
             f.write(response.content)
         print(f"✅ Image saved to {filename}")
     else:
         print("❌ Failed to download image")
+
+def create_landing_page(result, filename="landing_page.html"):
+    landing_page_content = result.get('artifacts', {}).get('web_developer', {}).get('landing_page', '')
+    if landing_page_content:
+        try:
+            # Add timestamp to filename
+            from datetime import datetime
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"{timestamp}_{filename}"
+            
+            with open(filename, 'w', encoding='utf-8') as f:
+                f.write(landing_page_content)
+            print(f"✅ Landing page saved as {filename}")
+        except Exception as e:
+            print(f"❌ Failed to save landing page: {e}")
+    else:
+        print("❌ No landing page content found in artifacts")
+
+
+
 
 def create_workflow():
     # Initialize teams
@@ -228,6 +407,10 @@ def create_workflow():
     copy = CopyTeam()
     visual = VisualTeam()
     review = ReviewTeam()
+    web_developer = WebDeveloper()
+    designer = DesignerTeam(client)
+    campaign_summary = CampaignSummaryAgent()
+    pdf_generator = PDFGeneratorTeam()
     
     # Create graph
     workflow = StateGraph(State)
@@ -240,13 +423,20 @@ def create_workflow():
     workflow.add_node("copy", copy.run)
     workflow.add_node("visual", visual.run)
     workflow.add_node("review", review.run)
-    
+    workflow.add_node("web_developer", web_developer.run)
+    workflow.add_node("designer", designer.run)
+    workflow.add_node("campaign_summary", campaign_summary.run)
+    workflow.add_node("pdf_generator", pdf_generator.run)
     # Define edges
     workflow.add_edge("project_manager", "strategy")
     workflow.add_edge("strategy", "creative")
     workflow.add_edge("creative", "copy")
     workflow.add_edge("copy", "visual")
-    workflow.add_edge("visual", END)
+    workflow.add_edge("visual", "designer")
+    workflow.add_edge("designer", "campaign_summary")
+    workflow.add_edge("campaign_summary", "web_developer")
+    workflow.add_edge("web_developer", "pdf_generator")
+    workflow.add_edge("pdf_generator", END)
     # workflow.add_edge("review", "project_manager")
     
     # # Add conditional edges for feedback loops
@@ -286,16 +476,19 @@ def create_workflow():
 def main():
     # Sample campaign brief
     campaign_brief = {
-        "product": "Eco-friendly Water Bottle",
-        "target_audience": "Environmentally conscious millennials",
-        "goals": ["Increase brand awareness", "Drive online sales"],
+        "product": "Forklift",
+        "target_audience": "Construction companies, landscaping companies, and other businesses that need a forklift",
+        "goals": ["Increase brand awareness", "Drive sales"],
         "key_features": [
-            "Made from recycled materials",
-            "Keeps drinks cold for 24 hours",
-            "Portion of profits goes to ocean cleanup"
+           "Brand new",
+           "Offer additional services (parts, service, and maintenance)",
+           "Zero mileage",
+           "Good price",
+           "Good condition",
+           "5 years warranty"
         ],
-        "budget": "$50,000",
-        "timeline": "4 weeks"
+        "budget": "$10,000",
+        "timeline": "2 weeks"
     }
 
     # Initialize state
@@ -313,41 +506,12 @@ def main():
     workflow_with_memory = workflow.compile(checkpointer=memory)
 
     # Run workflow
-    config = {"configurable": {"thread_id": "eco-bottle-campaign"}}
+    config = {"configurable": {"thread_id": "forklift-campaign"}}
     try:
   
         result = workflow_with_memory.invoke(initial_state, config={"thread_id": "campaign_001", "recursion_limit": 100})
         
-        # ⬇️ At the end, after review is done
-        visual_prompt = result["artifacts"].get("visual", {}).get("image_prompt", "")
-   
-        if visual_prompt:
-            print("[🎨] Generating image from visual prompt...")
-            if len(visual_prompt) > 3800:
-                visual_prompt = visual_prompt[:3800] + "..."
-
-            try:
-                image_response = client.images.generate(
-                    model="dall-e-3",
-                    prompt=visual_prompt,
-                    size="1024x1024",
-                    quality="standard",
-                    n=1,
-                )
-                image_url = image_response.data[0].url
-                result["artifacts"]["visual"] = {
-                    "image_prompt": visual_prompt,
-                    "image_url": image_url
-                }
-                download_image(image_url)  # Optional
-                print("[✅] Image generated successfully.")
-            except Exception as e:
-                result["artifacts"]["visual"] = {
-                    "image_prompt": visual_prompt,
-                    "image_url": None
-                }
-                print(f"[❌ Visual] Failed to generate image: {e}")
-
+  
         # Track analytics
         analytics = CampaignAnalytics()
         analytics.track_iteration(result)
@@ -374,9 +538,14 @@ def main():
         report = analytics.generate_report()
         print(report)
 
+        #download image
+        # download_image(result['artifacts'].get('visual', {}).get('image_url', ''))
+
         # Include revision_count in artifacts for PDF
-        result['artifacts']['revision_count'] = result.get('revision_count', 0)
-        generate_campaign_pdf(result , "final_campaign.pdf")
+        generate_formatted_pdf(result, "final_campaign.pdf")
+
+        # Generate landing page
+        create_landing_page(result)
 
     except Exception as e:
         print(f"An error occurred: {str(e)}")

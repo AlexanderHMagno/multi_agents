@@ -1,5 +1,8 @@
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from reportlab.lib.styles import ParagraphStyle
+from reportlab.platypus import Paragraph
+from reportlab.lib.units import inch
 from io import BytesIO
 import requests
 
@@ -11,6 +14,8 @@ def generate_campaign_pdf(state, filename="campaign_report.pdf"):
 
     artifacts = state.get("artifacts", {})
     feedback = state.get("feedback", [])
+    pdf_report = artifacts.get("pdf_report", {})
+    formatted_content = pdf_report.get("formatted_content", "")
 
     def draw_text_block(title, text, size=12):
         nonlocal y
@@ -25,6 +30,17 @@ def generate_campaign_pdf(state, filename="campaign_report.pdf"):
                 if y < 100:
                     c.showPage()
                     y = height - 50
+
+    # Draw header
+    c.setFont("Helvetica-Bold", 24)
+    c.drawString(x_margin, height - 40, "Campaign Report")
+    y = height - 80
+
+    # Section 0: PDF Generator Team's Formatted Content
+    if formatted_content:
+        draw_text_block("📋 Executive Summary", formatted_content)
+        c.showPage()
+        y = height - 50
 
     # Section 1: Content blocks
     draw_text_block("📊 Campaign Strategy", artifacts.get("strategy", "N/A"))
@@ -47,7 +63,14 @@ def generate_campaign_pdf(state, filename="campaign_report.pdf"):
         except Exception as e:
             draw_text_block("⚠️ Failed to load image", str(e))
 
-    # Section 3: Analytics
+    # Section 3: Web Developer Output
+    web_dev = artifacts.get("web_developer", {})
+    if web_dev:
+        c.showPage()
+        y = height - 50
+        draw_text_block("💻 Landing Page Code", web_dev.get("landing_page", "N/A"))
+
+    # Section 4: Analytics
     c.showPage()
     y = height - 50
     c.setFont("Helvetica-Bold", 16)
@@ -64,14 +87,21 @@ def generate_campaign_pdf(state, filename="campaign_report.pdf"):
             y = height - 50
 
     draw_kv("Number of Revisions", str(state.get("revision_count", "Unknown")))
-    activated_teams = [k for k in artifacts if k in ["strategy", "creative_concepts", "copy", "visual"]]
+    activated_teams = [k for k in artifacts if k in ["strategy", "creative_concepts", "copy", "visual", "web_developer", "pdf_report"]]
     draw_kv("Activated Teams", ", ".join(activated_teams))
 
     draw_kv("Feedback Topics", "")
     for fb in feedback:
         draw_kv("   •", fb)
 
-    draw_kv("Summary", "Campaign was generated using a multi-agent workflow. Each team contributed to a specific component, and the system handled iteration with feedback control.")
+    # Campaign Summary
+    if "campaign_summary" in artifacts:
+        c.showPage()
+        y = height - 50
+        c.setFont("Helvetica-Bold", 16)
+        c.drawString(x_margin, y, "📑 Campaign Summary")
+        y -= 30
+        draw_text_block("", artifacts["campaign_summary"])
 
     c.save()
     print(f"✅ PDF saved as {filename}")
