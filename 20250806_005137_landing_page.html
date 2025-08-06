@@ -1,0 +1,790 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Forklifts for Sale - Power Your Progress | [Your Company Name]</title>
+    <meta name="description" content="Brand new forklifts with 5-year warranty. Boost your construction or landscaping business efficiency. Competitive prices, reliable service, parts, and maintenance. Get a quote today!">
+    <meta name="keywords" content="forklift for sale, new forklift, construction equipment, landscaping equipment, forklift warranty, forklift service, material handling, heavy machinery">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Basic Reset & Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f7f6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 1rem;
+            color: #0056b3; /* Primary brand color */
+        }
+
+        h1 { font-size: 2.8rem; }
+        h2 { font-size: 2.2rem; text-align: center; margin-bottom: 2rem; color: #004085; }
+        h3 { font-size: 1.8rem; color: #0056b3; }
+        p { margin-bottom: 1rem; }
+        a { text-decoration: none; color: #007bff; }
+        a:hover { color: #0056b3; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            margin-top: 15px;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 15px rgba(0, 86, 179, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #0056b3 0%, #004085 100%);
+            box-shadow: 0 6px 20px rgba(0, 60, 130, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            border: 2px solid #007bff;
+            background-color: transparent;
+            color: #007bff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #007bff;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 86, 179, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+            color: #fff;
+            padding: 1.5rem 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #cce5ff;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: url('https://via.placeholder.com/1920x800/0056b3/ffffff?text=Powerful+New+Forklifts') no-repeat center center/cover;
+            color: #fff;
+            text-align: center;
+            padding: 100px 0;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            color: #fff;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #e0e0e0;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 60px 0;
+            background-color: #fff;
+        }
+
+        .features .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-item {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .feature-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-item i {
+            font-size: 3rem;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .feature-item h3 {
+            font-size: 1.4rem;
+            color: #004085;
+            margin-bottom: 10px;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 60px 0;
+            background: linear-gradient(180deg, #f4f7f6 0%, #e0e8e6 100%);
+        }
+
+        .benefits .benefit-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .benefit-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .benefit-content ul {
+            list-style: none;
+        }
+
+        .benefit-content ul li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .benefit-content ul li i {
+            color: #28a745; /* Green for checkmarks */
+            margin-right: 15px;
+            font-size: 1.3rem;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 60px 0;
+            background-color: #fff;
+        }
+
+        .testimonial-slider {
+            position: relative;
+            max-width: 700px;
+            margin: 0 auto;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .testimonial-item {
+            display: none; /* Hidden by default */
+            padding: 20px;
+        }
+
+        .testimonial-item.active {
+            display: block; /* Show active testimonial */
+        }
+
+        .testimonial-item p {
+            font-size: 1.1rem;
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #555;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .testimonial-item p::before,
+        .testimonial-item p::after {
+            content: '"';
+            font-size: 2.5rem;
+            color: #007bff;
+            opacity: 0.5;
+            position: absolute;
+            top: 0;
+        }
+
+        .testimonial-item p::before { left: -10px; }
+        .testimonial-item p::after { right: -10px; }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: #004085;
+            margin-top: 10px;
+            display: block;
+        }
+
+        .testimonial-author span {
+            font-weight: 400;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .testimonial-nav {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .testimonial-nav .nav-arrow {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-nav .nav-arrow:hover {
+            background: #0056b3;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 60px 0;
+            background: linear-gradient(180deg, #e0e8e6 0%, #d6e1de 100%);
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .contact-form {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .contact-form h3 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #004085;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: 'Open Sans', sans-serif;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .contact-info h3 {
+            text-align: left;
+            margin-bottom: 20px;
+            color: #004085;
+        }
+
+        .contact-info p {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            color: #333;
+        }
+
+        .contact-info p i {
+            margin-right: 15px;
+            color: #007bff;
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #004085; /* Darker brand blue */
+            color: #fff;
+            padding: 40px 0;
+            font-size: 0.9rem;
+        }
+
+        footer .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        footer .footer-section {
+            margin-bottom: 20px;
+        }
+
+        footer .footer-section h4 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        footer .footer-section ul {
+            list-style: none;
+        }
+
+        footer .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        footer .footer-section ul li a {
+            color: #e0e0e0;
+            transition: color 0.3s ease;
+        }
+
+        footer .footer-section ul li a:hover {
+            color: #fff;
+        }
+
+        footer .social-links a {
+            display: inline-block;
+            margin-right: 15px;
+            color: #fff;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        footer .social-links a:hover {
+            color: #cce5ff;
+        }
+
+        footer .footer-bottom {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            .hero h1 { font-size: 2.8rem; }
+            .hero p { font-size: 1.1rem; }
+
+            header .container {
+                flex-direction: column;
+                text-align: center;
+            }
+            nav ul {
+                margin-top: 15px;
+                justify-content: center;
+            }
+            nav ul li { margin: 5px 15px; }
+
+            .benefits .benefit-grid,
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+            .benefit-image,
+            .contact-info {
+                order: -1; /* Move image/info to top */
+                margin-bottom: 30px;
+            }
+            .contact-form {
+                margin-top: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero { padding: 80px 0; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1rem; }
+            .btn { padding: 10px 20px; font-size: 0.9rem; }
+
+            .features .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonial-item p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.8rem; }
+            .hero h1 { font-size: 2.2rem; }
+            .logo { font-size: 1.6rem; }
+
+            nav ul li { margin: 0 10px; }
+
+            .hero-content { padding: 15px; }
+            .hero-content h1 { font-size: 2rem; }
+
+            .contact-form, .contact-info {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">[Your Company Name]</div>
+            <nav>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#benefits">Benefits</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Brand New Forklifts: Power Your Progress</h1>
+            <p>Reliable, efficient, and built to last. Get the best value with our 5-year warranty and comprehensive support.</p>
+            <a href="#contact" class="btn btn-primary">Get a Quote Today!</a>
+            <a href="#features" class="btn btn-secondary">Learn More</a>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2>Why Choose Our Forklifts?</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <i class="fas fa-truck"></i>
+                    <h3>Brand New & Zero Mileage</h3>
+                    <p>Start with confidence. Pristine condition for maximum uptime.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>5-Year Warranty</h3>
+                    <p>Unbeatable peace of mind. Invest without worry.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-tools"></i>
+                    <h3>Full Service & Parts</h3>
+                    <p>Comprehensive support to keep you running smoothly.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-dollar-sign"></i>
+                    <h3>Great Price</h3>
+                    <p>Exceptional value for your investment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits" id="benefits">
+        <div class="container">
+            <div class="benefit-grid">
+                <div class="benefit-image">
+                    <!-- Placeholder for a visual asset, e.g., Concept 3 image -->
+                    <img src="https://via.placeholder.com/600x400/007bff/ffffff?text=Forklift+Boosting+Productivity" alt="Forklift increasing business productivity">
+                </div>
+                <div class="benefit-content">
+                    <h3>Invest in Growth & Efficiency</h3>
+                    <p>Our new forklifts are engineered to help your business thrive. Whether you're in construction or landscaping, experience the difference:</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> <strong>Boost Productivity:</strong> Complete projects faster and more efficiently.</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Reduce Downtime:</strong> Reliable machinery means less time lost to breakdowns.</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Lower Operating Costs:</strong> Brand new equipment with a strong warranty minimizes unexpected expenses.</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Scalable Operations:</strong> Equip your team to handle larger projects and more demanding workloads.</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Smart Investment:</strong> Long-term value backed by expert support.</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">Contact Us for a Special Offer</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <h2>What Our Clients Say</h2>
+            <div class="testimonial-slider">
+                <div class="testimonial-item active">
+                    <p>"The new forklift we purchased has been a game-changer for our construction site. Reliable, powerful, and the 5-year warranty gives us incredible peace of mind. Highly recommend!"</p>
+                    <div class="testimonial-author">
+                        David Miller
+                        <span>Operations Manager, Solid Foundations Construction</span>
+                    </div>
+                </div>
+                <div class="testimonial-item">
+                    <p>"As a growing landscaping business, we needed equipment that could keep up. Their new forklift is efficient, maneuverable, and the service support is top-notch. A smart investment for our future."</p>
+                    <div class="testimonial-author">
+                        Maria Rodriguez
+                        <span>Owner, GreenScape Landscaping</span>
+                    </div>
+                </div>
+                <div class="testimonial-item">
+                    <p>"Balancing budget and reliability is key for us. This forklift offers exactly that – a great price, brand new condition, and the warranty is fantastic. They also have excellent parts availability."</p>
+                    <div class="testimonial-author">
+                        Robert Chen
+                        <span>Fleet Manager, Reliable Landscaping & Maintenance Services</span>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-nav">
+                <button class="nav-arrow testimonial-prev"><i class="fas fa-chevron-left"></i></button>
+                <button class="nav-arrow testimonial-next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-form">
+                    <h3>Get Your Custom Quote</h3>
+                    <form id="quote-form">
+                        <div class="form-group">
+                            <label for="name">Full Name:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Company Name:</label>
+                            <input type="text" id="company" name="company" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone:</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                         <div class="form-group">
+                            <label for="interest">Your Interest:</label>
+                            <select id="interest" name="interest" required>
+                                <option value="">-- Select --</option>
+                                <option value="quote">Request a Quote</option>
+                                <option value="info">Learn More</option>
+                                <option value="service">Service/Parts Inquiry</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message (Optional):</label>
+                            <textarea id="message" name="message" placeholder="Tell us about your needs..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Request</button>
+                    </form>
+                </div>
+                <div class="contact-info">
+                    <h3>Contact Us Directly</h3>
+                    <p><i class="fas fa-phone"></i> <a href="tel:+18005551234">+1 (800) 555-1234</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:sales@yourcompany.com">sales@yourcompany.com</a></p>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Industry Lane, Cityville, ST 54321</p>
+                    <p><i class="fas fa-clock"></i> Mon - Fri: 8:00 AM - 5:00 PM</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>[Your Company Name]</h4>
+                    <p>Leading provider of high-quality new forklifts for construction, landscaping, and industrial businesses.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#benefits">Benefits</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#">New Forklift Sales</a></li>
+                        <li><a href="#">Parts & Accessories</a></li>
+                        <li><a href="#">Service & Maintenance</a></li>
+                        <li><a href="#">Financing Options</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p><i class="fas fa-phone"></i> +1 (800) 555-1234</p>
+                    <p><i class="fas fa-envelope"></i> sales@yourcompany.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Industry Lane, Cityville, ST 54321</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2024 [Your Company Name]. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Testimonial Slider Logic
+        const testimonials = document.querySelectorAll('.testimonial-item');
+        const prevBtn = document.querySelector('.testimonial-prev');
+        const nextBtn = document.querySelector('.testimonial-next');
+        let currentTestimonial = 0;
+
+        function showTestimonial(index) {
+            testimonials.forEach((test, i) => {
+                test.classList.remove('active');
+                if (i === index) {
+                    test.classList.add('active');
+                }
+            });
+        }
+
+        nextBtn.addEventListener('click', () => {
+            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+            showTestimonial(currentTestimonial);
+        });
+
+        prevBtn.addEventListener('click', () => {
+            currentTestimonial = (currentTestimonial - 1 + testimonials.length) % testimonials.length;
+            showTestimonial(currentTestimonial);
+        });
+
+        // Smooth Scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Basic Form Submission Handling (replace with actual backend logic)
+        document.getElementById('quote-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your submission! We will be in touch shortly.');
+            // In a real application, you would send this data to your server
+            // e.g., using fetch API or XMLHttpRequest
+            // For demonstration, we just reset the form
+            this.reset();
+        });
+
+    </script>
+</body>
+</html>
+```
