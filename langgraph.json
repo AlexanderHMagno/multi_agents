@@ -1,7 +1,0 @@
-{
-  "dependencies": ["."],
-  "graphs": {
-    "agent": "./src/react_agent/agentic_ad_generation.py:graph"
-  },
-  "env": ".env"
-}
