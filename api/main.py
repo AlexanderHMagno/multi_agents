@@ -12,7 +12,7 @@ import traceback
 from datetime import datetime, timedelta
 from typing import Dict, Any, Optional, List
 from pydantic import BaseModel, Field
-from fastapi import FastAPI, HTTPException, BackgroundTasks, Depends, status
+from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.security import OAuth2PasswordRequestForm
@@ -340,7 +340,6 @@ async def enable_user_account(username: str, current_user: User = Depends(get_cu
 @app.post("/api/v1/campaigns/generate", response_model=CampaignResponse)
 async def generate_campaign(
     campaign_brief: CampaignBrief,
-    background_tasks: BackgroundTasks,
     current_user: User = Depends(get_current_active_user)
 ):
     """
@@ -366,14 +365,16 @@ async def generate_campaign(
             "campaign_brief": campaign_brief.dict()
         }
         
-        # Start background task for campaign generation
-        background_tasks.add_task(generate_campaign_background, campaign_id, campaign_brief, current_user.username)
+        # Start background task for campaign generation using asyncio
+        asyncio.create_task(generate_campaign_background(campaign_id, campaign_brief, current_user.username))
         
         return CampaignResponse(
             campaign_id=campaign_id,
             status="started",
             message="Campaign generation started successfully. Use the campaign_id to check status and retrieve results.",
             artifacts={},
+            website_url=f"/api/v1/campaigns/{campaign_id}/website",
+            pdf_url=f"/api/v1/campaigns/{campaign_id}/pdf",
             created_by=current_user.username,
             created_at=datetime.now().isoformat()
         )
