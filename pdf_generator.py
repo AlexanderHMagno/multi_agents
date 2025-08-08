@@ -50,6 +50,8 @@ def generate_campaign_pdf(state, filename="campaign_report.pdf"):
     draw_text_block("🎯 CTA Optimization", artifacts.get("cta_optimization", "N/A"))
     draw_text_block("📱 Media Plan", artifacts.get("media_plan", "N/A"))
     draw_text_block("💼 Client Summary", artifacts.get("client_summary", "N/A"))
+    draw_text_block("📱 Social Media Campaign", artifacts.get("social_media_campaign", "N/A"))
+    draw_text_block("🎭 Emotion Personalization", artifacts.get("emotion_personalization", "N/A"))
     
     # Handle feedback properly - convert messages to strings
     feedback_text = ""
