@@ -1,0 +1,610 @@
+"""
+FastAPI Backend for Multi-Agent Campaign Generation System
+
+This module provides a REST API interface for the campaign generation workflow,
+allowing clients to submit campaign briefs and receive comprehensive campaign outputs.
+"""
+
+import os
+import sys
+import asyncio
+import traceback
+from datetime import datetime, timedelta
+from typing import Dict, Any, Optional, List
+from pydantic import BaseModel, Field
+from fastapi import FastAPI, HTTPException, BackgroundTasks, Depends, status
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.security import OAuth2PasswordRequestForm
+import uvicorn
+
+# Add the parent directory to the path to import the src modules
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from src.utils.config import load_configuration
+from src.utils.state import State
+from src.utils.monitoring import WorkflowMonitor, CampaignAnalytics
+from src.utils.file_handlers import create_campaign_website, save_campaign_pdf
+from src.workflows.campaign_workflow import create_workflow
+
+# Robust import for auth (supports both `python -m api.main` and `python api/main.py`)
+try:
+    from .auth import (
+        User, UserCreate, Token, authenticate_user, create_access_token,
+        get_current_active_user, get_current_admin_user, create_user,
+        list_users, delete_user, update_user_role, disable_user, enable_user,
+        ACCESS_TOKEN_EXPIRE_MINUTES
+    )
+except Exception:  # Fallback when running as a script without package context
+    from api.auth import (
+        User, UserCreate, Token, authenticate_user, create_access_token,
+        get_current_active_user, get_current_admin_user, create_user,
+        list_users, delete_user, update_user_role, disable_user, enable_user,
+        ACCESS_TOKEN_EXPIRE_MINUTES
+    )
+
+
+# Pydantic models for API requests and responses
+class CampaignBrief(BaseModel):
+    """Campaign brief input model"""
+    product: str = Field(..., description="Product or service name")
+    client: str = Field(..., description="Client company name")
+    client_website: Optional[str] = Field(None, description="Client website URL")
+    client_logo: Optional[str] = Field(None, description="Client logo URL")
+    color_scheme: Optional[str] = Field("professional", description="Preferred color scheme")
+    target_audience: str = Field(..., description="Target audience description")
+    goals: List[str] = Field(..., description="Campaign goals")
+    key_features: List[str] = Field(..., description="Key product features")
+    budget: Optional[str] = Field("$5,000", description="Campaign budget")
+    timeline: Optional[str] = Field("3 months", description="Campaign timeline")
+    additional_requirements: Optional[str] = Field(None, description="Additional requirements or notes")
+
+
+class CampaignResponse(BaseModel):
+    """Campaign generation response model"""
+    campaign_id: str = Field(..., description="Unique campaign identifier")
+    status: str = Field(..., description="Generation status")
+    message: str = Field(..., description="Status message")
+    artifacts: Dict[str, Any] = Field(default_factory=dict, description="Generated campaign artifacts")
+    website_url: Optional[str] = Field(None, description="Generated website URL")
+    pdf_url: Optional[str] = Field(None, description="Generated PDF URL")
+    execution_time: Optional[float] = Field(None, description="Execution time in seconds")
+    quality_score: Optional[int] = Field(None, description="Campaign quality score")
+    revision_count: Optional[int] = Field(None, description="Number of revisions performed")
+    created_at: str = Field(..., description="Creation timestamp")
+    created_by: str = Field(..., description="Username who created the campaign")
+
+
+class CampaignStatus(BaseModel):
+    """Campaign status response model"""
+    campaign_id: str = Field(..., description="Unique campaign identifier")
+    status: str = Field(..., description="Current status")
+    progress: Optional[Dict[str, Any]] = Field(None, description="Progress information")
+    estimated_completion: Optional[str] = Field(None, description="Estimated completion time")
+
+
+# Global storage for campaign results (in production, use a proper database)
+campaign_results: Dict[str, Dict[str, Any]] = {}
+campaign_status: Dict[str, str] = {}
+
+
+# Initialize FastAPI app
+app = FastAPI(
+    title="Multi-Agent Campaign Generation API",
+    description="REST API for generating comprehensive marketing campaigns using AI agents",
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc"
+)
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Configure appropriately for production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Initialize the application on startup"""
+    try:
+        # Load configuration
+        config = load_configuration()
+        app.state.config = config
+        app.state.llm = config["llm"]
+        app.state.openai_client = config["openai_client"]
+        
+        # Create workflow
+        workflow, monitor = create_workflow(config["llm"], config["openai_client"])
+        app.state.workflow = workflow
+        app.state.monitor = monitor
+        
+        print("✅ FastAPI backend initialized successfully")
+        print(f"🔧 LLM Model: {config.get('rational_model', 'Unknown')}")
+        print(f"🎨 OpenAI Client: {'✅ Available' if config.get('openai_client') else '❌ Not available'}")
+        print("🔐 Authentication enabled")
+        
+    except Exception as e:
+        print(f"❌ Failed to initialize FastAPI backend: {e}")
+        raise
+
+
+@app.get("/", response_class=HTMLResponse)
+async def root():
+    """Root endpoint with API information"""
+    return """
+    <html>
+        <head>
+            <title>Multi-Agent Campaign Generation API</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 40px; }
+                .container { max-width: 800px; margin: 0 auto; }
+                .endpoint { background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px; }
+                .method { font-weight: bold; color: #007bff; }
+                .url { font-family: monospace; color: #28a745; }
+                .auth { background: #fff3cd; border-left: 4px solid #ffc107; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>🎨 Multi-Agent Campaign Generation API</h1>
+                <p>Welcome to the campaign generation API! This system uses 17 specialized AI agents to create comprehensive marketing campaigns.</p>
+                
+                <div class="auth">
+                    <h3>🔐 Authentication Required</h3>
+                    <p>Most endpoints require authentication. Use the login endpoint to get a JWT token.</p>
+                </div>
+                
+                <h2>📋 Available Endpoints:</h2>
+                
+                <div class="endpoint">
+                    <span class="method">POST</span> <span class="url">/api/v1/auth/login</span>
+                    <p>Login to get JWT access token</p>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method">POST</span> <span class="url">/api/v1/auth/register</span>
+                    <p>Register a new user account</p>
+                </div>
+                
+                <div class="endpoint auth">
+                    <span class="method">POST</span> <span class="url">/api/v1/campaigns/generate</span>
+                    <p>Generate a complete marketing campaign from a campaign brief (Authentication Required)</p>
+                </div>
+                
+                <div class="endpoint auth">
+                    <span class="method">GET</span> <span class="url">/api/v1/campaigns/{campaign_id}</span>
+                    <p>Get campaign results and status (Authentication Required)</p>
+                </div>
+                
+                <div class="endpoint auth">
+                    <span class="method">GET</span> <span class="url">/api/v1/campaigns/{campaign_id}/website</span>
+                    <p>Download the generated campaign website (Authentication Required)</p>
+                </div>
+                
+                <div class="endpoint auth">
+                    <span class="method">GET</span> <span class="url">/api/v1/campaigns/{campaign_id}/pdf</span>
+                    <p>Download the generated campaign PDF report (Authentication Required)</p>
+                </div>
+                
+                <div class="endpoint">
+                    <span class="method">GET</span> <span class="url">/api/v1/health</span>
+                    <p>Check API health and configuration</p>
+                </div>
+                
+                <h2>📚 Documentation:</h2>
+                <ul>
+                    <li><a href="/docs">Interactive API Documentation (Swagger)</a></li>
+                    <li><a href="/redoc">Alternative Documentation (ReDoc)</a></li>
+                </ul>
+                
+                <h2>🚀 Quick Start:</h2>
+                <ol>
+                    <li>Register a new account: <code>POST /api/v1/auth/register</code></li>
+                    <li>Login to get token: <code>POST /api/v1/auth/login</code></li>
+                    <li>Use token in Authorization header: <code>Bearer YOUR_TOKEN</code></li>
+                    <li>Generate campaign: <code>POST /api/v1/campaigns/generate</code></li>
+                </ol>
+                
+                <h2>🔑 Default Users:</h2>
+                <ul>
+                    <li><strong>Admin:</strong> username: admin, password: admin123</li>
+                    <li><strong>User:</strong> username: user1, password: password123</li>
+                </ul>
+            </div>
+        </body>
+    </html>
+    """
+
+
+@app.get("/api/v1/health")
+async def health_check():
+    """Health check endpoint"""
+    try:
+        config = app.state.config
+        return {
+            "status": "healthy",
+            "timestamp": datetime.now().isoformat(),
+            "version": "1.0.0",
+            "llm_model": config.get("rational_model", "Unknown"),
+            "openai_available": bool(config.get("openai_client")),
+            "workflow_ready": bool(app.state.workflow),
+            "authentication": "enabled"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Health check failed: {str(e)}")
+
+
+# Authentication endpoints
+@app.post("/api/v1/auth/login", response_model=Token)
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    """Login to get JWT access token"""
+    user = authenticate_user(form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    if user.disabled:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
+
+
+@app.post("/api/v1/auth/register", response_model=User)
+async def register_user(user_data: UserCreate):
+    """Register a new user account"""
+    try:
+        user = create_user(
+            username=user_data.username,
+            email=user_data.email,
+            password=user_data.password,
+            full_name=user_data.full_name,
+            role=user_data.role
+        )
+        return user
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Registration failed: {str(e)}")
+
+
+@app.get("/api/v1/auth/me", response_model=User)
+async def read_users_me(current_user: User = Depends(get_current_active_user)):
+    """Get current user information"""
+    return current_user
+
+
+# Admin-only endpoints
+@app.get("/api/v1/auth/users", response_model=List[User])
+async def get_users(current_user: User = Depends(get_current_admin_user)):
+    """List all users (admin only)"""
+    return list_users()
+
+
+@app.delete("/api/v1/auth/users/{username}")
+async def remove_user(username: str, current_user: User = Depends(get_current_admin_user)):
+    """Delete a user (admin only)"""
+    if username == current_user.username:
+        raise HTTPException(status_code=400, detail="Cannot delete yourself")
+    
+    if delete_user(username):
+        return {"message": f"User {username} deleted successfully"}
+    else:
+        raise HTTPException(status_code=404, detail="User not found")
+
+
+@app.put("/api/v1/auth/users/{username}/role")
+async def change_user_role(
+    username: str, 
+    new_role: str, 
+    current_user: User = Depends(get_current_admin_user)
+):
+    """Update user role (admin only)"""
+    if update_user_role(username, new_role):
+        return {"message": f"User {username} role updated to {new_role}"}
+    else:
+        raise HTTPException(status_code=404, detail="User not found")
+
+
+@app.put("/api/v1/auth/users/{username}/disable")
+async def disable_user_account(username: str, current_user: User = Depends(get_current_admin_user)):
+    """Disable a user account (admin only)"""
+    if username == current_user.username:
+        raise HTTPException(status_code=400, detail="Cannot disable yourself")
+    
+    if disable_user(username):
+        return {"message": f"User {username} disabled successfully"}
+    else:
+        raise HTTPException(status_code=404, detail="User not found")
+
+
+@app.put("/api/v1/auth/users/{username}/enable")
+async def enable_user_account(username: str, current_user: User = Depends(get_current_admin_user)):
+    """Enable a user account (admin only)"""
+    if enable_user(username):
+        return {"message": f"User {username} enabled successfully"}
+    else:
+        raise HTTPException(status_code=404, detail="User not found")
+
+
+# Protected campaign endpoints
+@app.post("/api/v1/campaigns/generate", response_model=CampaignResponse)
+async def generate_campaign(
+    campaign_brief: CampaignBrief,
+    background_tasks: BackgroundTasks,
+    current_user: User = Depends(get_current_active_user)
+):
+    """
+    Generate a comprehensive marketing campaign using the multi-agent system.
+    
+    This endpoint accepts a campaign brief and returns a campaign ID.
+    The actual generation happens asynchronously in the background.
+    Requires authentication.
+    """
+    try:
+        # Generate unique campaign ID
+        campaign_id = f"campaign_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{id(campaign_brief)}"
+        
+        # Initialize campaign status
+        campaign_status[campaign_id] = "initialized"
+        campaign_results[campaign_id] = {
+            "campaign_id": campaign_id,
+            "status": "initialized",
+            "message": "Campaign generation started",
+            "artifacts": {},
+            "created_at": datetime.now().isoformat(),
+            "created_by": current_user.username,
+            "campaign_brief": campaign_brief.dict()
+        }
+        
+        # Start background task for campaign generation
+        background_tasks.add_task(generate_campaign_background, campaign_id, campaign_brief, current_user.username)
+        
+        return CampaignResponse(
+            campaign_id=campaign_id,
+            status="started",
+            message="Campaign generation started successfully. Use the campaign_id to check status and retrieve results.",
+            artifacts={},
+            created_by=current_user.username,
+            created_at=datetime.now().isoformat()
+        )
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to start campaign generation: {str(e)}")
+
+
+async def generate_campaign_background(campaign_id: str, campaign_brief: CampaignBrief, username: str):
+    """
+    Background task for campaign generation.
+    
+    This function runs the complete workflow and updates the campaign results.
+    """
+    start_time = datetime.now()
+    
+    try:
+        # Update status
+        campaign_status[campaign_id] = "running"
+        campaign_results[campaign_id]["status"] = "running"
+        campaign_results[campaign_id]["message"] = "Campaign generation in progress..."
+        
+        # Prepare initial state
+        initial_state = {
+            "messages": [],
+            "campaign_brief": campaign_brief.dict(),
+            "artifacts": {},
+            "feedback": [],
+            "revision_count": 0,
+            "previous_artifacts": {},
+            "workflow_start_time": datetime.now().timestamp()
+        }
+        
+        # Run workflow
+        from langgraph.checkpoint.memory import MemorySaver
+        memory = MemorySaver()
+        workflow_with_memory = app.state.workflow.compile(checkpointer=memory)
+        
+        print(f"🚀 Starting campaign generation for {campaign_id} by user {username}")
+        
+        # Execute workflow
+        result = workflow_with_memory.invoke(
+            initial_state,
+            config={"thread_id": campaign_id, "recursion_limit": 250}
+        )
+        
+        # Calculate execution time
+        execution_time = (datetime.now() - start_time).total_seconds()
+        
+        # Generate outputs
+        website_filename = f"{campaign_id}_campaign_website.html"
+        create_campaign_website(result, website_filename)
+        
+        # Update campaign results
+        campaign_results[campaign_id].update({
+            "status": "completed",
+            "message": "Campaign generation completed successfully",
+            "artifacts": result.get("artifacts", {}),
+            "website_url": f"/api/v1/campaigns/{campaign_id}/website",
+            "execution_time": execution_time,
+            "quality_score": len(result.get("artifacts", {})),
+            "revision_count": result.get("revision_count", 0),
+            "completed_at": datetime.now().isoformat()
+        })
+        
+        campaign_status[campaign_id] = "completed"
+        
+        print(f"✅ Campaign generation completed for {campaign_id} by user {username}")
+        print(f"⏱️ Execution time: {execution_time:.2f} seconds")
+        print(f"📊 Artifacts generated: {len(result.get('artifacts', {}))}")
+        
+    except Exception as e:
+        error_message = f"Campaign generation failed: {str(e)}"
+        print(f"❌ {error_message}")
+        print(f"🔍 Traceback: {traceback.format_exc()}")
+        
+        campaign_results[campaign_id].update({
+            "status": "failed",
+            "message": error_message,
+            "error": str(e),
+            "failed_at": datetime.now().isoformat()
+        })
+        campaign_status[campaign_id] = "failed"
+
+
+@app.get("/api/v1/campaigns/{campaign_id}", response_model=CampaignResponse)
+async def get_campaign(campaign_id: str, current_user: User = Depends(get_current_active_user)):
+    """Get campaign results and status (authentication required)"""
+    if campaign_id not in campaign_results:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+    
+    result = campaign_results[campaign_id]
+    
+    # Check if user owns the campaign or is admin
+    if result.get("created_by") != current_user.username and current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Access denied. You can only view your own campaigns.")
+    
+    return CampaignResponse(**result)
+
+
+@app.get("/api/v1/campaigns/{campaign_id}/status", response_model=CampaignStatus)
+async def get_campaign_status(campaign_id: str, current_user: User = Depends(get_current_active_user)):
+    """Get campaign status and progress (authentication required)"""
+    if campaign_id not in campaign_status:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+    
+    result = campaign_results.get(campaign_id, {})
+    
+    # Check if user owns the campaign or is admin
+    if result.get("created_by") != current_user.username and current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Access denied. You can only view your own campaigns.")
+    
+    status = campaign_status[campaign_id]
+    
+    progress = None
+    if status == "running":
+        progress = {
+            "artifacts_generated": len(result.get("artifacts", {})),
+            "revision_count": result.get("revision_count", 0),
+            "execution_time": result.get("execution_time", 0)
+        }
+    
+    return CampaignStatus(
+        campaign_id=campaign_id,
+        status=status,
+        progress=progress,
+        estimated_completion=None
+    )
+
+
+@app.get("/api/v1/campaigns/{campaign_id}/website")
+async def download_website(campaign_id: str, current_user: User = Depends(get_current_active_user)):
+    """Download the generated campaign website (authentication required)"""
+    if campaign_id not in campaign_results:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+    
+    result = campaign_results[campaign_id]
+    
+    # Check if user owns the campaign or is admin
+    if result.get("created_by") != current_user.username and current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Access denied. You can only download your own campaigns.")
+    
+    if result["status"] != "completed":
+        raise HTTPException(status_code=400, detail="Campaign generation not completed")
+    
+    # Find the website file
+    outputs_dir = "outputs"
+    website_files = [f for f in os.listdir(outputs_dir) if f.endswith("_campaign_website.html")]
+    
+    # Find the most recent file for this campaign
+    campaign_files = [f for f in website_files if campaign_id in f]
+    if not campaign_files:
+        raise HTTPException(status_code=404, detail="Website file not found")
+    
+    # Get the most recent file
+    latest_file = sorted(campaign_files)[-1]
+    file_path = os.path.join(outputs_dir, latest_file)
+    
+    return FileResponse(
+        path=file_path,
+        media_type="text/html",
+        filename=f"{campaign_id}_campaign_website.html"
+    )
+
+
+@app.get("/api/v1/campaigns/{campaign_id}/pdf")
+async def download_pdf(campaign_id: str, current_user: User = Depends(get_current_active_user)):
+    """Download the generated campaign PDF report (authentication required)"""
+    if campaign_id not in campaign_results:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+    
+    result = campaign_results[campaign_id]
+    
+    # Check if user owns the campaign or is admin
+    if result.get("created_by") != current_user.username and current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Access denied. You can only download your own campaigns.")
+    
+    if result["status"] != "completed":
+        raise HTTPException(status_code=400, detail="Campaign generation not completed")
+    
+    # Find the PDF file
+    outputs_dir = "outputs"
+    pdf_files = [f for f in os.listdir(outputs_dir) if f.endswith(".pdf")]
+    
+    # Find the most recent PDF file for this campaign
+    campaign_files = [f for f in pdf_files if campaign_id in f]
+    if not campaign_files:
+        raise HTTPException(status_code=404, detail="PDF file not found")
+    
+    # Get the most recent file
+    latest_file = sorted(campaign_files)[-1]
+    file_path = os.path.join(outputs_dir, latest_file)
+    
+    return FileResponse(
+        path=file_path,
+        media_type="application/pdf",
+        filename=f"{campaign_id}_campaign_report.pdf"
+    )
+
+
+@app.get("/api/v1/campaigns")
+async def list_campaigns(current_user: User = Depends(get_current_active_user)):
+    """List all campaigns with their status (authentication required)"""
+    campaigns = []
+    for campaign_id, result in campaign_results.items():
+        # Filter campaigns based on user role
+        if current_user.role == "admin" or result.get("created_by") == current_user.username:
+            campaigns.append({
+                "campaign_id": campaign_id,
+                "status": result.get("status", "unknown"),
+                "created_at": result.get("created_at"),
+                "completed_at": result.get("completed_at"),
+                "execution_time": result.get("execution_time"),
+                "artifacts_count": len(result.get("artifacts", {})),
+                "created_by": result.get("created_by", "unknown")
+            })
+    
+    return {
+        "campaigns": campaigns,
+        "total": len(campaigns),
+        "completed": len([c for c in campaigns if c["status"] == "completed"]),
+        "running": len([c for c in campaigns if c["status"] == "running"]),
+        "failed": len([c for c in campaigns if c["status"] == "failed"])
+    }
+
+
+if __name__ == "__main__":
+    uvicorn.run(
+        "api.main:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=True,
+        log_level="info"
+    ) 

@@ -1,0 +1,35 @@
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.swp
+*.log
+*.tmp
+
+# Git
+.git
+.gitignore
+
+# Python envs
+.venv
+venv
+env
+
+# IDE/editor
+.vscode
+.idea
+.DS_Store
+
+# Caches
+.mypy_cache
+.pytest_cache
+
+# Local files
+outputs/*.pdf
+outputs/*.html
+outputs/*.png
+outputs/*.jpg
+outputs/*.jpeg
+
+# Docker
+Dockerfile.* 
