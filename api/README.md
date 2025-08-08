@@ -526,6 +526,25 @@ Then run:
 docker compose up --build
 ```
 
+## Development with Docker (Hot Reload)
+
+- Create `.env` in repo root with your API keys and settings.
+- Start the API with live-reload and source mounting:
+
+```bash
+docker compose up --build
+```
+
+Compose mounts the repository into `/app` inside the container and runs:
+
+```bash
+uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app
+```
+
+Any changes you make to the source locally will trigger auto-reload in the container. Generated outputs are stored under `./outputs` on your host (still accessible in the container at `/app/outputs`).
+
+For production, run without `--reload` and avoid mounting the whole repo.
+
 ## 🔍 Troubleshooting
 
 ### Common Issues

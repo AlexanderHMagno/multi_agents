@@ -105,6 +105,7 @@ def start_server():
         print("\n👋 Server stopped by user")
     except Exception as e:
         print(f"❌ Failed to start server: {e}")
+        print("💡 If you see 'No module named api', ensure PYTHONPATH includes the repo root (e.g., export PYTHONPATH=$(pwd))")
         sys.exit(1)
 
 

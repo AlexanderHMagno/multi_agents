@@ -601,6 +601,54 @@ async def list_campaigns(current_user: User = Depends(get_current_active_user)):
     }
 
 
+@app.get("/campaigns/view/{campaign_id}", response_class=HTMLResponse)
+async def view_campaign_website(
+    campaign_id: str
+):
+    """View the generated campaign website in the browser (public by default)"""
+
+    if campaign_id not in campaign_results:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+
+    result = campaign_results[campaign_id]
+
+    # Default to public view unless explicitly set otherwise
+    # is_public = result.get("is_public", True)
+    # saved_share_token = result.get("share_token")
+
+    # # If not public, check token or auth
+    # if not is_public:
+    #     if share_token and saved_share_token and hmac.compare_digest(share_token, saved_share_token):
+    #         pass  # token OK
+    #     elif current_user and (
+    #         result.get("created_by") == current_user.username or current_user.role == "admin"
+    #     ):
+    #         pass  # owner or admin
+    #     else:
+    #         raise HTTPException(status_code=403, detail="Access denied")
+
+    if result["status"] != "completed":
+        return HTMLResponse(content="Campaign generation not completed stay tuned")
+        # raise HTTPException(status_code=400, detail="Campaign generation not completed")
+
+    # Locate HTML file
+    outputs_dir = "outputs"
+    website_files = [f for f in os.listdir(outputs_dir) if f.endswith("_campaign_website.html")]
+    campaign_files = [f for f in website_files if campaign_id in f]
+
+    if not campaign_files:
+        raise HTTPException(status_code=404, detail="Website file not found")
+
+    latest_file = sorted(campaign_files)[-1]
+    file_path = os.path.join(outputs_dir, latest_file)
+
+    # Return HTML directly
+    with open(file_path, "r", encoding="utf-8") as f:
+        html_content = f.read()
+
+    return HTMLResponse(content=html_content)
+
+
 if __name__ == "__main__":
     uvicorn.run(
         "api.main:app",

@@ -20,12 +20,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt ./
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Copy the project
+# Copy the project (compose will override with bind mount for dev)
 COPY . .
 
 # Expose FastAPI port
 EXPOSE 8000
 
-# Default command: production-friendly (no reload)
-# Use `--workers` >= number of CPU cores for production; keep 2 as default
+# Default command for production (compose overrides this with --reload for dev)
 CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"] 
