@@ -9,6 +9,7 @@ from .base_agent import BaseAgent
 from ..utils.state import State
 
 
+
 class WebDeveloper(BaseAgent):
     """
     Web Developer Agent - Generates comprehensive campaign presentation websites.
@@ -115,6 +116,9 @@ class WebDeveloper(BaseAgent):
         Image Description: {image_prompt}
         IMPORTANT: For all images, use https://placehold.co/600x400?text= as placeholder images, where text= is the image description and 600x400 is the size (can be any size as widthxheight)
 
+        WEBSITE TEMPLATE:
+        https://marketinai.s3.ca-central-1.amazonaws.com/public/base.html
+
         WEBSITE REQUIREMENTS:
         1. Create a complete HTML page with embedded CSS and JavaScript
         2. Design as a professional campaign presentation website, not a landing page
@@ -158,7 +162,7 @@ class WebDeveloper(BaseAgent):
         Generate a complete, professional campaign presentation website that showcases the entire campaign comprehensively.
         The website should look like a modern, beautiful presentation suitable for client meetings and stakeholder reviews.
         """
-        
+        print("IM THE WEBSITER")
         messages = self.get_messages(comprehensive_prompt)
         response = self.invoke_llm_with_retry(messages, "Campaign Website Generation")
         print(f"Comprehensive campaign presentation website generated with all campaign data")

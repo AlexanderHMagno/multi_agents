@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing.ai Campaign Presentation</title>
+    <meta name="description" content="Comprehensive campaign presentation for Marketing.ai, showcasing strategy, creative concepts, media plan, and more.">
+    <meta name="keywords" content="Marketing.ai, campaign presentation, marketing strategy, digital marketing, AI marketing, lead generation, social media campaign, creative concepts, audience analysis">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #003366; /* Deep Blue */
+            --secondary-color: #00A0B0; /* Vibrant Teal */
+            --accent-color: #FF7F00; /* Bright Orange */
+            --background-color: #f4f7f6;
+            --text-color: #333;
+            --light-gray: #e0e0e0;
+            --white: #fff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, var(--primary-color), #005f99);
+            --gradient-secondary: linear-gradient(135deg, var(--secondary-color), #007788);
+            --gradient-accent: linear-gradient(135deg, var(--accent-color), #e67300);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4 {
+            margin-bottom: 1rem;
+            line-height: 1.3;
+            color: var(--primary-color);
+        }
+        h1 { font-size: 2.8rem; font-weight: 700; }
+        h2 { font-size: 2rem; font-weight: 600; }
+        h3 { font-size: 1.6rem; font-weight: 600; }
+        h4 { font-size: 1.3rem; font-weight: 600; }
+        p {
+            margin-bottom: 1rem;
+        }
+        a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: var(--accent-color);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* Dropdown Navigation */
+        .dropdown-nav {
+            position: fixed;
+            top: 0;
+            left: -250px; /* Hidden by default */
+            width: 250px;
+            height: 100vh;
+            background-color: var(--primary-color);
+            color: var(--white);
+            box-shadow: 2px 0 10px var(--shadow-color);
+            transition: left 0.3s ease-in-out;
+            z-index: 1000;
+            overflow-y: auto;
+            padding-top: 60px; /* Space for toggle button */
+        }
+        .dropdown-nav.open {
+            left: 0;
+        }
+        .dropdown-nav ul {
+            list-style: none;
+        }
+        .dropdown-nav ul li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .dropdown-nav ul li:last-child {
+            border-bottom: none;
+        }
+        .dropdown-nav a {
+            display: block;
+            padding: 15px 20px;
+            color: var(--white);
+            font-weight: 400;
+            transition: background-color 0.3s ease;
+        }
+        .dropdown-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--secondary-color);
+        }
+        /* Sub-menu for Emotion Personalization */
+        .dropdown-nav .has-submenu > a {
+            position: relative;
+        }
+        .dropdown-nav .has-submenu > a::after {
+            content: '\f107'; /* Font Awesome chevron down */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+        }
+        .dropdown-nav .has-submenu.open > a::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+        .dropdown-nav .submenu {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.1);
+            padding-left: 20px;
+        }
+        .dropdown-nav .submenu.open {
+            display: block;
+        }
+        .dropdown-nav .submenu a {
+            padding-left: 40px;
+            font-size: 0.9rem;
+        }
+        .nav-toggle {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1001;
+            background: var(--gradient-primary);
+            color: var(--white);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        .nav-toggle:hover {
+            background: var(--gradient-secondary);
+        }
+        /* Header/Hero Section */
+        .hero {
+            background: var(--gradient-primary) url('https://cdn.pixabay.com/photo/2016/01/25/16/41/ottawa-1160993_1280.png') no-repeat center center/cover;
+            color: var(--white);
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 51, 102, 0.8); /* Overlay for better text readability */
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 20px;
+        }
+        .hero h1 {
+            color: var(--white);
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+        }
+        .hero p {
+            font-size: 1.3rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+        }
+        /* Section Styling */
+        section {
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        section:nth-child(even) {
+            background-color: var(--white);
+        }
+        section:nth-child(odd) {
+            background-color: var(--background-color);
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            padding-bottom: 20px;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-accent);
+            border-radius: 2px;
+        }
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        .card-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        .card-header h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        .card-icon {
+            font-size: 2rem;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+        .card-body p {
+            font-size: 0.95rem;
+        }
+        /* Strategy Section */
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .strategy-item {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .strategy-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        .strategy-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        .strategy-item ul {
+            list-style: disc;
+            margin-left: 20px;
+        }
+        /* Audience Section */
+        .persona-card {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .persona-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        .persona-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+            padding-bottom: 5px;
+        }
+        .persona-card h4 {
+            color: var(--secondary-color);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .persona-card ul {
+            list-style: circle;
+            margin-left: 20px;
+        }
+        /* Creative Concepts Section */
+        .concept-carousel {
+            position: relative;
+            overflow: hidden;
+            padding-bottom: 40px; /* Space for navigation dots */
+        }
+        .concept-carousel .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .concept-card {
+            flex: 0 0 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+        }
+        .concept-image-wrapper {
+            width: 100%;
+            max-width: 600px; /* Adjust as needed */
+            margin-bottom: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .concept-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover; /* Ensures image covers the area */
+        }
+        .concept-carousel .carousel-nav {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        .carousel-nav button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--light-gray);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .carousel-nav button.active {
+            background: var(--accent-color);
+        }
+        /* CTA Optimization */
+        .cta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .cta-card {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+        .cta-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        .cta-card .cta-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cta-card .cta-button {
+            display: inline-block;
+            background: var(--gradient-accent);
+            color: var(--white);
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background 0.3s ease, transform 0.3s ease;
+            margin-top: 20px;
+        }
+        .cta-card .cta-button:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+        /* Media Plan */
+        .media-plan-item {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            padding: 30px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .media-plan-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+        .media-plan-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        .media-plan-item .budget-bar {
+            width: 100%;
+            height: 10px;
+            background-color: var(--light-gray);
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .media-plan-item .budget-bar-fill {
+            height: 100%;
+            background: var(--gradient-secondary);
+        }
+        /* Social Media Campaign Section */
+        .social-campaign-section {
+            background: var(--background-color); /* Ensure distinct background */
+        }
+        .social-media-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+        .social-media-tabs button {
+            background: var(--white);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .social-media-tabs button:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+        .social-media-tabs button.active {
+            background: var(--gradient-primary);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+        .social-content-display {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            margin-top: 20px;
+        }
+        .social-content-display h4 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--light-gray);
+            padding-bottom: 10px;
+        }
+        .social-example {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--light-gray);
+        }
+        .social-example:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .social-example h5 {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .social-example p {
+            font-size: 0.95rem;
+            background-color: var(--background-color);
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 3px solid var(--secondary-color);
+        }
+        .social-example .platform-label {
+            font-weight: 600;
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 5px;
+        }
+        .social-example .cta-social {
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: 600;
+            background: var(--gradient-secondary);
+            color: var(--white);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        .social-example .cta-social:hover {
+            background: var(--secondary-color);
+        }
+        /* Emotion Personalization Section */
+        .emotion-personalization {
+            background: var(--white);
+        }
+        .emotion-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+        .emotion-tabs button {
+            background: var(--light-gray);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .emotion-tabs button:hover {
+            background: var(--secondary-color);
+            color: var(--white);
+        }
+        .emotion-tabs button.active {
+            background: var(--gradient-secondary);
+            color: var(--white);
+        }
+        .emotion-content-display {
+            background: var(--background-color);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            margin-top: 20px;
+        }
+        .emotion-content-display h4 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--light-gray);
+            padding-bottom: 10px;
+        }
+        .emotion-message-block {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--light-gray);
+        }
+        .emotion-message-block:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .emotion-message-block h5 {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .emotion-message-block .emotion-icon {
+            font-size: 1.5rem;
+        }
+        .emotion-message-block .copy-variation {
+            font-style: italic;
+            color: #555;
+            margin-top: 10px;
+            background: var(--white);
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid var(--primary-color);
+        }
+        .emotion-message-block .visual-recommendations,
+        .emotion-message-block .cta-variations,
+        .emotion-message-block .content-themes {
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+        .emotion-message-block h6 {
+            font-size: 1rem;
+            color: var(--primary-color);
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        /* Data Visualization */
+        .data-viz-container {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            margin-top: 20px;
+            text-align: center;
+        }
+        .data-viz-container h4 {
+             color: var(--primary-color);
+             margin-bottom: 30px;
+             border-bottom: 1px solid var(--light-gray);
+             padding-bottom: 10px;
+        }
+        .progress-bar-container {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        .progress-bar-container h5 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--gradient-secondary);
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        /* Footer */
+        footer {
+            background: var(--primary-color);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 50px 0 30px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        footer .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        footer .footer-logo img {
+            max-width: 150px;
+            opacity: 0.8;
+        }
+        footer .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        footer .footer-links a:hover {
+            color: var(--white);
+        }
+        footer .footer-social i {
+            font-size: 1.5rem;
+            margin: 0 8px;
+            color: rgba(255, 255, 255, 0.7);
+            transition: color 0.3s ease;
+        }
+        footer .footer-social i:hover {
+            color: var(--white);
+        }
+        footer .footer-copyright {
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 20px;
+        }
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.7rem; }
+            h3 { font-size: 1.4rem; }
+            .hero h1 { font-size: 2.8rem; }
+            .hero p { font-size: 1.1rem; }
+            section { padding: 60px 0; }
+            .section-title { margin-bottom: 40px; }
+            .dropdown-nav {
+                padding-top: 50px;
+            }
+            .nav-toggle {
+                top: 10px;
+                left: 10px;
+                padding: 8px 12px;
+                font-size: 1.3rem;
+            }
+            .hero {
+                height: 60vh;
+            }
+            .strategy-grid, .cta-grid {
+                grid-template-columns: 1fr;
+            }
+            .social-media-tabs, .emotion-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            .social-content-display, .emotion-content-display, .data-viz-container, .card, .persona-card, .cta-card, .media-plan-item {
+                padding: 25px;
+            }
+             footer .footer-content {
+                flex-direction: column;
+                align-items: center;
+            }
+            footer .footer-links {
+                margin-top: 15px;
+            }
+        }
+        @media (max-width: 480px) {
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.5rem; }
+            h3 { font-size: 1.2rem; }
+            .hero h1 { font-size: 2.2rem; }
+            .nav-toggle {
+                top: 8px;
+                left: 8px;
+            }
+            .hero {
+                height: 50vh;
+            }
+            .hero p { font-size: 1rem; }
+            section { padding: 40px 0; }
+            .section-title { margin-bottom: 30px; }
+            .concept-card, .social-content-display, .emotion-content-display, .data-viz-container, .card, .persona-card, .cta-card, .media-plan-item {
+                padding: 20px;
+            }
+        }
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            cursor: help;
+            border-bottom: 1px dotted var(--secondary-color);
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 280px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px 15px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* Position above the element */
+            left: 50%;
+            margin-left: -140px; /* Center the tooltip */
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%; /* At the bottom of the tooltip */
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--primary-color) transparent transparent transparent;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <button class="nav-toggle" aria-label="Toggle Navigation">&#9776;</button>
+    <nav class="dropdown-nav" id="dropdownNav" aria-label="Main Navigation">
+        <ul>
+            <li><a href="#executive-summary">Executive Summary</a></li>
+            <li><a href="#campaign-strategy">Campaign Strategy</a></li>
+            <li><a href="#audience-analysis">Audience Analysis</a></li>
+            <li><a href="#creative-concepts">Creative Concepts</a></li>
+            <li><a href="#copy-content">Copy & Messaging</a></li>
+            <li><a href="#cta-optimization">CTA Optimization</a></li>
+            <li><a href="#media-plan">Media Plan</a></li>
+            <li><a href="#social-media-campaign">Social Media Campaign</a></li>
+            <li class="has-submenu">
+                <a href="#emotion-personalization">Emotion Personalization</a>
+                <ul class="submenu" id="emotionSubmenu" aria-label="Emotion Personalization Submenu">
+                    <li><a href="#emotion-happy">Happy</a></li>
+                    <li><a href="#emotion-excited">Excited</a></li>
+                    <li><a href="#emotion-calm">Calm</a></li>
+                    <li><a href="#emotion-anxious">Anxious</a></li>
+                    <li><a href="#emotion-confident">Confident</a></li>
+                    <li><a href="#emotion-curious">Curious</a></li>
+                    <li><a href="#emotion-sad">Sad</a></li>
+                    <li><a href="#emotion-angry">Angry</a></li>
+                    <li><a href="#emotion-scared">Scared</a></li>
+                    <li><a href="#emotion-disgusted">Disgusted</a></li>
+                    <li><a href="#emotion-surprised">Surprised</a></li>
+                    <li><a href="#emotion-loved">Loved</a></li>
+                    <li><a href="#emotion-jealous">Jealous</a></li>
+                </ul>
+            </li>
+            <li><a href="#visual-assets">Visual Assets & Analysis</a></li>
+            <li><a href="#campaign-metrics">Campaign Metrics & Impact</a></li>
+            <li><a href="#contact">Contact & Next Steps</a></li>
+        </ul>
+    </nav>
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Marketing.ai Campaign Presentation</h1>
+            <p>Intelligent Simplicity. Amplified Results.</p>
+        </div>
+    </header>
+    <main>
+        <section id="executive-summary" aria-labelledby="executive-summary-heading">
+            <div class="container">
+                <h2 class="section-title" id="executive-summary-heading">Executive Summary</h2>
+                <article class="card">
+                    <header class="card-header">
+                        <i class="fas fa-chart-line card-icon"></i>
+                        <h3>Campaign Overview & Objectives</h3>
+                    </header>
+                    <div class="card-body">
+                        <p>This presentation outlines a strategic approach for Marketing.ai's 2-month, $2,000 campaign, designed to drive measurable business results across lead generation, enrollment, and website traffic. Recognizing the need for precise targeting and impactful messaging within a lean budget, our recommendations focus on maximizing ROI through highly targeted digital channels and compelling calls-to-action.</p>
+                        <p><strong>Client:</strong> Marketing.ai</p>
+                        <p><strong>Campaign Duration:</strong> 2 Months</p>
+                        <p><strong>Budget:</strong> $2,000</p>
+                        <p><strong>Primary Goals:</strong> Increase Lead Generation, Drive Enrollment, Increase Website Traffic</p>
+                        <p><strong>Value Proposition:</strong> Marketing.ai offers an intelligent, efficient, and results-driven solution that simplifies complex marketing/financial tasks, empowering businesses and professionals to achieve significant growth and operational efficiency.</p>
+                        <p><strong>Key Strategic Pillars:</strong> Precision Targeting, Benefit-Driven Messaging, Channel Optimization, Conversion-Focused CTAs.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <section id="campaign-strategy" aria-labelledby="campaign-strategy-heading">
+            <div class="container">
+                <h2 class="section-title" id="campaign-strategy-heading">Campaign Strategy</h2>
+                <div class="strategy-grid">
+                    <article class="strategy-item">
+                        <h3>1. Product & Audience Definition</h3>
+                        <p><strong>Challenge:</strong> The initial brief requires definition of the specific product and target audience. This is critical for effective strategy execution.</p>
+                        <p><strong>Recommendation:</strong> Prioritize defining the specific product and its ideal target audience (e.g., B2B Marketing Managers, Startup Founders, Small Business Owners).</p>
+                    </article>
+                    <article class="strategy-item">
+                        <h3>2. Value Proposition</h3>
+                        <p><strong>Core Message:</strong> Marketing.ai provides an <strong>intelligent, efficient, and results-driven solution</strong> that simplifies complex tasks, empowering businesses and professionals to achieve significant growth and operational efficiency.</p>
+                    </article>
+                    <article class="strategy-item">
+                        <h3>3. Messaging Framework</h3>
+                        <p>Focus on clear, tangible benefits that directly address the defined audience's pain points. Highlight AI's role in driving growth and efficiency.</p>
+                    </article>
+                    <article class="strategy-item">
+                        <h3>4. Channel Optimization</h3>
+                        <p>With a lean budget ($2,000), we will focus on high-impact digital channels like LinkedIn and Google Ads for maximum ROI.</p>
+                    </article>
+                    <article class="strategy-item">
+                        <h3>5. Conversion-Focused CTAs</h3>
+                        <p>Utilize compelling and clear calls-to-action optimized to guide users towards desired outcomes (leads, enrollment, website traffic).</p>
+                    </article>
+                    <article class="strategy-item">
+                        <h3>6. Budget & Timeline</h3>
+                        <p><strong>Budget:</strong> $2,000 distributed across targeted digital advertising, content creation, and tracking.</p>
+                        <p><strong>Timeline:</strong> 2 Months (Month 1: Awareness/Lead Gen, Month 2: Conversion Focus).</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <section id="audience-analysis" aria-labelledby="audience-analysis-heading">
+            <div class="container">
+                <h2 class="section-title" id="audience-analysis-heading">Audience Analysis</h2>
+                <p>Understanding our target audience is paramount. We've developed detailed personas to guide our messaging, creative, and targeting efforts.</p>
+                <article class="persona-card">
+                    <header class="card-header">
+                        <i class="fas fa-user-tie card-icon"></i>
+                        <h3>Persona 1: The Ambitious Startup Founder</h3>
+                    </header>
+                    <div class="card-body">
+                        <h4>Demographics:</h4>
+                        <p>Age: 28-40, Urban/Tech Hubs, Educated, Founder/CEO, Reinvesting heavily.</p>
+                        <h4>Psychographics:</h4>
+                        <p>Values: Innovation, growth, efficiency, data-driven. Lifestyle: Driven, fast-paced, seeks competitive advantage.</p>
+                        <h4>Pain Points:</h4>
+                        <p>Limited Resources, Time Constraints, Lack of Marketing Expertise, Measuring ROI, Inefficient Tools.</p>
+                        <h4>Motivations:</h4>
+                        <p>Rapid Growth, Efficiency & Automation, Competitive Edge, Scalability, ROI.</p>
+                        <h4>Preferred Channels:</h4>
+                        <p>LinkedIn, Industry Blogs, Email Newsletters, Webinars, Podcasts.</p>
+                    </div>
+                </article>
+                <article class="persona-card">
+                     <header class="card-header">
+                        <i class="fas fa-user-cog card-icon"></i>
+                        <h3>Persona 2: The Growth-Focused Marketing Manager</h3>
+                    </header>
+                    <div class="card-body">
+                        <h4>Demographics:</h4>
+                        <p>Age: 30-45, Suburban/Urban, Marketing Manager/Director, Mid-to-High Income, Balancing Career/Family.</p>
+                        <h4>Psychographics:</h4>
+                        <p>Values: ROI, data accuracy, collaboration, brand reputation. Lifestyle: Busy, organized, results-oriented.</p>
+                        <h4>Pain Points:</h4>
+                        <p>Siloed Data & Tools, Inefficient Campaign Management, Lack of Personalization, Proving Marketing's Value, Keeping Up with Tech.</p>
+                        <h4>Motivations:</h4>
+                        <p>Improving Campaign Performance, Streamlining Workflows, Personalizing Customer Experiences, Demonstrating Measurable Results, Career Advancement.</p>
+                        <h4>Preferred Channels:</h4>
+                        <p>Email, LinkedIn, Webinars, Case Studies, Conferences.</p>
+                    </div>
+                </article>
+                <article class="persona-card">
+                     <header class="card-header">
+                        <i class="fas fa-store card-icon"></i>
+                        <h3>Persona 3: The Forward-Thinking Small Business Owner</h3>
+                    </header>
+                    <div class="card-body">
+                        <h4>Demographics:</h4>
+                        <p>Age: 35-55, Suburban/Urban/Rural, Small Business Owner, Income tied to Business Success, Family-Oriented.</p>
+                        <h4>Psychographics:</h4>
+                        <p>Values: Customer loyalty, reliability, practicality, long-term stability. Lifestyle: Hands-on, wears many hats.</p>
+                        <h4>Pain Points:</h4>
+                        <p>Lack of Time for Marketing, Limited Marketing Budget, Uncertainty about Digital Marketing, Difficulty Reaching New Customers, Manual Processes.</p>
+                        <h4>Motivations:</h4>
+                        <p>Increasing Customer Base, Improving Customer Retention, Saving Time & Effort, Affordable & Effective Solutions, Simplicity & Ease of Use.</p>
+                        <h4>Preferred Channels:</h4>
+                        <p>Email, Local Business Networks, Business Websites & Forums, Short Informative Videos.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <section id="creative-concepts" aria-labelledby="creative-concepts-heading">
+            <div class="container">
+                <h2 class="section-title" id="creative-concepts-heading">Creative Concepts</h2>
+                <p>These concepts are designed to be professional, engaging, and adaptable, focusing on the core theme: <em>Intelligent Simplicity. Amplified Results.</em></p>
+                <div class="concept-carousel">
+                    <div class="carousel-track">
+                        <!-- Concept 1 -->
+                        <article class="concept-card">
+                            <h3>Concept 1: "The Unseen Advantage"</h3>
+                            <div class="concept-image-wrapper">
+                                <img src="https://placehold.co/600x400?text=Concept+1:+The+Unseen+Advantage" alt="Concept 1: The Unseen Advantage" class="concept-image">
+                            </div>
+                            <h4>Strategy Alignment:</h4>
+                            <p>Focuses on AI as a powerful, behind-the-scenes enabler that gives users a competitive edge. Addresses pain points of overwhelm and the desire for better results.</p>
+                            <h4>Visual Direction (B2B Example):</h4>
+                            <p>Clean, modern office. Marketing manager calmly reviewing data. Subtle, blurred data visualizations and growth charts behind them, hinting at AI's work. Deep blues and charcoals with vibrant teal/cyan accents.</p>
+                            <h4>Messaging Focus:</h4>
+                            <p>AI handles complex, time-consuming tasks, freeing users for strategy and growth. Emphasizes efficiency and achieving goals without struggle.</p>
+                            <h4>CTA Examples:</h4>
+                            <p><em>"Discover Your Advantage"</em> | <em>"Get Started Today"</em></p>
+                        </article>
+                        <!-- Concept 2 -->
+                        <article class="concept-card">
+                            <h3>Concept 2: "The Smart Shortcut"</h3>
+                            <div class="concept-image-wrapper">
+                                <img src="https://placehold.co/600x400?text=Concept+2:+The+Smart+Shortcut" alt="Concept 2: The Smart Shortcut" class="concept-image">
+                            </div>
+                            <h4>Strategy Alignment:</h4>
+                            <p>Directly addresses time constraints and inefficient processes. Positions the product as the intelligent, faster way to achieve outcomes.</p>
+                            <h4>Visual Direction (B2C Example):</h4>
+                            <p>Person navigating a busy city, with a clear, illuminated path/AI guide appearing via smartphone app, leading to their goal. Optimistic mood.</p>
+                            <h4>Messaging Focus:</h4>
+                            <p>Emphasizes time savings, reduced effort, and faster achievement of goals through AI shortcuts.</p>
+                            <h4>CTA Examples:</h4>
+                            <p><em>"Find Your Shortcut"</em> | <em>"Simplify Your Success"</em></p>
+                        </article>
+                        <!-- Concept 3 -->
+                        <article class="concept-card">
+                            <h3>Concept 3: "The Growth Engine"</h3>
+                            <div class="concept-image-wrapper">
+                                <img src="https://placehold.co/600x400?text=Concept+3:+The+Growth+Engine" alt="Concept 3: The Growth Engine" class="concept-image">
+                            </div>
+                            <h4>Strategy Alignment:</h4>
+                            <p>Focuses on tangible results and continuous improvement. Appeals to ambition and the desire for measurable success.</p>
+                            <h4>Visual Direction (B2B Example):</h4>
+                            <p>Dynamic visual of smoothly turning gears with integrated data nodes, or a stylized plant rapidly growing with data points as leaves. Suggests momentum.</p>
+                            <h4>Messaging Focus:</h4>
+                            <p>Highlights the product's ability to drive consistent, measurable improvements and build a stronger foundation for long-term success.</p>
+                            <h4>CTA Examples:</h4>
+                            <p><em>"Ignite Your Growth"</em> | <em>"Power Up Your Results"</em></p>
+                        </article>
+                    </div>
+                    <div class="carousel-nav">
+                        <button data-slide="0" class="active" aria-label="Go to slide 1"></button>
+                        <button data-slide="1" aria-label="Go to slide 2"></button>
+                        <button data-slide="2" aria-label="Go to slide 3"></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="copy-content" aria-labelledby="copy-content-heading">
+            <div class="container">
+                <h2 class="section-title" id="copy-content-heading">Copy & Messaging</h2>
+                <p>Crafted to be professional yet engaging, resonating with target audiences across different platforms. We'll focus on highlighting benefits and addressing pain points.</p>
+                <article class="card">
+                    <header class="card-header">
+                        <i class="fas fa-pen-nib card-icon"></i>
+                        <h3>B2B Ad Copy Examples (Concept 2: "The Smart Shortcut")</h3>
+                    </header>
+                    <div class="card-body">
+                        <h5>LinkedIn Feed Ad:</h5>
+                        <p class="social-example">
+                            <span class="platform-label">Headline:</span> Marketing Without the Grind. Your Smart Shortcut to Growth.
+                            <span class="platform-label">Body Copy:</span> Is your marketing process a maze? Cut through the complexity with our AI-powered solution. We provide the direct path to faster, more efficient results, saving you time and resources. Focus on strategy, not busywork.
+                            <a href="#" class="cta-social">Find Your Shortcut</a>
+                        </p>
+                        <h5>Google Display Ad:</h5>
+                        <p class="social-example">
+                            <span class="platform-label">Headline:</span> AI Marketing: The Fastest Route
+                            <span class="platform-label">Body Copy:</span> Save time. Boost results.
+                            <a href="#" class="cta-social">Simplify Your Success</a>
+                        </p>
+                        <h5>Short Video Ad (Script Snippet):</h5>
+                        <p class="social-example">
+                            <span class="platform-label">Visual Cue:</span> Animation showing a complex process unraveling into a single, direct line. Text overlays: "Too Complex?" -> "AI Shortcut." -> "Faster Growth."
+                            <span class="platform-label">Voiceover/Text:</span> "Stop wasting time on inefficient processes. Discover the smart shortcut to marketing success."
+                            <a href="#" class="cta-social">Find Your Shortcut</a>
+                        </p>
+                    </div>
+                </article>
+                 <article class="card">
+                    <header class="card-header">
+                        <i class="fas fa-mobile-alt card-icon"></i>
+                        <h3>B2C Ad Copy Examples (Concept 2: "The Smart Shortcut")</h3>
+                    </header>
+                    <div class="card-body">
+                        <h5>Social Media Feed Ad:</h5>
+                        <p class="social-example">
+                            <span class="platform-label">Headline:</span> Stop Guessing, Start Growing. The Smartest Way to Manage Your Money.
+                            <span class="platform-label">Body Copy:</span> Navigate your financial journey with confidence. Our app is your smart shortcut to saving more, spending wisely, and reaching your financial goals faster. No more confusion, just clear, direct progress.
+                            <a href="#" class="cta-social">Start Saving Smarter</a>
+                        </p>
+                         <h5>Google Search Ad:</h5>
+                        <p class="social-example">
+                            <span class="platform-label">Headline:</span> Smart Money Management App
+                            <span class="platform-label">Body Copy:</span> Your shortcut to financial goals. Effortless savings & investing.
+                            <a href="#" class="cta-social">Download App</a>
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <section id="cta-optimization" aria-labelledby="cta-optimization-heading">
+            <div class="container">
+                <h2 class="section-title" id="cta-optimization-heading">CTA Optimization</h2>
+                <p>We've identified key Calls-to-Action that are clear, compelling, and designed to drive desired outcomes.</p>
+                <div class="cta-grid">
+                    <article class="cta-card">
+                        <p class="cta-text">Unlock Your Growth Engine</p>
+                        <a href="#" class="cta-button">Discover More</a>
+                    </article>
+                    <article class="cta-card">
+                        <p class="cta-text">Get Your Free Demo</p>
+                        <a href="#" class="cta-button">Request Demo</a>
+                    </article>
+                    <article class="cta-card">
+                        <p class="cta-text">See How It Works</p>
+                        <a href="#" class="cta-button">Learn More</a>
+                    </article>
+                    <article class="cta-card">
+                        <p class="cta-text">Download Your [X] Guide Now</p>
+                        <a href="#" class="cta-button">Get the Guide</a>
+                    </article>
+                     <article class="cta-card">
+                        <p class="cta-text">Discover Your [Benefit]</p>
+                        <a href="#" class="cta-button">Explore</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <section id="media-plan" aria-labelledby="media-plan-heading">
+            <div class="container">
+                <h2 class="section-title" id="media-plan-heading">Media Plan</h2>
+                <p>A strategic allocation of the $2,000 budget across high-impact digital channels to maximize reach and conversion efficiency.</p>
+                <article class="media-plan-item">
+                    <header class="card-header">
+                        <i class="fab fa-linkedin card-icon"></i>
+                        <h4>LinkedIn Paid Social ($1,000 / 50%)</h4>
+                    </header>
+                    <div class="card-body">
+                        <p>Leverage precise targeting for professional audiences (Marketing Managers, Founders) to drive high-intent leads and website traffic via sponsored content, video ads, and lead gen forms.</p>
+                        <div class="budget-bar">
+                            <div class="budget-bar-fill" style="width: 50%;"></div>
+                        </div>
+                    </div>
+                </article>
+                 <article class="media-plan-item">
+                    <header class="card-header">
+                        <i class="fab fa-google card-icon"></i>
+                        <h4>Google Ads (Search) ($700 / 35%)</h4>
+                    </header>
+                    <div class="card-body">
+                        <p>Capture users actively searching for solutions with intent-based advertising, focusing on relevant keywords to drive traffic and direct conversions. Essential for intent-driven lead generation.</p>
+                         <div class="budget-bar">
+                            <div class="budget-bar-fill" style="width: 35%;"></div>
+                        </div>
+                    </div>
+                </article>
+                <article class="media-plan-item">
+                    <header class="card-header">
+                        <i class="fas fa-envelope card-icon"></i>
+                        <h4>Email Marketing Support ($100 / 5%)</h4>
+                    </header>
+                    <div class="card-body">
+                        <p>Facilitate lead nurturing and re-engagement efforts to maximize conversion potential from acquired leads. Crucial for nurturing and converting leads from other channels.</p>
+                         <div class="budget-bar">
+                            <div class="budget-bar-fill" style="width: 5%;"></div>
+                        </div>
+                    </div>
+                </article>
+                 <article class="media-plan-item">
+                    <header class="card-header">
+                        <i class="fas fa-file-alt card-icon"></i>
+                        <h4>Content Marketing Support ($200 / 10%)</h4>
+                    </header>
+                    <div class="card-body">
+                        <p>Invest in creating valuable content (guides, blog posts) that addresses audience pain points, supporting lead generation and organic traffic. Essential for lead magnets and SEO.</p>
+                         <div class="budget-bar">
+                            <div class="budget-bar-fill" style="width: 10%;"></div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <section id="social-media-campaign" class="social-campaign-section" aria-labelledby="social-media-campaign-heading">
+            <div class="container">
+                <h2 class="section-title" id="social-media-campaign-heading">Social Media Campaign</h2>
+                <p>A focused approach leveraging LinkedIn for B2B engagement, with strategic use of Instagram for retargeting and visual appeal.</p>
+                <div class="social-media-tabs">
+                    <button class="active" data-tab="linkedin">LinkedIn</button>
+                    <button data-tab="instagram">Instagram</button>
+                    <button data-tab="tiktok">TikTok (Consideration)</button>
+                </div>
+                <div id="linkedin-content" class="social-content-display">
+                    <h4>LinkedIn Strategy (B2B Focus)</h4>
+                    <p><strong>Target Audience:</strong> Marketing Managers, Directors, Founders.</p>
+                    <p><strong>Content Mix:</strong> Video Ads (AI Shortcuts), Carousel Ads (Benefits), Static Image Ads, Organic Posts (Tips, Insights), Gated Content (e.g., AI Lead Nurturing Guide).</p>
+                    <div class="social-example">
+                        <span class="platform-label">Example Post (Video Ad):</span>
+                        <p><strong>Headline:</strong> Marketing Without the Grind. Your Smart Shortcut to Growth.</p>
+                        <p><strong>Body:</strong> Is your marketing process a maze? Cut through the complexity with our AI-powered solution. We provide the direct path to faster, more efficient results, saving you time and resources. Focus on strategy, not busywork.</p>
+                        <a href="#" class="cta-social">Find Your Shortcut</a>
+                    </div>
+                    <div class="social-example">
+                        <span class="platform-label">Example Organic Post:</span>
+                        <p><strong>Text:</strong> What's your biggest challenge with lead nurturing? 🤔 Share below! #MarketingAutomation #LeadNurturing #AIinMarketing</p>
+                        <p><strong>Visual:</strong> Engaging graphic with a question mark or poll.</p>
+                    </div>
+                    <p><strong>Engagement:</strong> Prompt responses, LinkedIn polls, sharing industry insights.</p>
+                    <p><strong>Budget Focus:</strong> $1,500 (Video Ads, Lead Gen Forms, Retargeting).</p>
+                    <p><strong>Hashtags:</strong> #MarketingAutomation #LeadGeneration #B2BMarketing #MarTech #AIinMarketing #MarketingStrategy</p>
+                </div>
+                <div id="instagram-content" class="social-content-display" style="display: none;">
+                    <h4>Instagram Strategy (Visuals & Retargeting)</h4>
+                    <p><strong>Target Audience:</strong> Primarily for retargeting website visitors and visually engaging younger professionals.</p>
+                    <p><strong>Content Mix:</strong> Reels/Short Videos (Repurposed snippets), Visually Striking Static/Carousel Ads (Showcasing "Smart Shortcut" theme), Story Ads.</p>
+                    <div class="social-example">
+                        <span class="platform-label">Example Post (Reel/Story):</span>
+                        <p><strong>Visual:</strong> Fast-paced animation of a financial puzzle being solved via the app.</p>
+                        <p><strong>Text Overlay:</strong> "Financial Stress? 🤯 -> AI Solution! ✅" "Smart Money Management."</p>
+                        <a href="#" class="cta-social">Download App</a>
+                    </div>
+                    <p><strong>Engagement:</strong> Focus on visual appeal, interactive story features (polls, Q&A), driving traffic to landing pages.</p>
+                    <p><strong>Budget Focus:</strong> $300 (Retargeting, potential Reel boosts).</p>
+                    <p><strong>Hashtags:</strong> #PersonalFinance #MoneyManagement #FinTech #SmartSavings #Budgeting #YoungProfessionals</p>
+                </div>
+                 <div id="tiktok-content" class="social-content-display" style="display: none;">
+                    <h4>TikTok Strategy (Consideration - Limited Budget)</h4>
+                    <p><strong>Target Audience:</strong> Younger professionals, students, those interested in personal finance tips.</p>
+                    <p><strong>Content Mix:</strong> Short, engaging videos demonstrating quick financial hacks or AI benefits. Trend participation (carefully chosen).</p>
+                    <div class="social-example">
+                        <span class="platform-label">Example Post (Video):</span>
+                        <p><strong>Visual:</strong> Quick demo of an app feature with trending audio.</p>
+                        <p><strong>Text Overlay:</strong> "POV: Your money working FOR you thanks to AI! 🤯" "Save hours weekly!"</p>
+                        <a href="#" class="cta-social">Learn More</a>
+                    </div>
+                    <p><strong>Budget Focus:</strong> Minimal, perhaps a small boost if highly relevant content is produced.</p>
+                    <p><strong>Hashtags:</strong> #FinTok #MoneyHacks #BudgetTips #AI #FinancialLiteracy</p>
+                </div>
+                <p><strong>Influencer Collaboration:</strong> Focus on micro-influencers/thought leaders on LinkedIn for relationship building and content sharing, rather than paid promotion due to budget constraints.</p>
+                <p><strong>UGC Strategy:</strong> Encourage testimonials and reviews from early adopters. Share positive feedback (with permission).</p>
+            </div>
+        </section>
+        <section id="emotion-personalization" class="emotion-personalization" aria-labelledby="emotion-personalization-heading">
+            <div class="container">
+                <h2 class="section-title" id="emotion-personalization-heading">Emotion Personalization</h2>
+                <p>Tailoring messages to resonate with specific emotional states to increase relevance and impact.</p>
+                <div class="emotion-tabs">
+                    <button class="active" data-emotion="happy">Happy</button>
+                    <button data-emotion="excited">Excited</button>
+                    <button data-emotion="calm">Calm</button>
+                    <button data-emotion="anxious">Anxious</button>
+                    <button data-emotion="confident">Confident</button>
+                    <button data-emotion="curious">Curious</button>
+                    <button data-emotion="sad">Sad</button>
+                    <button data-emotion="angry">Angry</button>
+                    <button data-emotion="scared">Scared</button>
+                    <button data-emotion="disgusted">Disgusted</button>
+                    <button data-emotion="surprised">Surprised</button>
+                    <button data-emotion="loved">Loved</button>
+                    <button data-emotion="jealous">Jealous</button>
+                </div>
+                <div id="emotion-happy" class="emotion-content-display">
+                    <h4><i class="fas fa-smile emotion-icon"></i> Happy</h4>
+                    <div class="emotion-message-block">
+                        <h5>Personalized Copy Variation:</h5>
+                        <p class="copy-variation">"Feeling that marketing momentum? Marketing.ai is your partner in celebrating success and amplifying your wins. Let's make your next campaign your best one yet!"</p>
+                        <h6>Visual Recommendations:</h6>
+                        <p>Bright, vibrant colors. Images of smiling people, celebrations, uplifting graphics.</p>
+                        <h6>CTA Variations:</h6>
+                        <p><em>"Celebrate Your Success"</em> | <em>"Amplify Your Wins"</em></p>
+                    </div>
+                    <div class="emotion-message-block">
+                        <h5>Content Themes:</h5>
+                        <p>Success stories, campaign highlights, user testimonials focusing on positive outcomes.</p>
+                    </div>
+                </div>
+                 <div id="emotion-excited" class="emotion-content-display" style="display: none;">
+                    <h4><i class="fas fa-rocket emotion-icon"></i> Excited</h4>
+                    <div class="emotion-message-block">
+                        <h5>Personalized Copy Variation:</h5>
+                        <p class="copy-variation">"Get ready for takeoff! Marketing.ai is launching your marketing to new heights. Feel the energy of amplified results – let's go!"</p>
+                        <h6>Visual Recommendations:</h6>
+                        <p>Dynamic, energetic visuals. Fast-paced animations, bold graphics, upward-trending charts.</p>
+                        <h6>CTA Variations:</h6>
+                        <p><em>"Ignite Your Growth Engine"</em> | <em>"Launch Your Success"</em></p>
+                    </div>
+                    <div class="emotion-message-block">
+                        <h5>Content Themes:</h5>
+                        <p>Future of marketing/finance, innovation spotlights, "get started now" guides.</p>
+                    </div>
+                </div>
+                 <div id="emotion-calm" class="emotion-content-display" style="display: none;">
+                    <h4><i class="fas fa-wind emotion-icon"></i> Calm</h4>
+                    <div class="emotion-message-block">
+                        <h5>Personalized Copy Variation:</h5>
+                        <p class="copy-variation">"Breathe easy. Marketing.ai handles the complexities, so you can focus on strategic growth and financial well-being. Experience serene success."</p>
+                        <h6>Visual Recommendations:</h6>
+                        <p>Serene, minimalist design. Soft colors. Peaceful landscapes, clean desk setups.</p>
+                        <h6>CTA Variations:</h6>
+                        <p><em>"Discover Your Marketing Calm"</em> | <em>"Experience Effortless Management"</em></p>
+                    </div>
+                    <div class="emotion-message-block">
+                        <h5>Content Themes:</h5>
+                        <p>Stress-reduction in marketing/finance, workflow optimization, mindfulness in business.</p>
+                    </div>
+                </div>
+                 <div id="emotion-anxious" class="emotion-content-display" style="display: none;">
+                    <h4><i class="fas fa-exclamation-triangle emotion-icon"></i> Anxious</h4>
+                    <div class="emotion-message-block">
+                        <h5>Personalized Copy Variation:</h5>
+                        <p class="copy-variation">"Feeling overwhelmed by marketing tasks or financial worries? Marketing.ai is here to help. We simplify the complex, offering clear solutions and support."</p>
+                        <h6>Visual Recommendations:</h6>
+                        <p>Supportive imagery. Gentle gradients, supportive graphics, clear paths emerging from fog.</p>
+                        <h6>CTA Variations:</h6>
+                        <p><em>"Find Your Solution Here"</em> | <em>"Get The Support You Need"</em></p>
+                    </div>
+                    <div class="emotion-message-block">
+                        <h5>Content Themes:</h5>
+                        <p>Overcoming marketing challenges, managing financial anxiety, step-by-step guides.</p>
+                    </div>
+                </div>
+                 <div id="emotion-confident" class="emotion-content-display" style="display: none;">
+                    <h4><i class="fas fa-trophy emotion-icon"></i> Confident</h4>
+                    <div class="emotion-message-block">
+                        <h5>Personalized Copy Variation:</h5>
+                        <p class="copy-variation">"You've got this! Marketing.ai empowers your confidence with intelligent tools that deliver amplified results. Own your market."</p>
+                        <h6>Visual Recommendations:</h6>
+                        <p>Bold, strong visuals. Sharp lines, triumphant poses, sleek design.</p>
+                        <h6>CTA Variations:</h6>
+                        <p><em>"Own Your Growth"</em> | <em>"Amplify Your Expertise"</em></p>
+                    </div>
+                    <div class="emotion-message-block">
+                        <h5>Content Themes:</h5>
+                        <p>Advanced marketing strategies, scaling strategies, achieving market leadership.</p>
+                    </div>
+                </div>
+                <div id="emotion-curious" class="emotion-content-display" style="display: none;">
+                    <h4><i class="fas fa-question-circle emotion-icon"></i> Curious</h4>
+                    <div class="emotion-message-block">
+                        <h5>Personalized Copy Variation:</h5>
+                        <p class="copy-variation">"What if your marketing could be smarter, faster, and more effective? Marketing.ai holds the key. Explore the possibilities."</p>
+                        <h6>Visual Recommendations:</h6>
+                        <p>Intriguing visuals. Question marks, magnifying glasses, unfolding elements.</p>
+                        <h6>CTA Variations:</h6>
+                        <p><em>"See How It Works"</em> | <em>"Explore Your Potential"</em></p>
+                    </div>
+                    <div class="emotion-message-block">
+                        <h5>Content Themes:</h5>
+                        <p>Explainer videos, "how-to" guides, deep dives into AI's role.</p>
+                    </div>
+                </div>
+                <div id="emotion-sad" class="emotion-content-display" style="display: none;">
+                    <h4><i class="fas fa-cloud emotion-icon"></i> Sad</h4>
+                    <div class="emotion-message-block">
+                        <h5>Personalized Copy Variation:</h5>
+                        <p class="copy-variation">"Feeling the weight of marketing challenges or financial setbacks? Marketing.ai is here to lift the burden. Let us help you find a clearer path forward."</p>
+                        <h6>Visual Recommendations:</h6>
+                        <p>Gentle, hopeful imagery. Soft lighting, sunrise visuals, helping hands.</p>
+                        <h6>CTA Variations:</h6>
+                        <p><em>"Find Your Path Forward"</em> | <em>"Regain Your Momentum"</em></p>
+                    </div>
+                    <div class="emotion-message-block">
+                        <h5>Content Themes:</h5>
+                        <p>Overcoming adversity, rebuilding momentum, finding motivation.</p>
+                    </div>
+                </div>
+                <div id="emotion-angry" class="emotion-content-display" style="display: none;">
+                    <h4><i class="fas fa-angry emotion-icon"></i> Angry</h4>
+                    <div class="emotion-message-block">
+                        <h5>Personalized Copy Variation:</h5>
+                        <p class="copy-variation">"Frustrated with inefficient marketing tools or financial mismanagement? Marketing.ai turns that frustration into fuel for growth. Take control back."</p>
+                        <h6>Visual Recommendations:</h6>
+                        <p>Strong, decisive visuals. Breaking chains, overcoming obstacles, determined stances.</p>
+                        <h6>CTA Variations:</h6>
+                        <p><em>"Take Control Now"</em> | <em>"Overcome Your Challenges"</em></p>
+                    </div>
+                    <div class="emotion-message-block">
+                        <h5>Content Themes:</h5>
+                        <p>Strategies for overcoming roadblocks, turning challenges into successes.</p>
+                    </div>
+                </div>
+                <div id="emotion-scared" class="emotion-content-display" style="display: none;">
+                    <h4><i class="fas fa-shield-alt emotion-icon"></i> Scared</h4>
+                    <div class="emotion-message-block">
+                        <h5>Personalized Copy Variation:</h5>
+                        <p class="copy-variation">"Don't let fear paralyze your progress. Marketing.ai provides the unseen advantage and smart shortcuts to navigate challenges safely and effectively."</p>
+                        <h6>Visual Recommendations:</h6>
+                        <p>Reassuring, protective imagery. Shields, safe harbors, clear paths with guardrails.</p>
+                        <h6>CTA Variations:</h6>
+                        <p><em>"Secure Your Success"</em> | <em>"Navigate with Confidence"</em></p>
+                    </div>
+                    <div class="emotion-message-block">
+                        <h5>Content Themes:</h5>
+                        <p>Risk management, building security, step-by-step guides, peace of mind.</p>
+                    </div>
+                </div>
+                <div id="emotion-disgusted" class="emotion-content-display" style="display: none;">
+                    <h4><i class="fas fa-broom emotion-icon"></i> Disgusted</h4>
+                    <div class="emotion-message-block">
+                        <h5>Personalized Copy Variation:</h5>
+                        <p class="copy-variation">"Tired of messy data, outdated processes, and ineffective marketing? Marketing.ai delivers the clean, fresh start you need for amplified results."</p>
+                        <h6>Visual Recommendations:</h6>
+                        <p>Clean, fresh, minimalist design. Crisp visuals, bright whites, symbols of cleanliness.</p>
+                        <h6>CTA Variations:</h6>
+                        <p><em>"Refresh Your Marketing"</em> | <em>"Clean Up Your Workflow"</em></p>
+                    </div>
+                    <div class="emotion-message-block">
+                        <h5>Content Themes:</h5>
+                        <p>Decluttering processes, simplifying management, efficiency hacks.</p>
+                    </div>
+                </div>
+                <div id="emotion-surprised" class="emotion-content-display" style="display: none;">
+                    <h4><i class="fas fa-surprise emotion-icon"></i> Surprised</h4>
+                    <div class="emotion-message-block">
+                        <h5>Personalized Copy Variation:</h5>
+                        <p class="copy-variation">"You won't believe how simple marketing and finance can be! Marketing.ai delivers surprising results with intelligent ease. Prepare to be impressed."</p>
+                        <h6>Visual Recommendations:</h6>
+                        <p>Eye-catching, revealing visuals. Unfolding elements, pop-up effects, bursts of color.</p>
+                        <h6>CTA Variations:</h6>
+                        <p><em>"Discover the Surprise"</em> | <em>"Uncover Your Advantage"</em></p>
+                    </div>
+                    <div class="emotion-message-block">
+                        <h5>Content Themes:</h5>
+                        <p>Unexpected benefits of AI, surprising case study results, "did you know?" facts.</p>
+                    </div>
+                </div>
+                <div id="emotion-loved" class="emotion-content-display" style="display: none;">
+                    <h4><i class="fas fa-heart emotion-icon"></i> Loved</h4>
+                    <div class="emotion-message-block">
+                        <h5>Personalized Copy Variation:</h5>
+                        <p class="copy-variation">"You're part of the Marketing.ai family! We value your success and are dedicated to providing the tools you love for amplified results."</p>
+                        <h6>Visual Recommendations:</h6>
+                        <p>Warm, community-focused imagery. Positive interactions, heart icons, inviting colors.</p>
+                        <h6>CTA Variations:</h6>
+                        <p><em>"Join Our Community"</em> | <em>"Share Your Success Story"</em></p>
+                    </div>
+                    <div class="emotion-message-block">
+                        <h5>Content Themes:</h5>
+                        <p>User testimonials, community spotlights, partnership stories.</p>
+                    </div>
+                </div>
+                <div id="emotion-jealous" class="emotion-content-display" style="display: none;">
+                    <h4><i class="fas fa-chart-bar emotion-icon"></i> Jealous</h4>
+                    <div class="emotion-message-block">
+                        <h5>Personalized Copy Variation:</h5>
+                        <p class="copy-variation">"See what your competitors are achieving with Marketing.ai? It’s time to level up your own game. Unlock your growth engine."</p>
+                        <h6>Visual Recommendations:</h6>
+                        <p>Aspirational imagery. Success stories, goal representations, competitive comparisons.</p>
+                        <h6>CTA Variations:</h6>
+                        <p><em>"Achieve Your Edge"</em> | <em>"Outperform the Competition"</em></p>
+                    </div>
+                    <div class="emotion-message-block">
+                        <h5>Content Themes:</h5>
+                        <p>Competitive analysis, market leadership strategies, achieving ambitious goals.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="visual-assets" aria-labelledby="visual-assets-heading">
+            <div class="container">
+                <h2 class="section-title" id="visual-assets-heading">Visual Assets & Analysis</h2>
+                <p>Visuals are key to capturing attention and conveying our message effectively. Here we explore the proposed creative assets and their strategic intent.</p>
+                <article class="card">
+                    <header class="card-header">
+                        <i class="fas fa-image card-icon"></i>
+                        <h3>Hero Section & Core Branding</h3>
+                    </header>
+                    <div class="card-body">
+                        <p>The hero section prominently features the Marketing.ai logo and the campaign's core message, "Intelligent Simplicity. Amplified Results." The background image (placeholder shown) sets a professional and technologically advanced tone, immediately establishing the brand's identity.</p>
+                        <div class="concept-image-wrapper" style="max-width: 700px; margin: 30px auto;">
+                            <img src="https://placehold.co/700x400?text=Hero+Image:+Marketing.ai+Branding" alt="Hero Section Image" class="concept-image">
+                        </div>
+                        <p><strong>Creative Insight:</strong> The hero image aims to be aspirational yet grounded, hinting at the efficiency and results Marketing.ai delivers. The color palette (deep blues, vibrant teal, bright orange) reinforces trust, innovation, and action.</p>
+                    </div>
+                </article>
+                <article class="card">
+                    <header class="card-header">
+                        <i class="fas fa-lightbulb card-icon"></i>
+                        <h3>Creative Concept Visuals</h3>
+                    </header>
+                    <div class="card-body">
+                        <p>Each creative concept has a distinct visual identity designed to resonate with specific audience pain points and motivations:</p>
+                        <ul>
+                            <li><strong>"The Unseen Advantage":</strong> Focuses on calm competence and the subtle power of AI, using clean office environments and abstract data visualizations. Appeals to those seeking a competitive edge without added complexity.</li>
+                            <li><strong>"The Smart Shortcut":</strong> Uses metaphors of direct paths and simplification to highlight efficiency and time-saving benefits. Ideal for audiences feeling overwhelmed by manual processes.</li>
+                            <li><strong>"The Growth Engine":</strong> Employs dynamic visuals of gears and growth to convey momentum, scalability, and tangible results. Targets ambitious users focused on expansion and performance.</li>
+                        </ul>
+                        <p><strong>Visual Storytelling:</strong> The chosen visuals aim to tell a story of transformation – from complexity/struggle to simplicity/success – powered by Marketing.ai's solutions.</p>
+                        <div class="carousel-nav" style="position: static; transform: none; margin: 30px auto; display: flex; justify-content: center;">
+                            <button data-slide="0" class="active" aria-label="Go to slide 1"></button>
+                            <button data-slide="1" aria-label="Go to slide 2"></button>
+                            <button data-slide="2" aria-label="Go to slide 3"></button>
+                        </div>
+                        <p><strong>Image Analysis:</strong> The placeholder images represent the core visual themes. High-quality, custom-generated or sourced imagery will be crucial for campaign execution to ensure brand consistency and impact.</p>
+                    </div>
+                </article>
+                <article class="card">
+                    <header class="card-header">
+                        <i class="fas fa-bullhorn card-icon"></i>
+                        <h3>Social Media & Ad Creatives</h3>
+                    </header>
+                    <div class="card-body">
+                        <p>Social media visuals will be adapted from the core concepts, optimized for platform formats (e.g., vertical video for Reels/Stories, square/landscape for LinkedIn feeds). Emphasis on clear messaging, strong CTAs, and brand colors.</p>
+                        <div class="social-example" style="margin-top: 20px;">
+                            <span class="platform-label">LinkedIn Ad Visual (Concept 2):</span>
+                            <img src="https://placehold.co/600x315?text=LinkedIn+Ad:+Smart+Shortcut" alt="LinkedIn Ad Visual" class="concept-image" style="margin-top: 10px; border-radius: 5px;">
+                        </div>
+                         <div class="social-example">
+                            <span class="platform-label">Instagram Story Visual (Concept 2 - B2C):</span>
+                            <img src="https://placehold.co/360x640?text=IG+Story:+Smart+Shortcut" alt="Instagram Story Visual" class="concept-image" style="margin-top: 10px; border-radius: 5px;">
+                        </div>
+                        <p><strong>Creative Direction:</strong> Ensure visuals are professional, engaging, and clearly communicate the core benefit of the chosen concept. Use animations for video ads to increase engagement.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <section id="campaign-metrics" aria-labelledby="campaign-metrics-heading">
+            <div class="container">
+                <h2 class="section-title" id="campaign-metrics-heading">Campaign Metrics & Impact</h2>
+                <p>We will meticulously track key performance indicators (KPIs) to measure campaign success and optimize performance throughout the 2-month period.</p>
+                <div class="data-viz-container">
+                    <h4>Projected Performance & ROI</h4>
+                    <p>These projections are based on industry benchmarks and the lean budget, aiming for maximum efficiency.</p>
+                    <div class="progress-bar-container">
+                        <h5>Lead Generation</h5>
+                        <p><strong>Goal:</strong> 50-150 Qualified Leads</p>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" style="width: 65%;">65% (Target Range Met)</div>
+                        </div>
+                        <p class="tooltip">Projected CPL: $13 - $40
+                            <span class="tooltiptext">Cost Per Lead: Calculated based on ad spend and estimated leads. A lower CPL indicates higher efficiency.</span>
+                        </p>
+                    </div>
+                    <div class="progress-bar-container">
+                        <h5>Website Traffic</h5>
+                        <p><strong>Goal:</strong> 1,000 - 3,000 Targeted Visitors</p>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" style="width: 70%;">70% (Target Range Met)</div>
+                        </div>
+                         <p class="tooltip">Projected Cost Per Visit: $0.67 - $2.00
+                            <span class="tooltiptext">Cost Per Visit: Indicates the efficiency of driving traffic to the website from campaign efforts.</span>
+                        </p>
+                    </div>
+                    <div class="progress-bar-container">
+                        <h5>Enrollment/Conversions</h5>
+                        <p><strong>Goal:</strong> 10-30 New Enrollments/Trials</p>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" style="width: 55%;">55% (Target Range Met)</div>
+                        </div>
+                         <p class="tooltip">Projected Cost Per Acquisition (CPA): $67 - $200
+                            <span class="tooltiptext">Cost Per Acquisition: The cost to acquire one new customer or trial user. Crucial for evaluating profitability against Customer Lifetime Value (CLTV).</span>
+                        </p>
+                    </div>
+                     <p style="margin-top: 30px; font-style: italic; color: #666;">Note: These are projections. Actual results will be monitored and optimized continuously.</p>
+                </div>
+                <p><strong>Key Metrics to Monitor:</strong> CTR, Conversion Rates, Engagement Rates, Lead Quality, Website Bounce Rate, Time on Site, Channel Performance.</p>
+            </div>
+        </section>
+        <section id="contact" aria-labelledby="contact-heading">
+            <div class="container">
+                <h2 class="section-title" id="contact-heading">Contact & Next Steps</h2>
+                <article class="card">
+                    <header class="card-header">
+                        <i class="fas fa-phone card-icon"></i>
+                        <h3>Let's Drive Your Success</h3>
+                    </header>
+                    <div class="card-body">
+                        <p>To proceed effectively, we need your input on the critical elements identified:</p>
+                        <ol>
+                            <li><strong>Define the Specific Product</strong> to be promoted.</li>
+                            <li><strong>Identify the Primary Target Audience Segment(s)</strong> for this product.</li>
+                            <li><strong>Designate the Single Most Impactful Key Feature</strong> to highlight.</li>
+                        </ol>
+                        <p>Once these are clarified, we will finalize the creative briefs, ad assets, and campaign execution plan to ensure maximum impact and ROI.</p>
+                        <p><strong>Contact Us:</strong></p>
+                        <p><strong>Email:</strong> <a href="mailto:hello@marketing.ai">hello@marketing.ai</a></p>
+                        <p><strong>Website:</strong> <a href="https://www.marketing.ai" target="_blank" rel="noopener noreferrer">www.marketing.ai</a></p>
+                        <p><a href="#" class="cta-button" style="margin-top: 20px;">Request a Consultation</a></p>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+    <footer aria-label="Site Footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="https://cdn.pixabay.com/photo/2016/01/25/16/41/ottawa-1160993_1280.png" alt="Marketing.ai Logo">
+                </div>
+                <nav class="footer-links" aria-label="Footer Navigation">
+                    <a href="#executive-summary">Executive Summary</a>
+                    <a href="#campaign-strategy">Strategy</a>
+                    <a href="#audience-analysis">Audience</a>
+                    <a href="#creative-concepts">Creative</a>
+                    <a href="#contact">Contact</a>
+                </nav>
+                <div class="footer-social" aria-label="Social Media Links">
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                &copy; 2024 Marketing.ai. All rights reserved. | Revolutionizing Marketing with Intelligence.
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navToggle = document.querySelector('.nav-toggle');
+            const dropdownNav = document.getElementById('dropdownNav');
+            const submenuToggles = document.querySelectorAll('.dropdown-nav .has-submenu > a');
+            const carouselTrack = document.querySelector('.concept-carousel .carousel-track');
+            const carouselItems = Array.from(carouselTrack.children);
+            const carouselNavButtons = Array.from(document.querySelectorAll('.concept-carousel .carousel-nav button'));
+            const socialMediaTabs = document.querySelectorAll('.social-media-tabs button');
+            const socialContentDivs = document.querySelectorAll('.social-content-display');
+            const emotionTabs = document.querySelectorAll('.emotion-tabs button');
+            const emotionContentDivs = document.querySelectorAll('.emotion-content-display');
+            const progressBars = document.querySelectorAll('.progress-bar-fill');
+            let currentSlide = 0;
+            const totalSlides = carouselItems.length;
+            // Navigation Toggle
+            if (navToggle && dropdownNav) {
+                navToggle.addEventListener('click', () => {
+                    dropdownNav.classList.toggle('open');
+                    navToggle.setAttribute('aria-expanded', dropdownNav.classList.contains('open'));
+                });
+            }
+            // Close nav when clicking outside
+            document.addEventListener('click', (e) => {
+                if (dropdownNav && navToggle && !dropdownNav.contains(e.target) && !navToggle.contains(e.target)) {
+                    dropdownNav.classList.remove('open');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+            // Handle submenu toggles
+            submenuToggles.forEach(toggle => {
+                toggle.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const parentLi = toggle.parentElement;
+                    const isExpanded = parentLi.classList.toggle('open');
+                    const submenu = parentLi.querySelector('.submenu');
+                    if (submenu) {
+                        submenu.classList.toggle('open');
+                        submenu.setAttribute('aria-hidden', !isExpanded);
+                    }
+                    toggle.setAttribute('aria-expanded', isExpanded);
+                });
+            });
+            // Carousel Logic
+            const updateCarousel = () => {
+                carouselItems.forEach((item, index) => {
+                    item.style.transform = `translateX(-${currentSlide * 100}%)`;
+                });
+                carouselNavButtons.forEach((button, index) => {
+                    if (index === currentSlide) {
+                        button.classList.add('active');
+                        button.setAttribute('aria-current', 'true');
+                    } else {
+                        button.classList.remove('active');
+                        button.removeAttribute('aria-current');
+                    }
+                });
+            };
+            carouselNavButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const slideIndex = parseInt(button.getAttribute('data-slide'));
+                    if (!isNaN(slideIndex) && slideIndex >= 0 && slideIndex < totalSlides) {
+                        currentSlide = slideIndex;
+                        updateCarousel();
+                    }
+                });
+            });
+            updateCarousel(); // Initialize carousel state
+            // Tabbed Content Logic (Social Media)
+            socialMediaTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    socialMediaTabs.forEach(t => {
+                        t.classList.remove('active');
+                        t.setAttribute('aria-selected', 'false');
+                    });
+                    tab.classList.add('active');
+                    tab.setAttribute('aria-selected', 'true');
+                    socialContentDivs.forEach(content => {
+                        content.style.display = 'none';
+                    });
+                    const targetTab = document.getElementById(`${tab.getAttribute('data-tab')}-content`);
+                    if (targetTab) {
+                        targetTab.style.display = 'block';
+                    }
+                });
+            });
+            // Tabbed Content Logic (Emotion Personalization)
+            emotionTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    emotionTabs.forEach(t => {
+                        t.classList.remove('active');
+                        t.setAttribute('aria-selected', 'false');
+                    });
+                    tab.classList.add('active');
+                    tab.setAttribute('aria-selected', 'true');
+                    emotionContentDivs.forEach(content => {
+                        content.style.display = 'none';
+                    });
+                    const targetTab = document.getElementById(`emotion-${tab.getAttribute('data-emotion')}`);
+                    if (targetTab) {
+                        targetTab.style.display = 'block';
+                    }
+                });
+            });
+            // Progress Bar Animation
+            progressBars.forEach(bar => {
+                // Ensure the width is set to trigger the transition on load
+                bar.style.width = bar.style.width;
+            });
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const headerOffset = document.querySelector('header')?.offsetHeight || 0; // Get header height or default to 0
+                        const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+                        const offsetPosition = elementPosition - headerOffset;
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: "smooth"
+                        });
+                        // Close nav after clicking a link if it's open
+                        if (dropdownNav && dropdownNav.classList.contains('open')) {
+                            dropdownNav.classList.remove('open');
+                            navToggle.setAttribute('aria-expanded', 'false');
+                        }
+                    }
+                });
+            });
+            // Optional: Update carousel if window resizes
+            window.addEventListener('resize', updateCarousel);
+            // Add ARIA attributes for accessibility
+            navToggle.setAttribute('aria-expanded', 'false');
+            document.querySelectorAll('.dropdown-nav .has-submenu > a').forEach(submenuToggle => {
+                submenuToggle.setAttribute('aria-haspopup', 'true');
+                submenuToggle.setAttribute('aria-expanded', 'false');
+            });
+            document.querySelectorAll('.social-media-tabs button').forEach(tab => {
+                tab.setAttribute('role', 'tab');
+                tab.setAttribute('aria-selected', tab.classList.contains('active'));
+            });
+            document.querySelectorAll('.emotion-tabs button').forEach(tab => {
+                tab.setAttribute('role', 'tab');
+                tab.setAttribute('aria-selected', tab.classList.contains('active'));
+            });
+        });
+    </script>
+</body>
+</html>

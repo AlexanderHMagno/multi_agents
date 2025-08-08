@@ -212,8 +212,8 @@ def create_workflow(llm, openai_client):
     workflow.add_edge("review", "campaign_summary")
     workflow.add_edge("campaign_summary", "client_summary")
     workflow.add_edge("client_summary", "web_developer")
-    workflow.add_edge("web_developer", "html_validation")
-    workflow.add_edge("html_validation", END)
+    workflow.add_edge("web_developer", END)
+    # workflow.add_edge("html_validation", END)
     # workflow.add_edge("html_validation", "pdf_generator")  # Commented out
     # workflow.add_edge("pdf_generator", END)  # Commented out
     
