@@ -1,7 +1,7 @@
 {
-  "name": "campaign-generator-frontend",
+  "name": "marketminds-ai-frontend",
   "version": "1.0.0",
-  "description": "Frontend for Multi-Agent Campaign Generation System",
+  "description": "Frontend for MarketMinds AI - Multi-Agent Campaign Generation System",
   "private": true,
   "type": "module",
   "scripts": {

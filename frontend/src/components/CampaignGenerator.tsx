@@ -89,8 +89,12 @@ export const CampaignGenerator = () => {
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
             <div className="text-center mb-6">
-              <img src="/Marketmind.png" alt="MarketMinds AI Logo" className="w-32 h-20 mx-auto mb-4" />
-              <h1 className="text-3xl font-bold text-primary">MarketMinds AI Campaign Generator</h1>
+              <div className="text-primary mb-4">
+                <svg className="w-20 h-20 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h1 className="text-3xl font-bold text-primary">Campaign Generator</h1>
               <p className="text-base-content/70">
                 Create a comprehensive marketing campaign using our advanced AI agents
               </p>
@@ -327,13 +331,22 @@ export const CampaignGenerator = () => {
                 />
               </div>
 
-              <div className="flex justify-center pt-4">
-                <button 
-                  type="submit" 
-                  className={`btn btn-primary btn-lg ${loading ? 'loading' : ''}`}
+              <div className="form-control mt-6">
+                <button
+                  type="submit"
+                  className={`btn btn-primary btn-wide ${loading ? 'loading' : ''}`}
                   disabled={loading}
                 >
-                  {loading ? 'Generating Campaign...' : '🚀 Generate Campaign'}
+                  {loading ? (
+                    'Generating Campaign...'
+                  ) : (
+                    <>
+                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                      Generate Campaign
+                    </>
+                  )}
                 </button>
               </div>
             </form>
