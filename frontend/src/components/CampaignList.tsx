@@ -108,7 +108,12 @@ export const CampaignList: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-          <h1 className="text-3xl font-bold">Your Campaigns</h1>
+          <div className="flex items-center gap-4">
+            <img src="/Marketmind.png" alt="MarketMinds AI Logo" className="w-32 h-20" />
+            <div>
+              <p className="text-base-content/70 mt-2">Monitor and manage your AI-generated campaigns</p>
+            </div>
+          </div>
           <Link to="/generate" className="btn btn-primary">
             Create New Campaign
           </Link>

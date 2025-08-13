@@ -89,9 +89,11 @@ export const CampaignGenerator = () => {
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
             <div className="text-center mb-6">
-              <h1 className="text-3xl font-bold text-primary">🚀</h1>
-              <h2 className="text-3xl font-bold">Generate New Campaign</h2>
-              <p className="text-base-content/70">Create a comprehensive marketing campaign using our AI agents</p>
+              <img src="/Marketmind.png" alt="MarketMinds AI Logo" className="w-32 h-20 mx-auto mb-4" />
+              <h1 className="text-3xl font-bold text-primary">MarketMinds AI Campaign Generator</h1>
+              <p className="text-base-content/70">
+                Create a comprehensive marketing campaign using our advanced AI agents
+              </p>
             </div>
             
             {error && (

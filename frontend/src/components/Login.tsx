@@ -1,60 +1,40 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { LoginFormData } from '../types';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const Login = () => {
-  const [formData, setFormData] = useState<LoginFormData>({
-    username: '',
-    password: ''
-  });
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setLoading(true);
-    setError(null);
 
     try {
-      await login(formData.username, formData.password);
-      navigate('/');
-    } catch (err: any) {
-      setError(err.detail || 'Login failed. Please try again.');
+      await login(username, password);
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Login failed');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-base-200 flex items-center justify-center p-4">
       <div className="card w-full max-w-md bg-base-100 shadow-xl">
         <div className="card-body">
           <div className="text-center mb-6">
-            <h1 className="text-3xl font-bold text-primary">🎨</h1>
-            <h2 className="text-2xl font-bold">Welcome Back</h2>
-            <p className="text-base-content/70">Login to Campaign Generator</p>
+            <img src="/Marketmind.png" alt="MarketMinds AI Logo" className="w-20 h-20 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-primary">MarketMinds AI</h1>
+            <p className="text-base-content/70">Sign in to your account</p>
           </div>
           
-          {error && (
-            <div className="alert alert-error mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>{error}</span>
-            </div>
-          )}
-
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="form-control">
               <label className="label">
@@ -62,58 +42,55 @@ export const Login = () => {
               </label>
               <input
                 type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                required
                 placeholder="Enter your username"
                 className="input input-bordered w-full"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
               />
             </div>
-
+            
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
               <input
                 type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
                 placeholder="Enter your password"
                 className="input input-bordered w-full"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
-
-            <button 
-              type="submit" 
-              className={`btn btn-primary w-full ${loading ? 'loading' : ''}`}
-              disabled={loading}
-            >
-              {loading ? 'Logging in...' : 'Login'}
-            </button>
+            
+            <div className="form-control mt-6">
+              <button
+                type="submit"
+                className={`btn btn-primary w-full ${loading ? 'loading' : ''}`}
+                disabled={loading}
+              >
+                {loading ? 'Signing in...' : 'Sign In'}
+              </button>
+            </div>
           </form>
-
-          <div className="divider">OR</div>
-
-          <div className="text-center">
+          
+          {error && (
+            <div className="alert alert-error mt-4">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>{error}</span>
+            </div>
+          )}
+          
+          <div className="text-center mt-6">
             <p className="text-sm text-base-content/70">
               Don't have an account?{' '}
-              <Link to="/register" className="link link-primary font-medium">
-                Register here
+              <Link to="/register" className="link link-primary">
+                Sign up here
               </Link>
             </p>
-          </div>
-
-          <div className="card bg-base-200 mt-6">
-            <div className="card-body p-4">
-              <h4 className="font-semibold mb-2">🧪 Test Accounts</h4>
-              <div className="space-y-1 text-sm">
-                <p><span className="badge badge-primary badge-sm">Admin</span> username: <code>admin</code>, password: <code>admin123</code></p>
-                <p><span className="badge badge-secondary badge-sm">User</span> username: <code>user1</code>, password: <code>password123</code></p>
-              </div>
-            </div>
           </div>
         </div>
       </div>

@@ -127,26 +127,16 @@ export const CampaignMonitor = () => {
     );
   }
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'completed': return 'success';
-      case 'running': return 'info';
-      case 'failed': return 'error';
-      default: return 'warning';
-    }
-  };
-
   return (
     <div className="min-h-screen bg-base-200 p-6">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Campaign Header */}
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
-            <div className="flex items-center gap-3 mb-4">
-              <h2 className="card-title text-2xl">Campaign Status</h2>
-              <div className={`badge badge-${getStatusColor(campaign.status)} badge-lg`}>
-                {campaign.status}
-              </div>
+            <div className="text-center mb-6">
+              <img src="/Marketmind.png" alt="MarketMinds AI Logo" className="w-20 h-20 mx-auto mb-4" />
+              <h1 className="text-3xl font-bold text-primary">MarketMinds AI Campaign Monitor</h1>
+              <p className="text-base-content/70">Track your campaign generation progress in real-time</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
