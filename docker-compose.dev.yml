@@ -3,7 +3,7 @@ version: "3.9"
 services:
   backend:
     build: ./backend
-    container_name: campaign-backend
+    container_name: campaign-backend-dev
     working_dir: /app
     command: uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir . --reload-exclude outputs/* --reload-exclude .git/* --reload-exclude venv/* --reload-exclude .venv/* --reload-exclude __pycache__/*
     ports:
@@ -12,23 +12,31 @@ services:
       - .env
     environment:
       - PYTHONPATH=/app
+      - ENVIRONMENT=development
     volumes:
       - ./backend:/app
       - outputs:/app/outputs
     restart: unless-stopped
     networks:
-      - campaign-network
+      - campaign-network-dev
 
   frontend:
-    build: ./frontend
-    container_name: campaign-frontend
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: campaign-frontend-dev
+    working_dir: /app
+    command: npm run dev -- --host 0.0.0.0
     ports:
-      - "3000:80"
+      - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
     depends_on:
       - backend
     restart: unless-stopped
     networks:
-      - campaign-network
+      - campaign-network-dev
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -37,5 +45,5 @@ volumes:
   outputs:
 
 networks:
-  campaign-network:
+  campaign-network-dev:
     driver: bridge 
