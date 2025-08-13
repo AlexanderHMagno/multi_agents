@@ -11,12 +11,14 @@ import { CampaignMonitor } from './components/CampaignMonitor';
 import { CampaignList } from './components/CampaignList';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { CampaignView } from './components/CampaignView';
+import { Nav } from './components/Nav';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
         <div className="App">
+          <Nav />
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
