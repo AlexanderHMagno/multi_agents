@@ -2,7 +2,12 @@ import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
-export const Nav: React.FC = () => {
+interface NavProps {
+  theme: string;
+  onThemeChange: () => void;
+}
+
+export const Nav: React.FC<NavProps> = ({ theme, onThemeChange }) => {
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -21,115 +26,88 @@ export const Nav: React.FC = () => {
   }
 
   return (
-    <nav style={{
-      background: '#2c3e50',
-      padding: '0 20px',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-      position: 'sticky',
-      top: 0,
-      zIndex: 1000
-    }}>
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        minHeight: '60px'
-      }}>
-        {/* Logo/Brand */}
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Link to="/" style={{
-            textDecoration: 'none',
-            color: 'white',
-            fontSize: '20px',
-            fontWeight: 'bold'
-          }}>
-            🎨 Campaign Generator
-          </Link>
+    <div className="navbar bg-base-100 shadow-lg border-b border-base-300">
+      <div className="navbar-start">
+        <div className="dropdown">
+          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16"></path>
+            </svg>
+          </div>
+          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+            <li><Link to="/" className={isActive('/') ? 'active' : ''}>Dashboard</Link></li>
+            <li><Link to="/generate" className={isActive('/generate') ? 'active' : ''}>Generate Campaign</Link></li>
+            <li><Link to="/campaigns" className={isActive('/campaigns') ? 'active' : ''}>View Campaigns</Link></li>
+          </ul>
         </div>
-
-        {/* Navigation Links */}
-        <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-          <Link 
-            to="/" 
-            style={{
-              textDecoration: 'none',
-              color: isActive('/') ? '#3498db' : 'white',
-              padding: '8px 16px',
-              borderRadius: '4px',
-              transition: 'all 0.2s ease',
-              background: isActive('/') ? 'rgba(52, 152, 219, 0.1)' : 'transparent'
-            }}
-          >
-            Dashboard
-          </Link>
-          
-          <Link 
-            to="/generate" 
-            style={{
-              textDecoration: 'none',
-              color: isActive('/generate') ? '#3498db' : 'white',
-              padding: '8px 16px',
-              borderRadius: '4px',
-              transition: 'all 0.2s ease',
-              background: isActive('/generate') ? 'rgba(52, 152, 219, 0.1)' : 'transparent'
-            }}
-          >
-            Generate Campaign
-          </Link>
-          
-          <Link 
-            to="/campaigns" 
-            style={{
-              textDecoration: 'none',
-              color: isActive('/campaigns') ? '#3498db' : 'white',
-              padding: '8px 16px',
-              borderRadius: '4px',
-              transition: 'all 0.2s ease',
-              background: isActive('/campaigns') ? 'rgba(52, 152, 219, 0.1)' : 'transparent'
-            }}
-          >
-            View Campaigns
-          </Link>
-        </div>
-
-        {/* User Menu */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ color: 'white', fontSize: '14px' }}>
-              {user.full_name || user.username}
-            </div>
-            <div style={{ color: '#bdc3c7', fontSize: '12px' }}>
-              {user.role}
+        <Link to="/" className="btn btn-ghost text-xl">
+          🎨 Campaign Generator
+        </Link>
+      </div>
+      
+      <div className="navbar-center hidden lg:flex">
+        <ul className="menu menu-horizontal px-1">
+          <li>
+            <Link 
+              to="/" 
+              className={`${isActive('/') ? 'active' : ''}`}
+            >
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to="/generate" 
+              className={`${isActive('/generate') ? 'active' : ''}`}
+            >
+              Generate Campaign
+            </Link>
+          </li>
+          <li>
+            <Link 
+              to="/campaigns" 
+              className={`${isActive('/campaigns') ? 'active' : ''}`}
+            >
+              View Campaigns
+            </Link>
+          </li>
+        </ul>
+      </div>
+      
+      <div className="navbar-end">
+        {/* Theme Toggle Button */}
+        <button
+          onClick={onThemeChange}
+          className="btn btn-ghost btn-circle btn-sm mr-2"
+          title={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
+        >
+          {theme === 'light' ? '🌙' : '☀️'}
+        </button>
+        
+        <div className="dropdown dropdown-end">
+          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+            <div className="w-10 rounded-full bg-primary text-primary-content flex items-center justify-center">
+              <span className="text-lg font-bold">
+                {(user.full_name || user.username).charAt(0).toUpperCase()}
+              </span>
             </div>
           </div>
-          
-          <button 
-            onClick={handleLogout}
-            style={{
-              background: 'transparent',
-              border: '1px solid #e74c3c',
-              color: '#e74c3c',
-              padding: '8px 16px',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              transition: 'all 0.2s ease',
-              fontSize: '14px'
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.background = '#e74c3c';
-              e.currentTarget.style.color = 'white';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.background = 'transparent';
-              e.currentTarget.style.color = '#e74c3c';
-            }}
-          >
-            Logout
-          </button>
+          <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+            <li className="menu-title">
+              <span className="font-semibold">{user.full_name || user.username}</span>
+            </li>
+            <li className="menu-title">
+              <span className="text-sm opacity-70">{user.role}</span>
+            </li>
+            <div className="divider my-1"></div>
+            <li>
+              <button onClick={handleLogout} className="text-error">
+                Logout
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
-    </nav>
+    </div>
   );
 }; 

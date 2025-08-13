@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth';
-import './App.css';
 
 // Components
 import { Login } from './components/Login';
@@ -12,13 +11,25 @@ import { CampaignList } from './components/CampaignList';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { CampaignView } from './components/CampaignView';
 import { Nav } from './components/Nav';
+import { useState, useEffect } from 'react';
 
 function App() {
+  const [theme, setTheme] = useState('light');
+
+  useEffect(() => {
+    // Apply theme to document
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
   return (
     <AuthProvider>
       <Router>
         <div className="App">
-          <Nav />
+          <Nav theme={theme} onThemeChange={toggleTheme} />
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

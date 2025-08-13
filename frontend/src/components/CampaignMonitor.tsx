@@ -78,9 +78,14 @@ export const CampaignMonitor = () => {
 
   if (loading) {
     return (
-      <div className="container">
-        <div style={{ textAlign: 'center', padding: '50px' }}>
-          <h3>Loading campaign...</h3>
+      <div className="min-h-screen bg-base-200 p-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body text-center">
+              <span className="loading loading-spinner loading-lg text-primary"></span>
+              <h3 className="text-xl font-semibold mt-4">Loading campaign...</h3>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -88,10 +93,17 @@ export const CampaignMonitor = () => {
 
   if (error) {
     return (
-      <div className="container">
-        <div className="error-message">
-          <h3>Error</h3>
-          <p>{error}</p>
+      <div className="min-h-screen bg-base-200 p-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="alert alert-error shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <h3 className="font-bold">Error</h3>
+              <div className="text-xs">{error}</div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -99,75 +111,165 @@ export const CampaignMonitor = () => {
 
   if (!campaign) {
     return (
-      <div className="container">
-        <div className="error-message">
-          <h3>Campaign Not Found</h3>
-          <p>The requested campaign could not be found.</p>
+      <div className="min-h-screen bg-base-200 p-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="alert alert-error shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <h3 className="font-bold">Campaign Not Found</h3>
+              <div className="text-xs">The requested campaign could not be found.</div>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'completed': return 'success';
+      case 'running': return 'info';
+      case 'failed': return 'error';
+      default: return 'warning';
+    }
+  };
+
   return (
-    <div className="container">
-      <div className="campaign-monitor">
-        <h2>Campaign Status: {campaign.status}</h2>
-        
-        <div className="campaign-info">
-          <p><strong>Campaign ID:</strong> {campaign.campaign_id}</p>
-          <p><strong>Created:</strong> {new Date(campaign.created_at).toLocaleString()}</p>
-          <p><strong>Created By:</strong> {campaign.created_by}</p>
-          {campaign.execution_time && (
-            <p><strong>Execution Time:</strong> {campaign.execution_time.toFixed(2)} seconds</p>
-          )}
-          {campaign.quality_score && (
-            <p><strong>Quality Score:</strong> {campaign.quality_score}</p>
-          )}
-          {campaign.revision_count && (
-            <p><strong>Revisions:</strong> {campaign.revision_count}</p>
-          )}
-        </div>
-
-        {status?.progress && (
-          <div className="progress-info">
-            <h3>Progress</h3>
-            <p>Artifacts Generated: {status.progress.artifacts_generated}</p>
-            <p>Revision Count: {status.progress.revision_count}</p>
-            <p>Execution Time: {status.progress.execution_time?.toFixed(2)} seconds</p>
-          </div>
-        )}
-
-        {campaign.status === 'completed' && (
-          <div className="download-section">
-            <h3>Download Results</h3>
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-              <button onClick={downloadWebsite} className="btn">
-                Download Website
-              </button>
-              <button onClick={downloadPDF} className="btn">
-                Download PDF Report
-              </button>
+    <div className="min-h-screen bg-base-200 p-6">
+      <div className="max-w-4xl mx-auto space-y-6">
+        {/* Campaign Header */}
+        <div className="card bg-base-100 shadow-xl">
+          <div className="card-body">
+            <div className="flex items-center gap-3 mb-4">
+              <h2 className="card-title text-2xl">Campaign Status</h2>
+              <div className={`badge badge-${getStatusColor(campaign.status)} badge-lg`}>
+                {campaign.status}
+              </div>
             </div>
             
-            <div className="artifacts">
-              <h4>Generated Artifacts:</h4>
-              <pre>{JSON.stringify(campaign.artifacts, null, 2)}</pre>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="stat">
+                <div className="stat-title">Campaign ID</div>
+                <div className="stat-value text-lg font-mono">{campaign.campaign_id}</div>
+              </div>
+              <div className="stat">
+                <div className="stat-title">Created</div>
+                <div className="stat-value text-lg">{new Date(campaign.created_at).toLocaleString()}</div>
+              </div>
+              <div className="stat">
+                <div className="stat-title">Created By</div>
+                <div className="stat-value text-lg">{campaign.created_by}</div>
+              </div>
+              {campaign.execution_time && (
+                <div className="stat">
+                  <div className="stat-title">Execution Time</div>
+                  <div className="stat-value text-lg">{campaign.execution_time.toFixed(2)}s</div>
+                </div>
+              )}
+              {campaign.quality_score && (
+                <div className="stat">
+                  <div className="stat-title">Quality Score</div>
+                  <div className="stat-value text-lg">{campaign.quality_score}</div>
+                </div>
+              )}
+              {campaign.revision_count && (
+                <div className="stat">
+                  <div className="stat-title">Revisions</div>
+                  <div className="stat-value text-lg">{campaign.revision_count}</div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Progress Information */}
+        {status?.progress && (
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body">
+              <h3 className="card-title text-xl mb-4">Progress</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="stat">
+                  <div className="stat-title">Artifacts Generated</div>
+                  <div className="stat-value text-primary">{status.progress.artifacts_generated}</div>
+                </div>
+                <div className="stat">
+                  <div className="stat-title">Revision Count</div>
+                  <div className="stat-value text-secondary">{status.progress.revision_count}</div>
+                </div>
+                <div className="stat">
+                  <div className="stat-title">Execution Time</div>
+                  <div className="stat-value text-accent">{status.progress.execution_time?.toFixed(2)}s</div>
+                </div>
+              </div>
             </div>
           </div>
         )}
 
-        {campaign.status === 'failed' && (
-          <div className="error-section">
-            <h3>Campaign Generation Failed</h3>
-            <p>{campaign.message}</p>
+        {/* Download Section */}
+        {campaign.status === 'completed' && (
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body">
+              <h3 className="card-title text-xl mb-4">Download Results</h3>
+              <div className="flex flex-wrap gap-4 mb-6">
+                <button onClick={downloadWebsite} className="btn btn-primary">
+                  📄 Download Website
+                </button>
+                <button onClick={downloadPDF} className="btn btn-secondary">
+                  📊 Download PDF Report
+                </button>
+              </div>
+              
+              <div className="collapse collapse-arrow bg-base-200">
+                <input type="checkbox" /> 
+                <div className="collapse-title text-xl font-medium">
+                  Generated Artifacts
+                </div>
+                <div className="collapse-content"> 
+                  <pre className="bg-base-300 p-4 rounded-lg overflow-x-auto text-sm">
+                    {JSON.stringify(campaign.artifacts, null, 2)}
+                  </pre>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
+        {/* Error Section */}
+        {campaign.status === 'failed' && (
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body">
+              <div className="alert alert-error">
+                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <h3 className="font-bold">Campaign Generation Failed</h3>
+                  <div className="text-xs">{campaign.message}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Running Status */}
         {campaign.status === 'running' && (
-          <div className="progress-info">
-            <h3>Campaign in Progress</h3>
-            <p>Your campaign is being generated by our AI agents. This may take several minutes.</p>
-            <p>Status: {campaign.message}</p>
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body">
+              <div className="alert alert-info">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                  <h3 className="font-bold">Campaign in Progress</h3>
+                  <div className="text-xs">
+                    <p>Your campaign is being generated by our AI agents. This may take several minutes.</p>
+                    <p className="mt-2"><strong>Status:</strong> {campaign.message}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>

@@ -27,15 +27,15 @@ export const CampaignList: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return '#28a745';
+        return 'success';
       case 'running':
-        return '#ffc107';
+        return 'warning';
       case 'failed':
-        return '#dc3545';
+        return 'error';
       case 'initialized':
-        return '#17a2b8';
+        return 'info';
       default:
-        return '#6c757d';
+        return 'neutral';
     }
   };
 
@@ -51,9 +51,14 @@ export const CampaignList: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="container">
-        <div style={{ textAlign: 'center', padding: '50px' }}>
-          <h3>Loading campaigns...</h3>
+      <div className="min-h-screen bg-base-200 p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body text-center">
+              <span className="loading loading-spinner loading-lg text-primary"></span>
+              <h3 className="text-xl font-semibold mt-4">Loading campaigns...</h3>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -61,13 +66,20 @@ export const CampaignList: React.FC = () => {
 
   if (error) {
     return (
-      <div className="container">
-        <div className="error-message">
-          <h3>Error</h3>
-          <p>{error}</p>
-          <button onClick={fetchCampaigns} className="btn">
-            Try Again
-          </button>
+      <div className="min-h-screen bg-base-200 p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="alert alert-error shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <h3 className="font-bold">Error</h3>
+              <div className="text-xs">{error}</div>
+            </div>
+            <button onClick={fetchCampaigns} className="btn btn-sm">
+              Try Again
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -75,154 +87,143 @@ export const CampaignList: React.FC = () => {
 
   if (!campaigns || campaigns.campaigns.length === 0) {
     return (
-      <div className="container">
-        <div className="form-container">
-          <h2>No Campaigns Found</h2>
-          <p>You haven't created any campaigns yet.</p>
-          <Link to="/generate" className="btn">
-            Create Your First Campaign
-          </Link>
+      <div className="min-h-screen bg-base-200 p-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body text-center">
+              <h2 className="text-2xl font-bold mb-4">No Campaigns Found</h2>
+              <p className="text-base-content/70 mb-6">You haven't created any campaigns yet.</p>
+              <Link to="/generate" className="btn btn-primary">
+                Create Your First Campaign
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="container">
-      <div className="campaign-list">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-          <h2>Your Campaigns</h2>
-          <Link to="/generate" className="btn">
+    <div className="min-h-screen bg-base-200 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+          <h1 className="text-3xl font-bold">Your Campaigns</h1>
+          <Link to="/generate" className="btn btn-primary">
             Create New Campaign
           </Link>
         </div>
 
         {/* Summary Cards */}
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
-          gap: '20px', 
-          marginBottom: '30px' 
-        }}>
-          <div style={{ 
-            background: 'white', 
-            padding: '20px', 
-            borderRadius: '8px', 
-            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-            textAlign: 'center'
-          }}>
-            <h3 style={{ color: '#28a745', margin: '0 0 10px 0' }}>{campaigns.total}</h3>
-            <p style={{ margin: 0, color: '#666' }}>Total Campaigns</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="stat bg-base-100 shadow-lg rounded-box">
+            <div className="stat-figure text-success">
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <div className="stat-title">Total Campaigns</div>
+            <div className="stat-value text-success">{campaigns.total}</div>
           </div>
-          <div style={{ 
-            background: 'white', 
-            padding: '20px', 
-            borderRadius: '8px', 
-            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-            textAlign: 'center'
-          }}>
-            <h3 style={{ color: '#28a745', margin: '0 0 10px 0' }}>{campaigns.completed}</h3>
-            <p style={{ margin: 0, color: '#666' }}>Completed</p>
+          
+          <div className="stat bg-base-100 shadow-lg rounded-box">
+            <div className="stat-figure text-success">
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="stat-title">Completed</div>
+            <div className="stat-value text-success">{campaigns.completed}</div>
           </div>
-          <div style={{ 
-            background: 'white', 
-            padding: '20px', 
-            borderRadius: '8px', 
-            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-            textAlign: 'center'
-          }}>
-            <h3 style={{ color: '#ffc107', margin: '0 0 10px 0' }}>{campaigns.running}</h3>
-            <p style={{ margin: 0, color: '#666' }}>Running</p>
+          
+          <div className="stat bg-base-100 shadow-lg rounded-box">
+            <div className="stat-figure text-warning">
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="stat-title">Running</div>
+            <div className="stat-value text-warning">{campaigns.running}</div>
           </div>
-          <div style={{ 
-            background: 'white', 
-            padding: '20px', 
-            borderRadius: '8px', 
-            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-            textAlign: 'center'
-          }}>
-            <h3 style={{ color: '#dc3545', margin: '0 0 10px 0' }}>{campaigns.failed}</h3>
-            <p style={{ margin: 0, color: '#666' }}>Failed</p>
+          
+          <div className="stat bg-base-100 shadow-lg rounded-box">
+            <div className="stat-figure text-error">
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="stat-title">Failed</div>
+            <div className="stat-value text-error">{campaigns.failed}</div>
           </div>
         </div>
 
         {/* Campaigns Table */}
-        <div style={{ 
-          background: 'white', 
-          borderRadius: '8px', 
-          boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-          overflow: 'hidden'
-        }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr style={{ background: '#f8f9fa' }}>
-                <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Campaign ID</th>
-                <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Status</th>
-                <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Created</th>
-                <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Execution Time</th>
-                <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Artifacts</th>
-                <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {campaigns.campaigns.map((campaign) => (
-                <tr key={campaign.campaign_id} style={{ borderBottom: '1px solid #dee2e6' }}>
-                  <td style={{ padding: '15px', fontFamily: 'monospace', fontSize: '12px' }}>
-                    {campaign.campaign_id}
-                  </td>
-                  <td style={{ padding: '15px' }}>
-                    <span style={{
-                      padding: '4px 8px',
-                      borderRadius: '4px',
-                      fontSize: '12px',
-                      fontWeight: 'bold',
-                      color: 'white',
-                      backgroundColor: getStatusColor(campaign.status)
-                    }}>
-                      {campaign.status.toUpperCase()}
-                    </span>
-                  </td>
-                  <td style={{ padding: '15px' }}>
-                    {formatDate(campaign.created_at)}
-                  </td>
-                  <td style={{ padding: '15px' }}>
-                    {campaign.execution_time 
-                      ? `${campaign.execution_time.toFixed(2)}s`
-                      : '-'
-                    }
-                  </td>
-                  <td style={{ padding: '15px' }}>
-                    {campaign.artifacts_count}
-                  </td>
-                  <td style={{ padding: '15px' }}>
-                    <div style={{ display: 'flex', gap: '10px' }}>
-                      <Link 
-                        to={`/campaign/${campaign.campaign_id}`}
-                        className="btn"
-                        style={{ padding: '8px 12px', fontSize: '12px' }}
-                      >
-                        View
-                      </Link>
-                      {campaign.status === 'completed' && (
-                        <Link 
-                          to={`/campaign/view/${campaign.campaign_id}`}
-                          className="btn btn-primary"
-                          style={{ padding: '8px 12px', fontSize: '12px' }}
-                        >
-                          Preview
-                        </Link>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="card bg-base-100 shadow-xl">
+          <div className="card-body p-0">
+            <div className="overflow-x-auto">
+              <table className="table table-zebra w-full">
+                <thead>
+                  <tr>
+                    <th className="bg-base-200">Campaign ID</th>
+                    <th className="bg-base-200">Status</th>
+                    <th className="bg-base-200">Created</th>
+                    <th className="bg-base-200">Execution Time</th>
+                    <th className="bg-base-200">Artifacts</th>
+                    <th className="bg-base-200">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {campaigns.campaigns.map((campaign) => (
+                    <tr key={campaign.campaign_id} className="hover">
+                      <td className="font-mono text-xs">
+                        {campaign.campaign_id}
+                      </td>
+                      <td>
+                        <div className={`badge badge-${getStatusColor(campaign.status)} badge-lg`}>
+                          {campaign.status.toUpperCase()}
+                        </div>
+                      </td>
+                      <td>
+                        {formatDate(campaign.created_at)}
+                      </td>
+                      <td>
+                        {campaign.execution_time 
+                          ? `${campaign.execution_time.toFixed(2)}s`
+                          : '-'
+                        }
+                      </td>
+                      <td>
+                        <div className="badge badge-outline">{campaign.artifacts_count}</div>
+                      </td>
+                      <td>
+                        <div className="flex gap-2">
+                          <Link 
+                            to={`/campaign/${campaign.campaign_id}`}
+                            className="btn btn-sm btn-ghost"
+                          >
+                            View
+                          </Link>
+                          {campaign.status === 'completed' && (
+                            <Link 
+                              to={`/campaign/view/${campaign.campaign_id}`}
+                              className="btn btn-sm btn-primary"
+                            >
+                              Preview
+                            </Link>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
 
         {/* Refresh Button */}
-        <div style={{ textAlign: 'center', marginTop: '30px' }}>
-          <button onClick={fetchCampaigns} className="btn btn-secondary">
+        <div className="text-center mt-8">
+          <button onClick={fetchCampaigns} className="btn btn-secondary btn-wide">
             Refresh Campaigns
           </button>
         </div>
