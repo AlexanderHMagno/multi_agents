@@ -31,7 +31,12 @@ def create_campaign_website(result, filename="campaign_website.html"):
         validation_used = True
         print("🔍 Using validated and corrected HTML")
     else:
-        campaign_website_content = result.get('artifacts', {}).get('web_developer', {}).get('campaign_website', '')
+        # Try multiple paths to find the HTML content
+        campaign_website_content = (
+            result.get('web_developer', {}).get('campaign_website', '') or
+            result.get('artifacts', {}).get('web_developer', {}).get('campaign_website', '') or
+            ''
+        )
         validation_used = False
         print("⚠️ Using original HTML (validation not available)")
     
@@ -51,7 +56,7 @@ def create_campaign_website(result, filename="campaign_website.html"):
             # Basic validation if not already validated
             if not validation_used:
                 # Ensure proper HTML structure
-                if not campaign_website_content.strip().startswith('<!DOCTYPE html>'):
+                if not campaign_website_content.strip().find('<!DOCTYPE html>') == -1:
                     print("⚠️ Warning: Adding missing DOCTYPE declaration")
                     campaign_website_content = '<!DOCTYPE html>\n' + campaign_website_content
                 

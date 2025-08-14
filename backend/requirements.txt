@@ -17,3 +17,7 @@ aiofiles==23.2.1
 # Optional dependencies for enhanced features
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
+
+# AWS Dependencies for S3 and DynamoDB
+boto3>=1.34.0
+botocore>=1.34.0

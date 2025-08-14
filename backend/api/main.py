@@ -26,6 +26,7 @@ from src.utils.config import load_configuration
 from src.utils.state import State
 from src.utils.monitoring import WorkflowMonitor, CampaignAnalytics
 from src.utils.file_handlers import create_campaign_website, save_campaign_pdf
+from src.utils.aws_config import load_aws_services
 from src.workflows.campaign_workflow import create_workflow
 
 # Robust import for auth (supports both `python -m api.main` and `python api/main.py`)
@@ -129,11 +130,21 @@ async def startup_event():
         # Create thread pool executor for non-blocking workflow execution
         app.state.thread_pool = ThreadPoolExecutor(max_workers=4)
         
+        # Initialize AWS services
+        s3_service, dynamodb_service = load_aws_services()
+        app.state.s3_service = s3_service
+        app.state.dynamodb_service = dynamodb_service
+        
         print("✅ FastAPI backend initialized successfully")
         print(f"🔧 LLM Model: {config.get('rational_model', 'Unknown')}")
         print(f"🎨 OpenAI Client: {'✅ Available' if config.get('openai_client') else '❌ Not available'}")
         print("🔐 Authentication enabled")
         print("🧵 Thread pool executor initialized for non-blocking campaign generation")
+        
+        if s3_service and dynamodb_service:
+            print("☁️ AWS services initialized successfully")
+        else:
+            print("⚠️ AWS services not available - campaigns will be stored locally only")
         
     except Exception as e:
         print(f"❌ Failed to initialize FastAPI backend: {e}")
@@ -215,7 +226,27 @@ async def root():
                 </div>
                 
                 <div class="endpoint auth">
-                    <span class="method">GET</span> <span class="url">/api/v1/campaigns/{campaign_id}/website</span>
+                    <span class="method">GET</span> <span class="url">/api/v1/campaigns/{campaign_id}/aws</span>
+                    <p>Get campaign information from AWS S3 and DynamoDB (Authentication Required)</p>
+                </div>
+                
+                <div class="endpoint auth">
+                    <span class="method">GET</span> <span class="url">/api/v1/campaigns/aws/list</span>
+                    <p>List campaigns from AWS DynamoDB (Authentication Required)</p>
+                </div>
+                
+                <div class="endpoint auth">
+                    <span class="method">GET</span> <span class="url">/api/v1/campaigns/aws/stats</span>
+                    <p>Get campaign statistics from AWS DynamoDB (Admin Only)</p>
+                </div>
+                
+                <div class="endpoint auth">
+                    <span class="method">DELETE</span> <span class="url">/api/v1/campaigns/{campaign_id}/aws</span>
+                    <p>Delete campaign from AWS S3 and DynamoDB (Authentication Required)</p>
+                </div>
+                
+                <div class="endpoint auth">
+                    <span class="url">/api/v1/campaigns/{campaign_id}/website</span>
                     <p>Download the generated campaign website (Authentication Required)</p>
                 </div>
                 
@@ -249,6 +280,15 @@ async def root():
                     <li><strong>Progress Updates:</strong> <code>GET /api/v1/campaigns/{campaign_id}/progress</code> - Get current progress and agent interactions</li>
                     <li><strong>Live Streaming:</strong> <code>GET /api/v1/campaigns/{campaign_id}/stream</code> - Server-Sent Events for live updates</li>
                     <li><strong>Step Details:</strong> <code>GET /api/v1/campaigns/{campaign_id}/workflow-steps</code> - Detailed workflow step information</li>
+                </ul>
+                
+                <h2>☁️ AWS Storage:</h2>
+                <p>Campaigns are automatically stored in AWS for persistence and scalability:</p>
+                <ul>
+                    <li><strong>S3 Storage:</strong> Campaign websites, PDFs, artifacts, and metadata stored in S3 bucket</li>
+                    <li><strong>DynamoDB:</strong> Campaign metadata and state information stored in NoSQL database</li>
+                    <li><strong>Auto-Upload:</strong> All campaign files automatically uploaded upon completion</li>
+                    <li><strong>Cloud Access:</strong> Access campaigns from anywhere via S3 URLs</li>
                 </ul>
                 
                 <h2>🔑 Default Users:</h2>
@@ -539,12 +579,74 @@ async def generate_campaign_background(campaign_id: str, campaign_brief: Campaig
             print(f"⚠️ Warning: Failed to create website: {e}")
             _log_agent_interaction(campaign_id, "Output Generator", "error", f"Failed to create website: {e}")
         
+        # Store campaign data in AWS if available
+        s3_urls = {}
+        if hasattr(app.state, 's3_service') and app.state.s3_service:
+            try:
+                # Upload campaign files to S3
+                s3_urls = app.state.s3_service.upload_campaign_files(campaign_id, "outputs")
+                print(f"☁️ Campaign files uploaded to S3: {list(s3_urls.keys())}")
+                
+                # Upload workflow state and artifacts
+                if result.get("artifacts"):
+                    artifacts_url = app.state.s3_service.upload_campaign_artifacts(campaign_id, result)
+                    s3_urls['artifacts'] = artifacts_url
+                
+                # Upload campaign metadata
+                metadata = {
+                    "campaign_brief": campaign_brief.dict(),
+                    "progress_log": campaign_progress.get(campaign_id, {}),
+                    "agent_interactions": agent_interactions.get(campaign_id, []),
+                    "final_state": result,
+                    "execution_time": execution_time,
+                    "quality_score": len(result.get("artifacts", {})),
+                    "revision_count": result.get("revision_count", 0)
+                }
+                metadata_url = app.state.s3_service.upload_campaign_metadata(campaign_id, metadata)
+                s3_urls['metadata'] = metadata_url
+                
+                _log_agent_interaction(campaign_id, "AWS Storage", "completed", "Campaign data stored in S3 successfully")
+                
+            except Exception as e:
+                print(f"⚠️ Warning: Failed to upload to S3: {e}")
+                _log_agent_interaction(campaign_id, "AWS Storage", "error", f"Failed to upload to S3: {e}")
+        
+        # Store campaign metadata in DynamoDB if available
+        if hasattr(app.state, 'dynamodb_service') and app.state.dynamodb_service:
+            try:
+                campaign_data = {
+                    "campaign_id": campaign_id,
+                    "user_id": username,
+                    "campaign_name": campaign_brief.campaign_name or "Unnamed Campaign",
+                    "status": "completed",
+                    "created_at": datetime.now().isoformat(),
+                    "completed_at": datetime.now().isoformat(),
+                    "execution_time": execution_time,
+                    "s3_website_url": s3_urls.get("website"),
+                    "s3_pdf_url": s3_urls.get("pdf"),
+                    "s3_artifacts_url": s3_urls.get("artifacts"),
+                    "s3_metadata_url": s3_urls.get("metadata"),
+                    "campaign_brief": campaign_brief.dict(),
+                    "final_state": result,
+                    "progress_log": campaign_progress.get(campaign_id, {}),
+                    "agent_interactions": agent_interactions.get(campaign_id, [])
+                }
+                
+                app.state.dynamodb_service.store_campaign(campaign_data)
+                print(f"🗄️ Campaign metadata stored in DynamoDB")
+                _log_agent_interaction(campaign_id, "DynamoDB Storage", "completed", "Campaign metadata stored successfully")
+                
+            except Exception as e:
+                print(f"⚠️ Warning: Failed to store in DynamoDB: {e}")
+                _log_agent_interaction(campaign_id, "DynamoDB Storage", "error", f"Failed to store in DynamoDB: {e}")
+        
         # Update campaign results
         campaign_results[campaign_id].update({
             "status": "completed",
             "message": "Campaign generation completed successfully",
             "artifacts": result.get("artifacts", {}),
-            "website_url": f"/api/v1/campaigns/{campaign_id}/website",
+            "website_url": f"/api/v1/campaigns/view/{campaign_id}",
+            "s3_urls": s3_urls,  # Add S3 URLs to results
             "execution_time": execution_time,
             "quality_score": len(result.get("artifacts", {})),
             "revision_count": result.get("revision_count", 0),
@@ -1400,6 +1502,146 @@ async def get_workflow_steps(campaign_id: str, current_user: User = Depends(get_
         "workflow_stats": workflow_stats,
         "current_status": current_status,
         "last_update": datetime.now().isoformat()
+    }
+
+
+@app.get("/api/v1/campaigns/{campaign_id}/aws")
+async def get_campaign_aws_info(campaign_id: str, current_user: User = Depends(get_current_active_user)):
+    """Get campaign information from AWS S3 and DynamoDB (authentication required)"""
+    if campaign_id not in campaign_results:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+    
+    result = campaign_results.get(campaign_id, {})
+    
+    # Check if user owns the campaign or is admin
+    if result.get("created_by") != current_user.username and current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Access denied. You can only view your own campaigns.")
+    
+    aws_info = {}
+    
+    # Get S3 information if available
+    if hasattr(app.state, 's3_service') and app.state.s3_service:
+        try:
+            s3_urls = app.state.s3_service.get_campaign_files(campaign_id)
+            aws_info['s3'] = {
+                'bucket_name': app.state.s3_service.bucket_name,
+                'region': app.state.s3_service.region,
+                'files': s3_urls
+            }
+        except Exception as e:
+            aws_info['s3'] = {'error': str(e)}
+    
+    # Get DynamoDB information if available
+    if hasattr(app.state, 'dynamodb_service') and app.state.dynamodb_service:
+        try:
+            db_campaign = app.state.dynamodb_service.get_campaign(campaign_id)
+            if db_campaign:
+                aws_info['dynamodb'] = {
+                    'table_name': app.state.dynamodb_service.table_name,
+                    'region': app.state.dynamodb_service.region,
+                    'data': db_campaign
+                }
+            else:
+                aws_info['dynamodb'] = {'status': 'not_found'}
+        except Exception as e:
+            aws_info['dynamodb'] = {'error': str(e)}
+    
+    return {
+        "campaign_id": campaign_id,
+        "aws_services": aws_info,
+        "last_update": datetime.now().isoformat()
+    }
+
+
+@app.get("/api/v1/campaigns/aws/list")
+async def list_aws_campaigns(current_user: User = Depends(get_current_active_user)):
+    """List campaigns from AWS DynamoDB (authentication required)"""
+    if not hasattr(app.state, 'dynamodb_service') or not app.state.dynamodb_service:
+        raise HTTPException(status_code=503, detail="DynamoDB service not available")
+    
+    try:
+        # Get campaigns for the current user
+        campaigns = app.state.dynamodb_service.list_user_campaigns(current_user.username)
+        
+        # Format response
+        formatted_campaigns = []
+        for campaign in campaigns:
+            formatted_campaigns.append({
+                "campaign_id": campaign.get("campaign_id"),
+                "campaign_name": campaign.get("campaign_name"),
+                "status": campaign.get("status"),
+                "created_at": campaign.get("created_at"),
+                "completed_at": campaign.get("completed_at"),
+                "execution_time": campaign.get("execution_time"),
+                "s3_urls": {
+                    "website": campaign.get("s3_website_url"),
+                    "pdf": campaign.get("s3_pdf_url"),
+                    "artifacts": campaign.get("s3_artifacts_url"),
+                    "metadata": campaign.get("s3_metadata_url")
+                }
+            })
+        
+        return {
+            "campaigns": formatted_campaigns,
+            "total": len(formatted_campaigns),
+            "user_id": current_user.username
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to retrieve campaigns: {str(e)}")
+
+
+@app.get("/api/v1/campaigns/aws/stats")
+async def get_aws_campaign_stats(current_user: User = Depends(get_current_admin_user)):
+    """Get campaign statistics from AWS DynamoDB (admin only)"""
+    if not hasattr(app.state, 'dynamodb_service') or not app.state.dynamodb_service:
+        raise HTTPException(status_code=503, detail="DynamoDB service not available")
+    
+    try:
+        stats = app.state.dynamodb_service.get_campaign_stats()
+        return {
+            "aws_stats": stats,
+            "last_update": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to retrieve stats: {str(e)}")
+
+
+@app.delete("/api/v1/campaigns/{campaign_id}/aws")
+async def delete_campaign_from_aws(campaign_id: str, current_user: User = Depends(get_current_active_user)):
+    """Delete campaign from AWS S3 and DynamoDB (authentication required)"""
+    if campaign_id not in campaign_results:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+    
+    result = campaign_results.get(campaign_id, {})
+    
+    # Check if user owns the campaign or is admin
+    if result.get("created_by") != current_user.username and current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Access denied. You can only delete your own campaigns.")
+    
+    deletion_results = {}
+    
+    # Delete from S3 if available
+    if hasattr(app.state, 's3_service') and app.state.s3_service:
+        try:
+            success = app.state.s3_service.delete_campaign_files(campaign_id)
+            deletion_results['s3'] = {'success': success}
+        except Exception as e:
+            deletion_results['s3'] = {'success': False, 'error': str(e)}
+    
+    # Delete from DynamoDB if available
+    if hasattr(app.state, 'dynamodb_service') and app.state.dynamodb_service:
+        try:
+            success = app.state.dynamodb_service.delete_campaign(campaign_id)
+            deletion_results['dynamodb'] = {'success': success}
+        except Exception as e:
+            deletion_results['dynamodb'] = {'success': False, 'error': str(e)}
+    
+    return {
+        "campaign_id": campaign_id,
+        "deletion_results": deletion_results,
+        "message": "Campaign deletion completed"
     }
 
 
