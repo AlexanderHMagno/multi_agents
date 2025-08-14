@@ -32,82 +32,44 @@
   --mm-success: #059669; /* green-600 */
   --mm-warning: #D97706; /* amber-600 */
   --mm-error: #DC2626; /* red-600 */
-  --mm-info: #0891B2; /* cyan-600 */
+  --mm-info: #2563EB; /* blue-600 */
 }
 
 /* Custom Component Classes */
 @layer components {
-  /* Primary Button */
-  .btn-mm-primary {
-    @apply bg-[var(--mm-primary)] hover:bg-[var(--mm-primary-hover)] border-[var(--mm-primary)] text-white;
-  }
+  /* Button Styles */
+  .btn-mm-primary { @apply bg-[var(--mm-primary)] hover:bg-[var(--mm-primary-hover)] border-[var(--mm-primary)] text-white; }
+  .btn-mm-secondary { @apply border-[var(--mm-secondary)] text-[var(--mm-secondary)] hover:bg-[var(--mm-secondary-bg)]; }
   
-  /* Secondary Button */
-  .btn-mm-secondary {
-    @apply border-[var(--mm-secondary)] text-[var(--mm-secondary)] hover:bg-[var(--mm-secondary-bg)];
-  }
+  /* Card Styles */
+  .card-mm { @apply bg-white rounded-lg shadow-sm border border-[var(--mm-gray-200)]; }
   
-  /* Primary Text */
-  .text-mm-primary {
-    color: var(--mm-primary);
-  }
+  /* Stats Styles */
+  .stat-mm { @apply bg-white rounded-lg shadow-sm border border-[var(--mm-gray-200)] p-6; }
   
-  /* Secondary Text */
-  .text-mm-secondary {
-    color: var(--mm-secondary);
-  }
+  /* Badge Styles */
+  .badge-mm-primary { @apply bg-[var(--mm-primary-light)] text-[var(--mm-primary)]; }
+  .badge-mm-secondary { @apply bg-[var(--mm-secondary-light)] text-[var(--mm-secondary)]; }
   
-  /* Primary Background */
-  .bg-mm-primary {
-    background-color: var(--mm-primary);
-  }
+  /* Form Input Styles */
+  .input-mm { @apply border-[var(--mm-gray-300)] focus:border-[var(--mm-primary)] focus:ring-[var(--mm-primary)]; }
+  .textarea-mm { @apply border-[var(--mm-gray-300)] focus:border-[var(--mm-primary)] focus:ring-[var(--mm-primary)]; }
+  .select-mm { @apply border-[var(--mm-gray-300)] focus:border-[var(--mm-primary)] focus:ring-[var(--mm-primary)]; }
   
-  /* Secondary Background */
-  .bg-mm-secondary {
-    background-color: var(--mm-secondary);
-  }
+  /* Checkbox Styles */
+  .checkbox-mm-primary { @apply border-[var(--mm-gray-300)] checked:bg-[var(--mm-primary)] checked:border-[var(--mm-primary)]; }
   
-  /* Primary Light Background */
-  .bg-mm-primary-light {
-    background-color: var(--mm-primary-light);
-  }
+  /* Text Color Utilities */
+  .text-mm-primary { color: var(--mm-primary); }
+  .text-mm-secondary { color: var(--mm-secondary); }
   
-  /* Secondary Light Background */
-  .bg-mm-secondary-light {
-    background-color: var(--mm-secondary-light);
-  }
+  /* Background Color Utilities */
+  .bg-mm-primary { background-color: var(--mm-primary); }
+  .bg-mm-secondary { background-color: var(--mm-secondary); }
+  .bg-mm-primary-bg { background-color: var(--mm-primary-bg); }
+  .bg-mm-secondary-bg { background-color: var(--mm-secondary-bg); }
   
-  /* Primary Border */
-  .border-mm-primary {
-    border-color: var(--mm-primary);
-  }
-  
-  /* Secondary Border */
-  .border-mm-secondary {
-    border-color: var(--mm-secondary);
-  }
-  
-  /* Card with MarketMinds styling */
-  .card-mm {
-    @apply bg-white rounded-lg shadow-sm border border-[var(--mm-gray-200)];
-  }
-  
-  /* Stats card with MarketMinds styling */
-  .stat-mm {
-    @apply bg-white rounded-lg shadow-sm border border-[var(--mm-gray-200)] p-6;
-  }
-  
-  /* Input with MarketMinds styling */
-  .input-mm {
-    @apply border-[var(--mm-gray-300)] focus:border-[var(--mm-primary)] focus:ring-[var(--mm-primary)];
-  }
-  
-  /* Badge with MarketMinds styling */
-  .badge-mm-primary {
-    @apply bg-[var(--mm-primary-light)] text-[var(--mm-primary)];
-  }
-  
-  .badge-mm-secondary {
-    @apply bg-[var(--mm-secondary-light)] text-[var(--mm-secondary)];
-  }
+  /* Border Color Utilities */
+  .border-mm-primary { border-color: var(--mm-primary); }
+  .border-mm-secondary { border-color: var(--mm-secondary); }
 } 
