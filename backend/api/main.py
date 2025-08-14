@@ -997,9 +997,9 @@ async def get_campaign_progress(campaign_id: str, current_user: User = Depends(g
         "completed_steps": progress.get("completed_steps", 0),
         "total_steps": progress.get("total_steps", 17),
         "progress_percentage": progress_percentage,
-        "estimated_total_time": 200,  # Total estimated time in seconds
+        "estimated_total_time": 300,  # Total estimated time in seconds
         "current_execution_time": result.get("execution_time", 0),
-        "estimated_remaining_time": max(0, 200 - result.get("execution_time", 0))
+        "estimated_remaining_time": max(0, 300 - result.get("execution_time", 0))
     }
     
     # Get recent interactions (last 10)
