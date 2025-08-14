@@ -17,6 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.security import OAuth2PasswordRequestForm
 import uvicorn
+from concurrent.futures import ThreadPoolExecutor
 
 # Add the parent directory to the path to import the src modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -123,14 +124,29 @@ async def startup_event():
         app.state.workflow = workflow
         app.state.monitor = monitor
         
+        # Create thread pool executor for non-blocking workflow execution
+        app.state.thread_pool = ThreadPoolExecutor(max_workers=4)
+        
         print("✅ FastAPI backend initialized successfully")
         print(f"🔧 LLM Model: {config.get('rational_model', 'Unknown')}")
         print(f"🎨 OpenAI Client: {'✅ Available' if config.get('openai_client') else '❌ Not available'}")
         print("🔐 Authentication enabled")
+        print("🧵 Thread pool executor initialized for non-blocking campaign generation")
         
     except Exception as e:
         print(f"❌ Failed to initialize FastAPI backend: {e}")
         raise
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Clean up resources on shutdown"""
+    try:
+        if hasattr(app.state, 'thread_pool'):
+            app.state.thread_pool.shutdown(wait=True)
+            print("🧵 Thread pool executor shut down successfully")
+    except Exception as e:
+        print(f"⚠️ Error shutting down thread pool: {e}")
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -233,10 +249,43 @@ async def health_check():
             "llm_model": config.get("rational_model", "Unknown"),
             "openai_available": bool(config.get("openai_client")),
             "workflow_ready": bool(app.state.workflow),
-            "authentication": "enabled"
+            "authentication": "enabled",
+            "thread_pool_ready": hasattr(app.state, 'thread_pool') and app.state.thread_pool._shutdown == False
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Health check failed: {str(e)}")
+
+
+@app.get("/api/v1/test/thread-pool")
+async def test_thread_pool():
+    """Test endpoint to verify thread pool is working (for debugging)"""
+    try:
+        if not hasattr(app.state, 'thread_pool'):
+            return {"status": "error", "message": "Thread pool not initialized"}
+        
+        # Test running a simple function in the thread pool
+        loop = asyncio.get_event_loop()
+        
+        def test_function():
+            import time
+            time.sleep(2)  # Simulate some work
+            return "Thread pool test completed successfully"
+        
+        result = await loop.run_in_executor(app.state.thread_pool, test_function)
+        
+        return {
+            "status": "success",
+            "message": "Thread pool is working correctly",
+            "result": result,
+            "timestamp": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": f"Thread pool test failed: {str(e)}",
+            "timestamp": datetime.now().isoformat()
+        }
 
 
 # Authentication endpoints
@@ -388,7 +437,7 @@ async def generate_campaign_background(campaign_id: str, campaign_brief: Campaig
     """
     Background task for campaign generation.
     
-    This function runs the complete workflow and updates the campaign results.
+    This function runs the complete workflow in a separate thread to avoid blocking the main event loop.
     """
     start_time = datetime.now()
     
@@ -409,17 +458,21 @@ async def generate_campaign_background(campaign_id: str, campaign_brief: Campaig
             "workflow_start_time": datetime.now().timestamp()
         }
         
-        # Run workflow
+        # Run workflow in a separate thread to avoid blocking the main event loop
         from langgraph.checkpoint.memory import MemorySaver
         memory = MemorySaver()
         workflow_with_memory = app.state.workflow.compile(checkpointer=memory)
         
         print(f"🚀 Starting campaign generation for {campaign_id} by user {username}")
         
-        # Execute workflow
-        result = workflow_with_memory.invoke(
-            initial_state,
-            config={"thread_id": campaign_id, "recursion_limit": 250}
+        # Execute workflow in a separate thread using ThreadPoolExecutor
+        loop = asyncio.get_event_loop()
+        result = await loop.run_in_executor(
+            app.state.thread_pool,
+            lambda: workflow_with_memory.invoke(
+                initial_state,
+                config={"thread_id": campaign_id, "recursion_limit": 250}
+            )
         )
         
         # Calculate execution time
@@ -427,7 +480,11 @@ async def generate_campaign_background(campaign_id: str, campaign_brief: Campaig
         
         # Generate outputs
         website_filename = f"{campaign_id}_campaign_website.html"
-        create_campaign_website(result, website_filename)
+        try:
+            create_campaign_website(result, website_filename)
+            print(f"🌐 Website generated: {website_filename}")
+        except Exception as e:
+            print(f"⚠️ Warning: Failed to create website: {e}")
         
         # Update campaign results
         campaign_results[campaign_id].update({
@@ -459,6 +516,11 @@ async def generate_campaign_background(campaign_id: str, campaign_brief: Campaig
             "failed_at": datetime.now().isoformat()
         })
         campaign_status[campaign_id] = "failed"
+        
+        # Log additional context for debugging
+        print(f"📋 Campaign brief: {campaign_brief.dict()}")
+        print(f"👤 User: {username}")
+        print(f"🆔 Campaign ID: {campaign_id}")
 
 
 @app.get("/api/v1/campaigns/{campaign_id}", response_model=CampaignResponse)
@@ -504,6 +566,40 @@ async def get_campaign_status(campaign_id: str, current_user: User = Depends(get
         progress=progress,
         estimated_completion=None
     )
+
+
+@app.get("/api/v1/campaigns/progress")
+async def get_all_campaigns_progress(current_user: User = Depends(get_current_active_user)):
+    """Get progress of all campaigns for the current user (non-blocking)"""
+    user_campaigns = []
+    
+    for campaign_id, result in campaign_results.items():
+        # Filter campaigns based on user role
+        if current_user.role == "admin" or result.get("created_by") == current_user.username:
+            campaign_info = {
+                "campaign_id": campaign_id,
+                "status": result.get("status", "unknown"),
+                "created_at": result.get("created_at"),
+                "progress": {
+                    "artifacts_generated": len(result.get("artifacts", {})),
+                    "revision_count": result.get("revision_count", 0),
+                    "execution_time": result.get("execution_time", 0)
+                }
+            }
+            
+            if result.get("status") == "completed":
+                campaign_info["completed_at"] = result.get("completed_at")
+                campaign_info["quality_score"] = result.get("quality_score")
+            
+            user_campaigns.append(campaign_info)
+    
+    return {
+        "campaigns": user_campaigns,
+        "total": len(user_campaigns),
+        "completed": len([c for c in user_campaigns if c["status"] == "completed"]),
+        "running": len([c for c in user_campaigns if c["status"] == "running"]),
+        "failed": len([c for c in user_campaigns if c["status"] == "failed"])
+    }
 
 
 @app.get("/api/v1/campaigns/{campaign_id}/website")
