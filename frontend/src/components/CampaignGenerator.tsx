@@ -94,9 +94,12 @@ export const CampaignGenerator = () => {
   const [showGoalsModal, setShowGoalsModal] = useState(false);
   const [showFeaturesModal, setShowFeaturesModal] = useState(false);
   const [showAudienceModal, setShowAudienceModal] = useState(false);
+  const [showJsonModal, setShowJsonModal] = useState(false);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [selectedAudience, setSelectedAudience] = useState<string[]>([]);
+  const [jsonInput, setJsonInput] = useState('');
+  const [jsonError, setJsonError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -188,6 +191,89 @@ export const CampaignGenerator = () => {
     }
   };
 
+  const importFromJson = () => {
+    try {
+      setJsonError('');
+      const parsedData = JSON.parse(jsonInput);
+      
+      // Validate required fields
+      if (!parsedData.product || !parsedData.client || !parsedData.target_audience) {
+        setJsonError('Missing required fields: product, client, and target_audience are required');
+        return;
+      }
+
+      // Update the form with imported data
+      setBrief({
+        campaign_name: parsedData.campaign_name || '',
+        product: parsedData.product || '',
+        client: parsedData.client || '',
+        client_website: parsedData.client_website || '',
+        client_logo: parsedData.client_logo || '',
+        color_scheme: parsedData.color_scheme || 'professional',
+        target_audience: parsedData.target_audience || '',
+        goals: Array.isArray(parsedData.goals) && parsedData.goals.length > 0 
+          ? parsedData.goals 
+          : [''],
+        key_features: Array.isArray(parsedData.key_features) && parsedData.key_features.length > 0 
+          ? parsedData.key_features 
+          : [''],
+        budget: parsedData.budget || '$5,000',
+        timeline: parsedData.timeline || '3 months',
+        additional_requirements: parsedData.additional_requirements || ''
+      });
+
+      // Update selected arrays for modals
+      if (Array.isArray(parsedData.goals)) {
+        setSelectedGoals(parsedData.goals);
+      }
+      if (Array.isArray(parsedData.key_features)) {
+        setSelectedFeatures(parsedData.key_features);
+      }
+      if (parsedData.target_audience) {
+        setSelectedAudience([parsedData.target_audience]);
+      }
+
+      // Close modal and show success
+      setShowJsonModal(false);
+      setJsonInput('');
+      
+      // Show success message (you can add a toast notification here)
+      console.log('Campaign data imported successfully from JSON');
+      
+    } catch (error) {
+      setJsonError('Invalid JSON format. Please check your JSON syntax.');
+      console.error('JSON import error:', error);
+    }
+  };
+
+  const loadSampleJson = () => {
+    const sampleJson = {
+      "product": "Cit-E Cycles e-Bikes – featured Moustache Dimanche 29 Gravel 2 EQ & 4 EQ",
+      "client": "Cit-E Cycles",
+      "client_website": "https://www.citecycles.com/",
+      "client_logo": "[to be provided by client]",
+      "color_scheme": "professional",
+      "target_audience": "Outdoor enthusiasts and urban commuters in British Columbia seeking high-quality, electric-powered cycling solutions",
+      "goals": [
+        "Raise awareness of Cit-E Cycles as Canada's premier e-bike retailer",
+        "Promote the 2025 Moustache Dimanche 29 Gravel line (2 EQ & 4 EQ)",
+        "Drive foot traffic and test rides at BC showroom locations",
+        "Establish Cit-E Cycles as a trusted expert in e-bike service and support"
+      ],
+      "key_features": [
+        "Extensive e-bike selection—20+ brands, 300+ models",
+        "Top-tier Gravel models priced at CA$5,899 and CA$7,499",
+        "Exceptional customer service backed by 100+ years of experience",
+        "Multiple convenient locations across BC"
+      ],
+      "budget": "$5,000",
+      "timeline": "3 months",
+      "additional_requirements": "In-store test-ride events; QR codes linking to booking page; highlight accessible service and financing options"
+    };
+    
+    setJsonInput(JSON.stringify(sampleJson, null, 2));
+  };
+
   return (
     <div className="min-h-screen bg-[var(--mm-gray-50)] p-6">
       <div className="max-w-4xl mx-auto">
@@ -200,9 +286,19 @@ export const CampaignGenerator = () => {
                 </svg>
               </div>
               <h1 className="text-3xl font-bold text-[var(--mm-gray-900)]">Campaign Generator</h1>
-              <p className="text-[var(--mm-gray-600)]">
+              <p className="text-[var(--mm-gray-600)] mb-4">
                 Create a comprehensive marketing campaign using our advanced AI agents
               </p>
+              <button
+                type="button"
+                onClick={() => setShowJsonModal(true)}
+                className="btn btn-mm-secondary btn-sm"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                </svg>
+                Import from JSON
+              </button>
             </div>
             
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -718,6 +814,89 @@ export const CampaignGenerator = () => {
                 onClick={applySelectedAudience}
               >
                 Apply Selected Audience
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* JSON Import Modal */}
+      {showJsonModal && (
+        <div className="modal modal-open">
+          <div className="modal-box max-w-6xl">
+            <h3 className="font-bold text-lg text-[var(--mm-gray-900)] mb-4">Import Campaign from JSON</h3>
+            
+            <div className="mb-4">
+              <div className="flex justify-between items-center mb-2">
+                <label className="label">
+                  <span className="label-text font-medium text-[var(--mm-gray-700)]">Paste your JSON campaign data:</span>
+                </label>
+                <button
+                  type="button"
+                  onClick={loadSampleJson}
+                  className="btn btn-sm btn-mm-secondary"
+                >
+                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Load Sample
+                </button>
+              </div>
+              <textarea
+                className="textarea textarea-mm w-full h-96 font-mono text-sm"
+                placeholder="Paste your JSON campaign data here..."
+                value={jsonInput}
+                onChange={(e) => setJsonInput(e.target.value)}
+              />
+              {jsonError && (
+                <div className="alert alert-error mt-2">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span>{jsonError}</span>
+                </div>
+              )}
+            </div>
+
+            <div className="mb-4">
+              <div className="alert alert-info">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <h4 className="font-bold">JSON Format Requirements:</h4>
+                  <ul className="text-sm mt-1">
+                    <li><strong>Required fields:</strong> product, client, target_audience</li>
+                    <li><strong>Optional fields:</strong> campaign_name, client_website, client_logo, color_scheme, goals, key_features, budget, timeline, additional_requirements</li>
+                    <li><strong>Arrays:</strong> goals and key_features should be arrays of strings</li>
+                    <li><strong>Format:</strong> Valid JSON with proper quotes and commas</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="modal-action">
+              <button
+                type="button"
+                className="btn btn-mm-secondary"
+                onClick={() => {
+                  setShowJsonModal(false);
+                  setJsonInput('');
+                  setJsonError('');
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn-mm-primary"
+                onClick={importFromJson}
+                disabled={!jsonInput.trim()}
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+                Import Campaign
               </button>
             </div>
           </div>
