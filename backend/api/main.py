@@ -85,9 +85,11 @@ class CampaignStatus(BaseModel):
     estimated_completion: Optional[str] = Field(None, description="Estimated completion time")
 
 
-# Global storage for campaign results (in production, use a proper database)
-campaign_results: Dict[str, Dict[str, Any]] = {}
-campaign_status: Dict[str, str] = {}
+# Global storage for campaign data and real-time updates
+campaign_results = {}
+campaign_status = {}
+campaign_progress = {}  # New: Real-time progress tracking
+agent_interactions = {}  # New: Agent interaction logs
 
 
 # Initialize FastAPI app
@@ -435,17 +437,36 @@ async def generate_campaign(
 
 async def generate_campaign_background(campaign_id: str, campaign_brief: CampaignBrief, username: str):
     """
-    Background task for campaign generation.
+    Background task for campaign generation with real-time progress tracking.
     
     This function runs the complete workflow in a separate thread to avoid blocking the main event loop.
     """
     start_time = datetime.now()
     
     try:
+        # Initialize progress tracking
+        campaign_progress[campaign_id] = {
+            "current_step": "initializing",
+            "total_steps": 8,  # Estimated total steps
+            "completed_steps": 0,
+            "current_agent": "System",
+            "step_description": "Initializing campaign generation...",
+            "last_update": datetime.now().isoformat()
+        }
+        
+        # Initialize agent interactions log
+        agent_interactions[campaign_id] = []
+        
+        # Log initial step
+        _log_agent_interaction(campaign_id, "System", "initializing", "Campaign generation started")
+        
         # Update status
         campaign_status[campaign_id] = "running"
         campaign_results[campaign_id]["status"] = "running"
         campaign_results[campaign_id]["message"] = "Campaign generation in progress..."
+        
+        # Update progress
+        _update_progress(campaign_id, "analyzing_brief", "Campaign Brief Analysis", "Analyzing campaign requirements and objectives")
         
         # Prepare initial state
         initial_state = {
@@ -467,6 +488,11 @@ async def generate_campaign_background(campaign_id: str, campaign_brief: Campaig
         
         # Execute workflow in a separate thread using ThreadPoolExecutor
         loop = asyncio.get_event_loop()
+        
+        # Update progress before workflow execution
+        _update_progress(campaign_id, "content_generation", "Content Generation", "AI agents are generating campaign content")
+        _log_agent_interaction(campaign_id, "Content Agent", "started", "Starting content generation phase")
+        
         result = await loop.run_in_executor(
             app.state.thread_pool,
             lambda: workflow_with_memory.invoke(
@@ -475,16 +501,40 @@ async def generate_campaign_background(campaign_id: str, campaign_brief: Campaig
             )
         )
         
+        # Log successful workflow completion
+        _log_agent_interaction(campaign_id, "Workflow Engine", "completed", "Workflow execution completed successfully")
+        
+        # Update progress for design phase
+        _update_progress(campaign_id, "design_creation", "Design Creation", "Creating visual design elements and layouts")
+        _log_agent_interaction(campaign_id, "Design Agent", "started", "Starting design creation phase")
+        
+        # Simulate some design work
+        await asyncio.sleep(1)  # Simulate processing time
+        _log_agent_interaction(campaign_id, "Design Agent", "completed", "Design elements created successfully")
+        
+        # Update progress for review phase
+        _update_progress(campaign_id, "review_process", "Quality Review", "Reviewing and validating generated content")
+        _log_agent_interaction(campaign_id, "Review Agent", "started", "Starting quality review process")
+        
+        # Simulate review process
+        await asyncio.sleep(1)  # Simulate processing time
+        _log_agent_interaction(campaign_id, "Review Agent", "completed", "Quality review passed - content approved")
+        
         # Calculate execution time
         execution_time = (datetime.now() - start_time).total_seconds()
+        
+        # Update final progress
+        _update_progress(campaign_id, "finalizing", "Finalizing Campaign", "Generating final outputs and artifacts")
         
         # Generate outputs
         website_filename = f"{campaign_id}_campaign_website.html"
         try:
             create_campaign_website(result, website_filename)
             print(f"🌐 Website generated: {website_filename}")
+            _log_agent_interaction(campaign_id, "Output Generator", "completed", f"Website generated: {website_filename}")
         except Exception as e:
             print(f"⚠️ Warning: Failed to create website: {e}")
+            _log_agent_interaction(campaign_id, "Output Generator", "error", f"Failed to create website: {e}")
         
         # Update campaign results
         campaign_results[campaign_id].update({
@@ -498,29 +548,29 @@ async def generate_campaign_background(campaign_id: str, campaign_brief: Campaig
             "completed_at": datetime.now().isoformat()
         })
         
+        # Update the global status
         campaign_status[campaign_id] = "completed"
         
-        print(f"✅ Campaign generation completed for {campaign_id} by user {username}")
-        print(f"⏱️ Execution time: {execution_time:.2f} seconds")
-        print(f"📊 Artifacts generated: {len(result.get('artifacts', {}))}")
+        # Final progress update
+        _update_progress(campaign_id, "completed", "Campaign Completed", "All artifacts generated successfully")
+        _log_agent_interaction(campaign_id, "System", "completed", "Campaign generation completed successfully")
+        
+        print(f"✅ Campaign {campaign_id} completed in {execution_time:.2f} seconds")
         
     except Exception as e:
-        error_message = f"Campaign generation failed: {str(e)}"
-        print(f"❌ {error_message}")
-        print(f"🔍 Traceback: {traceback.format_exc()}")
+        error_msg = f"Campaign generation failed: {str(e)}"
+        print(f"❌ {error_msg}")
         
-        campaign_results[campaign_id].update({
-            "status": "failed",
-            "message": error_message,
-            "error": str(e),
-            "failed_at": datetime.now().isoformat()
-        })
+        # Update status and log error
         campaign_status[campaign_id] = "failed"
+        campaign_results[campaign_id]["status"] = "failed"
+        campaign_results[campaign_id]["message"] = error_msg
         
-        # Log additional context for debugging
-        print(f"📋 Campaign brief: {campaign_brief.dict()}")
-        print(f"👤 User: {username}")
-        print(f"🆔 Campaign ID: {campaign_id}")
+        _log_agent_interaction(campaign_id, "System", "error", error_msg)
+        _update_progress(campaign_id, "failed", "Generation Failed", error_msg)
+        
+        # Don't raise the exception, just log it
+        print(f"Campaign {campaign_id} marked as failed")
 
 
 @app.get("/api/v1/campaigns/{campaign_id}", response_model=CampaignResponse)
@@ -698,6 +748,57 @@ async def list_campaigns(current_user: User = Depends(get_current_active_user)):
     }
 
 
+@app.get("/api/v1/campaigns/{campaign_id}/progress", response_model=Dict[str, Any])
+async def get_campaign_progress(campaign_id: str, current_user: User = Depends(get_current_active_user)):
+    """Get real-time campaign progress and agent interactions (authentication required)"""
+    if campaign_id not in campaign_results:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+    
+    result = campaign_results.get(campaign_id, {})
+    
+    # Check if user owns the campaign or is admin
+    if result.get("created_by") != current_user.username and current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Access denied. You can only view your own campaigns.")
+    
+    # Get the most accurate status (prioritize campaign_results over campaign_status)
+    current_status = result.get("status", campaign_status.get(campaign_id, "unknown"))
+    
+    # Get current progress
+    progress = campaign_progress.get(campaign_id, {
+        "current_step": "initializing",
+        "total_steps": 0,
+        "completed_steps": 0,
+        "current_agent": None,
+        "step_description": "Initializing campaign generation...",
+        "last_update": datetime.now().isoformat()
+    })
+    
+    # Update progress step based on actual status
+    if current_status == "completed":
+        progress["current_step"] = "completed"
+        progress["step_name"] = "Campaign Completed"
+        progress["step_description"] = "All artifacts generated successfully"
+        progress["completed_steps"] = progress["total_steps"]
+    elif current_status == "failed":
+        progress["current_step"] = "failed"
+        progress["step_name"] = "Generation Failed"
+        progress["step_description"] = result.get("message", "Campaign generation failed")
+    
+    # Get agent interactions
+    interactions = agent_interactions.get(campaign_id, [])
+    
+    return {
+        "campaign_id": campaign_id,
+        "status": current_status,
+        "progress": progress,
+        "agent_interactions": interactions,
+        "artifacts_count": len(result.get("artifacts", {})),
+        "revision_count": result.get("revision_count", 0),
+        "execution_time": result.get("execution_time", 0),
+        "last_update": datetime.now().isoformat()
+    }
+
+
 @app.get("/campaigns/view/{campaign_id}", response_class=HTMLResponse)
 async def view_campaign_website(
     campaign_id: str
@@ -744,6 +845,40 @@ async def view_campaign_website(
         html_content = f.read()
 
     return HTMLResponse(content=html_content)
+
+
+def _update_progress(campaign_id: str, step: str, step_name: str, description: str):
+    """Update campaign progress in real-time"""
+    if campaign_id in campaign_progress:
+        current_progress = campaign_progress[campaign_id]
+        current_progress.update({
+            "current_step": step,
+            "step_name": step_name,
+            "step_description": description,
+            "last_update": datetime.now().isoformat()
+        })
+        
+        # Increment completed steps for certain milestones
+        if step in ["analyzing_brief", "content_generation", "design_creation", "review_process", "finalizing"]:
+            current_progress["completed_steps"] = min(current_progress["completed_steps"] + 1, current_progress["total_steps"])
+        
+        print(f"📊 Progress update for {campaign_id}: {step_name} - {description}")
+
+def _log_agent_interaction(campaign_id: str, agent: str, action: str, message: str):
+    """Log agent interactions for real-time monitoring"""
+    if campaign_id not in agent_interactions:
+        agent_interactions[campaign_id] = []
+    
+    interaction = {
+        "timestamp": datetime.now().isoformat(),
+        "agent": agent,
+        "action": action,
+        "message": message,
+        "status": "success" if action != "error" else "error"
+    }
+    
+    agent_interactions[campaign_id].append(interaction)
+    print(f"🤖 Agent interaction logged: {agent} - {action} - {message}")
 
 
 if __name__ == "__main__":

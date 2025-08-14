@@ -127,6 +127,11 @@ class ApiClient {
     return this.request<CampaignStatus>(`/api/v1/campaigns/${campaignId}/status`);
   }
 
+  // New: Get real-time campaign progress and agent interactions
+  async getCampaignProgress(campaignId: string): Promise<any> {
+    return this.request<any>(`/api/v1/campaigns/${campaignId}/progress`);
+  }
+
   async listCampaigns(): Promise<CampaignListResponse> {
     return this.request<CampaignListResponse>('/api/v1/campaigns');
   }

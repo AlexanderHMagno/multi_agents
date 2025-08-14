@@ -248,10 +248,11 @@ export const CampaignGenerator = () => {
 
   const loadSampleJson = () => {
     const sampleJson = {
+      "campaign_name": "Cit-E Cycles 2025 Gravel Campaign",
       "product": "Cit-E Cycles e-Bikes – featured Moustache Dimanche 29 Gravel 2 EQ & 4 EQ",
       "client": "Cit-E Cycles",
       "client_website": "https://www.citecycles.com/",
-      "client_logo": "[to be provided by client]",
+      "client_logo": "",
       "color_scheme": "professional",
       "target_audience": "Outdoor enthusiasts and urban commuters in British Columbia seeking high-quality, electric-powered cycling solutions",
       "goals": [
