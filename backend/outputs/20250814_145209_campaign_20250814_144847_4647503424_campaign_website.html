@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cit-E Cycles 2025 Gravel Campaign Presentation</title>
+    <meta name="description" content="Comprehensive presentation of the Cit-E Cycles 2025 Gravel Campaign, focusing on the Moustache Dimanche 29 Gravel line.">
+    <meta name="keywords" content="Cit-E Cycles, Moustache Dimanche 29 Gravel, e-bike campaign, British Columbia cycling, gravel biking, e-bike marketing, digital campaign, campaign presentation">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --accent-color: #28a745;
+            --background-color: #f8f9fa;
+            --card-background: #ffffff;
+            --text-color: #333;
+            --heading-color: #212529;
+            --gradient-start: #007bff;
+            --gradient-end: #0056b3;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --hover-shadow: rgba(0, 0, 0, 0.2);
+            --border-radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--heading-color);
+            margin-bottom: 1rem;
+        }
+
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; margin-top: 2rem; border-bottom: 2px solid var(--primary-color); padding-bottom: 0.5rem;}
+        h3 { font-size: 1.5rem; margin-top: 1.5rem; }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--gradient-end);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Dropdown Navigation */
+        .dropdown-nav {
+            background-color: var(--card-background);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #eee;
+        }
+
+        .dropdown-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .dropdown-nav .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .dropdown-nav .nav-links {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-nav .dropbtn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-nav .dropbtn:hover, .dropdown-nav .dropbtn:focus {
+            background-color: var(--gradient-end);
+        }
+
+        .dropdown-nav .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--card-background);
+            min-width: 250px;
+            box-shadow: 0 8px 16px var(--shadow-color);
+            z-index: 1;
+            border-radius: var(--border-radius);
+            margin-top: 5px;
+            right: 0; /* Align to the right */
+            max-height: 70vh; /* Limit height */
+            overflow-y: auto; /* Enable scrolling */
+        }
+
+        .dropdown-nav .dropdown-content a {
+            color: var(--text-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-nav .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown-nav .show {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://placehold.co/1920x800/007bff/ffffff?text=Hero+Background+Image'); /* Placeholder for actual background */
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 2rem auto;
+            opacity: 0.9;
+        }
+
+        .hero .cta-button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 15px 30px;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        .hero .cta-button:hover {
+            background-color: #218838;
+            transform: translateY(-3px);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 60px 0;
+        }
+
+        section:nth-child(even) {
+            background-color: var(--card-background);
+        }
+
+        section h2 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* Cards */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--hover-shadow);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 25px;
+            flex-grow: 1; /* Allows content to fill available space */
+        }
+
+        .card-content h3 {
+            margin-top: 0;
+        }
+
+        .card-content p {
+            font-size: 0.95rem;
+        }
+
+        /* Specific Section Styling */
+
+        /* Executive Summary */
+        #executive-summary .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            align-items: center;
+        }
+
+        #executive-summary .text-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        #executive-summary .image-content {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        #executive-summary .image-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        /* Strategy */
+        #strategy ul {
+            list-style: disc;
+            margin-left: 25px;
+        }
+
+        #strategy li {
+            margin-bottom: 10px;
+        }
+
+        /* Audience Analysis */
+        .persona {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .persona:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--hover-shadow);
+        }
+
+        .persona h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .persona h4 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: var(--heading-color);
+        }
+
+        /* Creative Concepts */
+        .concept-item {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            margin-bottom: 30px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr; /* Default to single column */
+            gap: 20px;
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .concept-item {
+                grid-template-columns: 1fr 1fr; /* Two columns for larger screens */
+            }
+            .concept-item.reverse {
+                grid-template-columns: 1fr 1fr;
+            }
+            .concept-item.reverse .concept-image,
+            .concept-item:not(.reverse) .concept-image {
+                order: 2; /* Image on the right for non-reversed, left for reversed */
+            }
+            .concept-item.reverse .concept-text,
+            .concept-item:not(.reverse) .concept-text {
+                order: 1;
+            }
+        }
+
+        .concept-image img {
+            width: 100%;
+            height: 350px; /* Fixed height for consistency */
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        .concept-text {
+            padding: 20px;
+        }
+
+        .concept-text h3 {
+            margin-top: 0;
+        }
+
+        /* CTA Optimization */
+        .cta-section {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 60px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.5) 0%, rgba(0, 123, 255, 0.5) 100%);
+            z-index: 0;
+        }
+
+        .cta-section .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section h2 {
+            color: white;
+            margin-bottom: 20px;
+            border-bottom: none;
+        }
+
+        .cta-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .cta-item {
+            background-color: white;
+            color: var(--primary-color);
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 2px 8px var(--shadow-color);
+            cursor: pointer; /* Indicate it's clickable */
+        }
+
+        .cta-item:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px var(--hover-shadow);
+        }
+
+        /* Media Plan */
+        .media-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 8px var(--shadow-color);
+        }
+
+        .media-item .icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            width: 50px; /* Fixed width for alignment */
+            text-align: center;
+        }
+
+        .media-item .details {
+            flex-grow: 1;
+        }
+
+        .media-item .details h4 {
+            margin-bottom: 5px;
+            font-size: 1.2rem;
+        }
+
+        .media-item .details p {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+
+        .media-item .budget {
+            font-weight: 600;
+            color: var(--accent-color);
+            font-size: 1.1rem;
+        }
+
+        /* Social Media Campaign */
+        .social-platform {
+            margin-bottom: 40px;
+            padding: 25px;
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        .social-platform h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .social-platform .content-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .social-platform .content-item {
+            border: 1px solid #eee;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            background-color: #fdfdfd;
+            box-shadow: inset 0 1px 5px rgba(0,0,0,0.05);
+        }
+
+        .social-platform .content-item p {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .social-platform .content-item .platform-tag {
+            font-size: 0.8rem;
+            color: var(--secondary-color);
+            font-style: italic;
+        }
+
+        .social-platform .hashtags, .social-platform .keywords {
+            margin-top: 15px;
+        }
+
+        .social-platform .hashtags h4, .social-platform .keywords h4 {
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .social-platform .hashtags span, .social-platform .keywords span {
+            background-color: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            display: inline-block;
+            font-size: 0.85rem;
+        }
+
+        /* Emotion Personalization */
+        .emotion-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .emotion-tab {
+            background-color: #e9ecef;
+            color: var(--text-color);
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-weight: 600;
+        }
+
+        .emotion-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .emotion-content {
+            display: none; /* Hidden by default */
+            background-color: var(--card-background);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .emotion-content.active {
+            display: block;
+        }
+
+        .emotion-content h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        .emotion-content .visual-style, .emotion-content .tone-voice, .emotion-content .cta-variations, .emotion-content .themes {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .emotion-content h4 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .emotion-content ul {
+            list-style: disc;
+            margin-left: 25px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Data Visualization - Placeholder */
+        .data-viz {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            padding: 30px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .data-viz .progress-bar-container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 25px;
+        }
+
+        .data-viz .progress-bar {
+            height: 100%;
+            background-color: var(--accent-color);
+            width: 0%; /* Animated via JS */
+            border-radius: 10px;
+            transition: width 1s ease-in-out;
+            text-align: center;
+            color: white;
+            line-height: 25px;
+            font-size: 0.9rem;
+        }
+
+        .data-viz .metric {
+            margin-bottom: 15px;
+        }
+
+        .data-viz .metric strong {
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--heading-color);
+            color: #ccc;
+            padding: 40px 0;
+            margin-top: 60px;
+            font-size: 0.9rem;
+        }
+
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        footer .footer-nav a {
+            color: #ccc;
+            margin: 0 10px;
+        }
+
+        footer .footer-nav a:hover {
+            color: white;
+        }
+
+        footer .contact-info i {
+            margin-right: 8px;
+            color: var(--accent-color);
+        }
+
+        footer .copywrite {
+            text-align: center;
+            width: 100%;
+            margin-top: 20px;
+            opacity: 0.7;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .hero h1 { font-size: 2.8rem; }
+            .hero p { font-size: 1.1rem; }
+            .dropdown-nav .container { padding: 10px 15px; }
+            .dropdown-nav .dropdown-content { min-width: 220px; }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.7rem; }
+            h3 { font-size: 1.3rem; }
+
+            .hero { padding: 80px 0; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1rem; }
+
+            section { padding: 40px 0; }
+
+            .card-container { grid-template-columns: 1fr; }
+            .concept-item { grid-template-columns: 1fr; }
+            .concept-item .concept-image, .concept-item .concept-text { order: initial !important; }
+
+            .dropdown-nav .container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .dropdown-nav .nav-links { margin-top: 10px; }
+            .dropdown-nav .dropdown-content {
+                position: static;
+                min-width: auto;
+                width: 100%;
+                margin-top: 0;
+                box-shadow: none;
+                max-height: none;
+                overflow-y: visible;
+            }
+            .dropdown-nav .dropbtn { width: 100%; }
+
+            footer .container {
+                flex-direction: column;
+                text-align: center;
+            }
+            footer .footer-nav { margin-bottom: 15px; }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 0.95rem; }
+            .hero .cta-button { padding: 12px 25px; font-size: 1rem; }
+
+            .cta-list { flex-direction: column; align-items: center; }
+            .cta-item { width: 80%; text-align: center;}
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="dropdown-nav">
+        <div class="container">
+            <div class="logo">
+                <img src="https://www.citecycles.com/cdn/shop/files/Cite_Cycles-logo_150x.png?v=1679540428" alt="Cit-E Cycles Logo">
+            </div>
+            <div class="nav-links">
+                <button class="dropbtn" onclick="toggleDropdown()">Sections <i class="fas fa-chevron-down"></i></button>
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="#executive-summary">Executive Summary</a>
+                    <a href="#campaign-strategy">Campaign Strategy</a>
+                    <a href="#audience-analysis">Audience Analysis</a>
+                    <a href="#creative-concepts">Creative Concepts</a>
+                    <a href="#copy-content">Copy & Messaging</a>
+                    <a href="#cta-optimization">CTA Optimization</a>
+                    <a href="#media-plan">Media Plan</a>
+                    <a href="#social-media-campaign">Social Media Campaign</a>
+                    <a href="#emotion-personalization">Emotion Personalization</a>
+                    <a href="#business-impact">Business Impact</a>
+                    <a href="#visual-assets">Visual Assets</a>
+                    <a href="#recommendations">Recommendations</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Cit-E Cycles 2025 Gravel Campaign</h1>
+            <p>Elevating Adventure and Expertise Across British Columbia</p>
+            <a href="#executive-summary" class="cta-button">View Campaign Overview</a>
+        </div>
+    </section>
+
+    <section id="executive-summary">
+        <div class="container">
+            <div class="text-content">
+                <h2>Executive Summary</h2>
+                <p>This 3-month, $5,000 campaign is designed to significantly elevate Cit-E Cycles' brand presence within British Columbia, positioning it as Canada's premier e-bike retailer. By strategically promoting the high-performance Moustache Dimanche 29 Gravel e-bikes, we aim to drive qualified foot traffic to Cit-E Cycles' showrooms, increase test rides, and reinforce the company's reputation as a trusted expert in e-bike sales, service, and support.</p>
+                <p><strong>Value Proposition:</strong> Cit-E Cycles offers an unparalleled selection of over 20 e-bike brands and 300+ models, backed by over 100 years of combined retail experience. This campaign leverages the premium Moustache Dimanche 29 Gravel line—priced attractively at CA$5,899 and CA$7,499—to attract discerning outdoor enthusiasts and urban commuters in BC seeking advanced electric cycling solutions.</p>
+                <p><strong>Key Objectives:</strong> Raise awareness, promote the Moustache Dimanche 29 Gravel line, drive foot traffic and test rides, and establish Cit-E Cycles as a trusted expert.</p>
+            </div>
+            <div class="image-content">
+                <img src="https://placehold.co/600x400/007bff/ffffff?text=Campaign+Hero+Visual" alt="Cit-E Cycles 2025 Gravel Campaign Hero Image">
+                <p style="font-size: 0.8rem; color: var(--secondary-color); margin-top: 10px;"><strong>Visual Insight:</strong> This image captures the essence of the campaign – adventure, quality, and the stunning BC landscape.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="campaign-strategy">
+        <div class="container">
+            <h2>Campaign Strategy</h2>
+            <p>Our strategy is built on a foundation of targeted digital marketing, compelling creative, and a focus on driving in-store experiences. We aim to connect with our audience by highlighting the joy, capability, and ease that the Moustache Dimanche 29 Gravel offers, while reinforcing Cit-E Cycles' position as the leading e-bike expert in British Columbia.</p>
+            <ul>
+                <li><strong>Strategic Pillars & Objectives:</strong> Position Cit-E Cycles as Canada's premier e-bike retailer, promote the Moustache Dimanche 29 Gravel line, drive foot traffic and test rides, and establish expertise in service and support.</li>
+                <li><strong>Targeting Strategy:</strong> Hyper-local targeting (20-30km radius of BC showrooms) combined with interest-based targeting (cycling, outdoors, urban commuting, premium goods).</li>
+                <li><strong>Messaging Strategy:</strong> Core themes include "Embrace the Adventure," "Effortless Exploration," "Expertise You Can Trust," and "Your BC Cycling Hub."</li>
+                <li><strong>Positioning Strategy:</strong> Authoritative, trusted, and premium destination for e-bike solutions in BC.</li>
+                <li><strong>Creative Development:</strong> Focus on stunning BC landscapes, dynamic riding shots, and the showroom experience.</li>
+                <li><strong>Media & Channel Strategy:</strong> Prioritize paid social media (Facebook/Instagram), paid search (Google Ads), Local SEO, and micro-influencer collaborations within a $5,000 budget.</li>
+                <li><strong>Measurement & KPIs:</strong> Track website traffic, social media engagement, test ride bookings, foot traffic, and lead generation.</li>
+                <li><strong>Additional Requirements:</strong> Implement in-store test-ride events, utilize QR codes for booking, and highlight accessible service and financing options.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="audience-analysis">
+        <div class="container">
+            <h2>Audience Analysis</h2>
+            <p>Understanding our audience is key to tailoring our message and maximizing campaign impact. We've identified three core personas:</p>
+
+            <div class="persona">
+                <h3>Persona 1: "The Weekend Warrior" - Liam</h3>
+                <h4>Demographics:</h4>
+                <p><strong>Age:</strong> 38 | <strong>Occupation:</strong> Software Engineer | <strong>Location:</strong> Vancouver, BC | <strong>Income:</strong> CA$120,000+ | <strong>Lifestyle:</strong> Active, health-conscious, time-poor.</p>
+                <h4>Psychographics:</h4>
+                <p>Values quality and performance, seeks personal challenges, interested in cycling, tech, and sustainability. Sees e-bikes as a tool to extend capabilities.</p>
+                <h4>Pain Points:</h4>
+                <p>Time constraints, physical limitations, choice paralysis, cost justification.</p>
+                <h4>Motivations:</h4>
+                <p>Explore more, enhance performance, invest in adventure, receive expert advice.</p>
+            </div>
+
+            <div class="persona">
+                <h3>Persona 2: "The Eco-Conscious Urban Explorer" - Chloe</h3>
+                <h4>Demographics:</h4>
+                <p><strong>Age:</strong> 29 | <strong>Occupation:</strong> Graphic Designer | <strong>Location:</strong> East Vancouver, BC | <strong>Income:</strong> CA$70,000 | <strong>Lifestyle:</strong> Environmentally conscious, seeks convenience and efficiency.</p>
+                <h4>Psychographics:</h4>
+                <p>Values sustainability, community, efficiency, aesthetics. Views e-bikes as a practical, eco-friendly alternative.</p>
+                <h4>Pain Points:</h4>
+                <p>Cost of car ownership, public transit limitations, physical exertion for commuting, carrying capacity.</p>
+                <h4>Motivations:</h4>
+                <p>Sustainable commuting, freedom and flexibility, health and wellness, cost savings.</p>
+            </div>
+
+            <div class="persona">
+                <h3>Persona 3: "The Seasoned Cyclist Seeking More" - David</h3>
+                <h4>Demographics:</h4>
+                <p><strong>Age:</strong> 55 | <strong>Occupation:</strong> Retired Architect | <strong>Location:</strong> Victoria, BC | <strong>Income:</strong> CA$80,000+ | <strong>Lifestyle:</strong> Active retirement, values comfort and technology.</p>
+                <h4>Psychographics:</h4>
+                <p>Enjoys cycling but notices age-related stamina decline. Values comfort, reliability, and advanced technology. Sees e-bikes as a way to maintain his passion.</p>
+                <h4>Pain Points:</h4>
+                <p>Age-related physical changes, fear of being left behind, desire for extended range.</p>
+                <h4>Motivations:</h4>
+                <p>Maintain cycling lifestyle, explore further, ride with companions, comfort and enjoyment.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="creative-concepts">
+        <div class="container">
+            <h2>Creative Concepts</h2>
+            <p>We've developed three distinct creative concepts to resonate with our target audience and bring the campaign to life visually and narratively.</p>
+
+            <div class="concept-item">
+                <div class="concept-image">
+                    <img src="https://placehold.co/600x350/007bff/ffffff?text=Concept+1:+Unpaved+Potential" alt="Concept 1 Visual">
+                </div>
+                <div class="concept-text">
+                    <h3>Concept 1: "Unpaved Potential"</h3>
+                    <p><strong>Theme:</strong> Focuses on the transformative power of the Moustache Dimanche 29 Gravel, enabling riders to break free from the ordinary and discover new possibilities in British Columbia's diverse landscapes. It appeals to both the outdoor enthusiast and the commuter seeking more.</p>
+                    <p><strong>Visual Direction:</strong> Cinematic shots in stunning BC environments, highlighting the bike's versatility and the rider's sense of freedom and discovery.</p>
+                    <p><strong>Messaging Focus:</strong> Adventure, exploration, freedom, discovery, versatility, escaping the ordinary.</p>
+                </div>
+            </div>
+
+            <div class="concept-item reverse">
+                <div class="concept-image">
+                    <img src="https://placehold.co/600x350/28a745/ffffff?text=Concept+2:+Effortless+Elevation" alt="Concept 2 Visual">
+                </div>
+                <div class="concept-text">
+                    <h3>Concept 2: "Effortless Elevation"</h3>
+                    <p><strong>Theme:</strong> Directly addresses the "effortless exploration" pillar, highlighting how the e-assist technology makes challenging BC terrain accessible and enjoyable. It emphasizes conquering hills and covering more ground with ease.</p>
+                    <p><strong>Visual Direction:</strong> Dynamic action shots of ascending inclines, focus on the rider's experience of ease and accomplishment, clean and modern aesthetic.</p>
+                    <p><strong>Messaging Focus:</strong> Ease, accessibility, overcoming challenges, confidence, power, enjoyment.</p>
+                </div>
+            </div>
+
+            <div class="concept-item">
+                <div class="concept-image">
+                    <img src="https://placehold.co/600x350/6c757d/ffffff?text=Concept+3:+Your+BC+Cycling+Hub" alt="Concept 3 Visual">
+                </div>
+                <div class="concept-text">
+                    <h3>Concept 3: "Your BC Cycling Hub"</h3>
+                    <p><strong>Theme:</strong> Positions Cit-E Cycles as the ultimate destination for all e-bike needs in BC, emphasizing their extensive selection, expert knowledge, and trusted service, with the Moustache Dimanche 29 Gravel as the star attraction.</p>
+                    <p><strong>Visual Direction:</strong> Showroom-centric, highlighting friendly staff interactions, showcasing the breadth of selection, and creating a community feel.</p>
+                    <p><strong>Messaging Focus:</strong> Expertise, selection, trust, service, customer experience, premium destination, community.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="copy-content">
+        <div class="container">
+            <h2>Copy & Messaging</h2>
+            <p>Our copy is crafted to resonate with specific emotional triggers and audience motivations, ensuring each message is persuasive and on-brand.</p>
+
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-content">
+                        <h3>Concept 1: "Unpaved Potential"</h3>
+                        <p><strong>Headline Example:</strong> "Unpaved Potential. Unleash Yours."</p>
+                        <p><strong>Body Example:</strong> "Tired of the same old routes? Break free from the pavement and discover the breathtaking beauty of British Columbia with the Moustache Dimanche 29 Gravel. Effortlessly glide over gravel, forest paths, and coastal trails."</p>
+                        <p><strong>CTA:</strong> "Book Your Test Ride and Unleash Your Potential."</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3>Concept 2: "Effortless Elevation"</h3>
+                        <p><strong>Headline Example:</strong> "Effortless Elevation. More Miles. More Smiles."</p>
+                        <p><strong>Body Example:</strong> "Conquer BC's stunning climbs without the struggle. The Moustache Dimanche 29 Gravel, with its intuitive e-assist, makes every ascent a joy, not a challenge. Explore further, ride longer, and rediscover the exhilaration of cycling."</p>
+                        <p><strong>CTA:</strong> "Find Your Effortless Ride. Visit a Cit-E Cycles Showroom."</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3>Concept 3: "Your BC Cycling Hub"</h3>
+                        <p><strong>Headline Example:</strong> "Your BC Cycling Hub. Where Adventure Meets Expertise."</p>
+                        <p><strong>Body Example:</strong> "Ready to elevate your ride? At Cit-E Cycles, we’re your premier destination for all things e-bike. Explore Canada's widest selection, including the capable Moustache Dimanche 29 Gravel. Our passionate experts provide unparalleled service and support."</p>
+                        <p><strong>CTA:</strong> "Find Your Perfect E-bike. Visit Cit-E Cycles. Book a Test Ride Today."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cta-optimization">
+        <div class="cta-section">
+            <div class="container">
+                <h2>CTA Optimization</h2>
+                <p>We employ clear, benefit-driven Calls-to-Action designed to drive specific user behaviors and achieve campaign goals.</p>
+                <div class="cta-list">
+                    <span class="cta-item">Book Your Test Ride & Conquer BC's Trails</span>
+                    <span class="cta-item">Discover Effortless Exploration: Test Ride Today!</span>
+                    <span class="cta-item">Visit Your Local Cit-E Cycles: Your E-bike Experts</span>
+                    <span class="cta-item">Find Your Perfect Gravel E-bike: Explore the Moustache Line</span>
+                    <span class="cta-item">Upgrade Your Ride: Test Ride the Moustache Dimanche 29</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="media-plan">
+        <div class="container">
+            <h2>Media Plan</h2>
+            <p>Our $5,000 budget is strategically allocated across high-impact digital channels to maximize reach and conversion for the Cit-E Cycles 2025 Gravel Campaign.</p>
+
+            <div class="media-item">
+                <div class="icon"><i class="fab fa-instagram"></i></div>
+                <div class="details">
+                    <h4>Paid Social Media (Instagram & Facebook)</h4>
+                    <p>Targeted ads showcasing lifestyle, product features, and events. Visual storytelling with high engagement potential.</p>
+                </div>
+                <div class="budget">$2,500 (50%)</div>
+            </div>
+
+            <div class="media-item">
+                <div class="icon"><i class="fab fa-google"></i></div>
+                <div class="details">
+                    <h4>Paid Search (Google Ads)</h4>
+                    <p>Capture high-intent users searching for e-bikes and local dealers. Drive qualified traffic and foot traffic.</p>
+                </div>
+                <div class="budget">$1,500 (30%)</div>
+            </div>
+
+            <div class="media-item">
+                <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="details">
+                    <h4>Local SEO & GBP Optimization</h4>
+                    <p>Ensure visibility for local searches, driving showroom visits and building trust through reviews.</p>
+                </div>
+                <div class="budget">$500 (10%)</div>
+            </div>
+
+            <div class="media-item">
+                <div class="icon"><i class="fas fa-users"></i></div>
+                <div class="details">
+                    <h4>Micro-Influencer Collaboration</h4>
+                    <p>Leverage local BC influencers for authentic endorsements and content creation.</p>
+                </div>
+                <div class="budget">$500 (10%)</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="social-media-campaign">
+        <div class="container">
+            <h2>Social Media Campaign</h2>
+            <p>Our social media strategy focuses on engaging content tailored for TikTok and Instagram, building community, and driving direct action.</p>
+
+            <div class="social-platform">
+                <h3>TikTok Strategy</h3>
+                <p><strong>Focus:</strong> Short-form, trend-driven, experiential content. Emphasis on fun, adventure, and authenticity.</p>
+                <div class="content-examples">
+                    <div class="content-item">
+                        <p><strong>Content:</strong> "POV: You upgraded your commute with the Moustache Dimanche 29 Gravel."</p>
+                        <p class="platform-tag">#EbikeCommute #POV #VancouverCycling</p>
+                    </div>
+                    <div class="content-item">
+                        <p><strong>Content:</strong> Quick cuts of the bike exploring scenic BC trails with trending audio.</p>
+                        <p class="platform-tag">#GravelAdventures #ExploreBC #MoustacheBikes</p>
+                    </div>
+                    <div class="content-item">
+                        <p><strong>Content:</strong> "Test Ride Reactions: First time on the Moustache Dimanche 29!"</p>
+                        <p class="platform-tag">#EbikeLife #TestRide #CitEcycles</p>
+                    </div>
+                </div>
+                <div class="hashtags">
+                    <h4>Key Hashtags:</h4>
+                    <span>#CiteCycles</span> <span>#MoustacheBikes</span> <span>#Dimanche29Gravel</span> <span>#BCycling</span> <span>#EbikeLife</span> <span>#GravelBike</span> <span>#TikTokCycling</span>
+                </div>
+            </div>
+
+            <div class="social-platform">
+                <h3>Instagram Strategy</h3>
+                <p><strong>Focus:</strong> High-quality visuals, storytelling, community building. Mix of Reels, Feed posts, and Stories.</p>
+                <div class="content-examples">
+                    <div class="content-item">
+                        <p><strong>Content:</strong> Stunning Feed photo of the Moustache Dimanche 29 Gravel in a coastal BC setting.</p>
+                        <p class="platform-tag">#BCcycling #GravelAdventures #MoustacheDimanche29</p>
+                    </div>
+                    <div class="content-item">
+                        <p><strong>Content:</strong> Reel showcasing the bike's effortless climbing capability on a mountain trail.</p>
+                        <p class="platform-tag">#EbikeAdventure #EffortlessElevation #CitEcycles</p>
+                    </div>
+                    <div class="content-item">
+                        <p><strong>Content:</strong> Story poll: "What's your favorite BC trail for gravel biking?" + Link sticker to test ride booking.</p>
+                        <p class="platform-tag">#ExploreBC #CyclingCommunity</p>
+                    </div>
+                </div>
+                <div class="hashtags">
+                    <h4>Key Hashtags:</h4>
+                    <span>#CiteCycles</span> <span>#MoustacheBikes</span> <span>#Dimanche29Gravel</span> <span>#BCycling</span> <span>#EbikeLife</span> <span>#GravelBike</span> <span>#VancouverCycling</span> <span>#ExploreBC</span>
+                </div>
+                <div class="themes">
+                    <h4>Content Themes:</h4>
+                    <p>Adventure highlights, product features, showroom experience, customer spotlights, event promotions, Q&As, UGC features.</p>
+                </div>
+            </div>
+
+            <div class="social-platform">
+                <h3>User-Generated Content (UGC) & Influencer Strategy</h3>
+                <p><strong>UGC Campaign:</strong> Encourage users to share rides with #MyCiteCyclesAdventure for a chance to be featured. Builds social proof and authentic content.</p>
+                <p><strong>Influencer Collabs:</strong> Partner with BC-based micro-influencers for authentic reviews and promotions, focusing on their experience with the Moustache Dimanche 29 Gravel.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="emotion-personalization">
+        <div class="container">
+            <h2>Emotion Personalization</h2>
+            <p>We tailor our messaging to connect with our audience on a deeper, emotional level, ensuring relevance and impact.</p>
+
+            <div class="emotion-tabs">
+                <span class="emotion-tab active" data-emotion="happy">Happy</span>
+                <span class="emotion-tab" data-emotion="excited">Excited</span>
+                <span class="emotion-tab" data-emotion="calm">Calm</span>
+                <span class="emotion-tab" data-emotion="anxious">Anxious</span>
+                <span class="emotion-tab" data-emotion="confident">Confident</span>
+                <span class="emotion-tab" data-emotion="curious">Curious</span>
+                <span class="emotion-tab" data-emotion="sad">Sad</span>
+                <span class="emotion-tab" data-emotion="angry">Angry</span>
+                <span class="emotion-tab" data-emotion="scared">Scared</span>
+                <span class="emotion-tab" data-emotion="disgusted">Disgusted</span>
+                <span class="emotion-tab" data-emotion="surprised">Surprised</span>
+                <span class="emotion-tab" data-emotion="loved">Loved</span>
+                <span class="emotion-tab" data-emotion="jealous">Jealous</span>
+            </div>
+
+            <div id="emotion-content-happy" class="emotion-content active">
+                <h3>Happy</h3>
+                <p><strong>Headline:</strong> Your BC Adventures Just Got Brighter!</p>
+                <p><strong>Body Copy:</strong> Feel the sunshine on your face and the breeze in your hair as you conquer BC's stunning landscapes with the Moustache Dimanche 29 Gravel! It's not just a bike, it's your ticket to endless smiles and unforgettable memories. Get ready for more joy, more exploration, and more "wow" moments!</p>
+                <div class="visual-style">
+                    <h4>Visual Style:</h4>
+                    <p>Bright, sunny photos/videos of smiling riders in scenic BC locations. Vibrant colors, golden hour lighting.</p>
+                </div>
+                <div class="tone-voice">
+                    <h4>Tone & Voice:</h4>
+                    <p>Upbeat, cheerful, enthusiastic, friendly, celebratory. Use of emojis like 😊, 🎉, ☀️.</p>
+                </div>
+                <div class="cta-variations">
+                    <h4>CTA Variations:</h4>
+                    <p>"Find Your Happy Place. Test Ride Today!"</p>
+                    <p>"Pedal into Happiness! Book Your Moustache Adventure."</p>
+                </div>
+                <div class="themes">
+                    <h4>Content Themes:</h4>
+                    <p>Joy of discovery, freedom, creating memories, simple pleasures.</p>
+                </div>
+            </div>
+
+            <div id="emotion-content-excited" class="emotion-content">
+                <h3>Excited</h3>
+                <p><strong>Headline:</strong> Get Ready to EXPLORE BC Like Never Before!</p>
+                <p><strong>Body Copy:</strong> Amp up your adventures! ⚡️ The Moustache Dimanche 29 Gravel is your ultimate partner for exhilarating rides across British Columbia. Experience the rush of effortless speed and the thrill of conquering challenging trails. Let's GO!</p>
+                <div class="visual-style">
+                    <h4>Visual Style:</h4>
+                    <p>Dynamic action shots, fast-paced edits, focus on power and performance, bold typography.</p>
+                </div>
+                <div class="tone-voice">
+                    <h4>Tone & Voice:</h4>
+                    <p>High-energy, motivational, inspiring, action-oriented. Use of exclamation points, strong verbs.</p>
+                </div>
+                <div class="cta-variations">
+                    <h4>CTA Variations:</h4>
+                    <p>"Ignite Your Adventure! Test Ride the Moustache Dimanche 29 NOW!"</p>
+                    <p>"Get Ready! Book Your High-Energy Test Ride Today!"</p>
+                </div>
+                <div class="themes">
+                    <h4>Content Themes:</h4>
+                    <p>Adrenaline rush, empowerment, pushing boundaries, cutting-edge technology.</p>
+                </div>
+            </div>
+
+            <div id="emotion-content-calm" class="emotion-content">
+                <h3>Calm</h3>
+                <p><strong>Headline:</strong> Find Your Peace on BC's Scenic Paths.</p>
+                <p><strong>Body Copy:</strong> Breathe in the fresh BC air and let the gentle hum of the Moustache Dimanche 29 Gravel guide you. Experience the serenity of effortless cycling as you glide through peaceful landscapes. Your moment of calm awaits.</p>
+                <div class="visual-style">
+                    <h4>Visual Style:</h4>
+                    <p>Serene images in quiet natural settings, relaxed riders, soft natural lighting, minimalist aesthetic.</p>
+                </div>
+                <div class="tone-voice">
+                    <h4>Tone & Voice:</h4>
+                    <p>Soothing, tranquil, reassuring, gentle, mindful.</p>
+                </div>
+                <div class="cta-variations">
+                    <h4>CTA Variations:</h4>
+                    <p>"Ride into Serenity. Visit Cit-E Cycles Today."</p>
+                    <p>"Experience Effortless Calm. Discover the Moustache Dimanche 29."</p>
+                </div>
+                <div class="themes">
+                    <h4>Content Themes:</h4>
+                    <p>Meditative cycling, reconnecting with nature, mental well-being, personal sanctuary.</p>
+                </div>
+            </div>
+
+            <div id="emotion-content-anxious" class="emotion-content">
+                <h3>Anxious</h3>
+                <p><strong>Headline:</strong> Feeling Overwhelmed? We Make Exploring BC Effortless.</p>
+                <p><strong>Body Copy:</strong> Worried about tackling those BC hills or long distances? The Moustache Dimanche 29 Gravel, with its reliable e-assist, is designed to ease your concerns. We're here to help you find a ride that feels comfortable and empowering, every step of the way.</p>
+                <div class="visual-style">
+                    <h4>Visual Style:</h4>
+                    <p>Friendly staff assisting customers, riders looking comfortable and in control, clean showroom environments.</p>
+                </div>
+                <div class="tone-voice">
+                    <h4>Tone & Voice:</h4>
+                    <p>Reassuring, empathetic, patient, knowledgeable, supportive.</p>
+                </div>
+                <div class="cta-variations">
+                    <h4>CTA Variations:</h4>
+                    <p>"Ride with Confidence. Book Your Supportive Test Ride."</p>
+                    <p>"Ease Your Mind. Visit Cit-E Cycles for Expert Advice."</p>
+                </div>
+                <div class="themes">
+                    <h4>Content Themes:</h4>
+                    <p>Addressing e-bike anxieties, highlighting expert support, ease of use, safety.</p>
+                </div>
+            </div>
+
+            <div id="emotion-content-confident" class="emotion-content">
+                <h3>Confident</h3>
+                <p><strong>Headline:</strong> Own the Trail. Command Your Ride.</p>
+                <p><strong>Body Copy:</strong> You've got goals. The Moustache Dimanche 29 Gravel is built to help you crush them. Experience the power, precision, and performance that fuels your ambition. Conquer every climb, master every descent, and ride with unwavering confidence.</p>
+                <div class="visual-style">
+                    <h4>Visual Style:</h4>
+                    <p>Strong, dynamic shots of riders confidently navigating challenging terrain, focus on robust build and performance features.</p>
+                </div>
+                <div class="tone-voice">
+                    <h4>Tone & Voice:</h4>
+                    <p>Empowering, bold, assertive, inspiring, achievement-focused.</p>
+                </div>
+                <div class="cta-variations">
+                    <h4>CTA Variations:</h4>
+                    <p>"Unleash Your Confidence. Test Ride the Moustache Dimanche 29!"</p>
+                    <p>"Achieve Your Cycling Goals. Visit Cit-E Cycles & Get Inspired."</p>
+                </div>
+                <div class="themes">
+                    <h4>Content Themes:</h4>
+                    <p>Achieving goals, mastering challenges, performance capabilities, pushing boundaries.</p>
+                </div>
+            </div>
+
+            <div id="emotion-content-curious" class="emotion-content">
+                <h3>Curious</h3>
+                <p><strong>Headline:</strong> What Lies Beyond the Pavement? Discover BC's Secrets.</p>
+                <p><strong>Body Copy:</strong> Ever wondered what adventures await just off the beaten path? The Moustache Dimanche 29 Gravel is your key to unlocking BC's hidden trails and stunning vistas. Let your curiosity lead the way.</p>
+                <div class="visual-style">
+                    <h4>Visual Style:</h4>
+                    <p>Intriguing shots hinting at discovery, infographics explaining tech, "behind-the-scenes" looks.</p>
+                </div>
+                <div class="tone-voice">
+                    <h4>Tone & Voice:</h4>
+                    <p>Intriguing, informative, educational, inviting. Pose questions, encourage exploration.</p>
+                </div>
+                <div class="cta-variations">
+                    <h4>CTA Variations:</h4>
+                    <p>"Satisfy Your Curiosity. Book a Discovery Test Ride!"</p>
+                    <p>"Learn More. Explore the Moustache Dimanche 29 at Cit-E Cycles."</p>
+                </div>
+                <div class="themes">
+                    <h4>Content Themes:</h4>
+                    <p>E-bike technology explained, hidden BC trails, "did you know" facts, choosing the right e-bike.</p>
+                </div>
+            </div>
+
+            <div id="emotion-content-sad" class="emotion-content">
+                <h3>Sad</h3>
+                <p><strong>Headline:</strong> Rediscover Your Joy. Explore BC with Ease.</p>
+                <p><strong>Body Copy:</strong> Feeling a bit down? Sometimes, a change of scenery and a gentle push can make all the difference. The Moustache Dimanche 29 Gravel offers a smooth, supportive ride that can help you reconnect with the simple joys of movement and the beauty of BC.</p>
+                <div class="visual-style">
+                    <h4>Visual Style:</h4>
+                    <p>Softer, muted tones but still beautiful BC scenery. Riders experiencing quiet reflection, focus on supportive assistance.</p>
+                </div>
+                <div class="tone-voice">
+                    <h4>Tone & Voice:</h4>
+                    <p>Gentle, empathetic, supportive, calm, hopeful.</p>
+                </div>
+                <div class="cta-variations">
+                    <h4>CTA Variations:</h4>
+                    <p>"Find Your Uplift. Book a Gentle Test Ride."</p>
+                    <p>"Rediscover Your Spark. Visit Cit-E Cycles."</p>
+                </div>
+                <div class="themes">
+                    <h4>Content Themes:</h4>
+                    <p>Mental health benefits of cycling, making physical activity accessible, finding peace, positive experiences.</p>
+                </div>
+            </div>
+
+            <div id="emotion-content-angry" class="emotion-content">
+                <h3>Angry</h3>
+                <p><strong>Headline:</strong> Tired of Limitations? Take Control of Your Ride.</p>
+                <p><strong>Body Copy:</strong> Frustrated by hills that slow you down or trails that feel out of reach? The Moustache Dimanche 29 Gravel is engineered to overcome those obstacles. Take back your adventure and experience the power to ride where you want, when you want.</p>
+                <div class="visual-style">
+                    <h4>Visual Style:</h4>
+                    <p>Strong, determined riders tackling challenging terrain, focus on robust construction and powerful motor, dynamic visuals.</p>
+                </div>
+                <div class="tone-voice">
+                    <h4>Tone & Voice:</h4>
+                    <p>Understanding, validating frustration, empowering, solution-focused, strong.</p>
+                </div>
+                <div class="cta-variations">
+                    <h4>CTA Variations:</h4>
+                    <p>"Overcome Your Limits. Test Ride the Moustache Dimanche 29!"</p>
+                    <p>"Take Control. Visit Cit-E Cycles for a Powerful Solution."</p>
+                </div>
+                <div class="themes">
+                    <h4>Content Themes:</h4>
+                    <p>Turning frustration into motivation, overcoming obstacles with technology, satisfaction of conquering challenges.</p>
+                </div>
+            </div>
+
+            <div id="emotion-content-scared" class="emotion-content">
+                <h3>Scared</h3>
+                <p><strong>Headline:</strong> Ride with Confidence. We've Got Your Back.</p>
+                <p><strong>Body Copy:</strong> Feeling hesitant about tackling new trails or the technology of e-bikes? The Moustache Dimanche 29 Gravel offers a stable, intuitive ride with reliable support. Cit-E Cycles provides expert guidance and a safe environment to build your cycling confidence.</p>
+                <div class="visual-style">
+                    <h4>Visual Style:</h4>
+                    <p>Riders looking secure and in control, friendly staff assisting, focus on stability and ease of use.</p>
+                </div>
+                <div class="tone-voice">
+                    <h4>Tone & Voice:</h4>
+                    <p>Reassuring, protective, patient, calm, confidence-building.</p>
+                </div>
+                <div class="cta-variations">
+                    <h4>CTA Variations:</h4>
+                    <p>"Ride Securely. Book Your Confidence-Building Test Ride."</p>
+                    <p>"Feel Safe, Explore More. Visit Cit-E Cycles."</p>
+                </div>
+                <div class="themes">
+                    <h4>Content Themes:</h4>
+                    <p>Safety features, building confidence, expert guidance, ease of use.</p>
+                </div>
+            </div>
+
+            <div id="emotion-content-disgusted" class="emotion-content">
+                <h3>Disgusted</h3>
+                <p><strong>Headline:</strong> Upgrade from the Ordinary. Experience True Cycling Excellence.</p>
+                <p><strong>Body Copy:</strong> Tired of clunky, unreliable rides or routes that feel dirty and uninspiring? The Moustache Dimanche 29 Gravel offers a clean, efficient, and exhilarating way to experience BC. Embrace the freshness of a superior ride.</p>
+                <div class="visual-style">
+                    <h4>Visual Style:</h4>
+                    <p>Spotless, gleaming bikes in pristine settings, focus on sleek design and clean performance, modern appeal.</p>
+                </div>
+                <div class="tone-voice">
+                    <h4>Tone & Voice:</h4>
+                    <p>Clean, fresh, sophisticated, efficient, improvement-focused.</p>
+                </div>
+                <div class="cta-variations">
+                    <h4>CTA Variations:</h4>
+                    <p>"Refresh Your Ride. Test Ride the Moustache Dimanche 29!"</p>
+                    <p>"Experience the Clean Difference. Visit Cit-E Cycles."</p>
+                </div>
+                <div class="themes">
+                    <h4>Content Themes:</h4>
+                    <p>Efficiency and cleanliness of e-bikes, superior experience, quality and innovation.</p>
+                </div>
+            </div>
+
+            <div id="emotion-content-surprised" class="emotion-content">
+                <h3>Surprised</h3>
+                <p><strong>Headline:</strong> You Won't Believe How Easy BC's Trails Can Be!</p>
+                <p><strong>Body Copy:</strong> Prepare to be amazed! The Moustache Dimanche 29 Gravel redefines what's possible on a bike. Effortlessly conquer climbs you never thought you could, and discover trails you only dreamed of. It's a revelation!</p>
+                <div class="visual-style">
+                    <h4>Visual Style:</h4>
+                    <p>Visually striking imagery conveying wonder, "before and after" styles, bold graphics, focus on unexpected capability.</p>
+                </div>
+                <div class="tone-voice">
+                    <h4>Tone & Voice:</h4>
+                    <p>Exciting, astonishing, revelatory, attention-grabbing, enthusiastic.</p>
+                </div>
+                <div class="cta-variations">
+                    <h4>CTA Variations:</h4>
+                    <p>"Prepare for Surprise! Test Ride the Moustache Dimanche 29!"</p>
+                    <p>"Experience the Unbelievable. Visit Cit-E Cycles."</p>
+                </div>
+                <div class="themes">
+                    <h4>Content Themes:</h4>
+                    <p>Surprising e-bike capabilities, unexpected discoveries, "wow" factor, game-changing technology.</p>
+                </div>
+            </div>
+
+            <div id="emotion-content-loved" class="emotion-content">
+                <h3>Loved</h3>
+                <p><strong>Headline:</strong> Join the Cit-E Cycles Family. Ride with Love.</p>
+                <p><strong>Body Copy:</strong> At Cit-E Cycles, we're more than just a store – we're a community of passionate riders. Experience the warmth of exceptional service and the joy of shared adventures with the Moustache Dimanche 29 Gravel. We appreciate you!</p>
+                <div class="visual-style">
+                    <h4>Visual Style:</h4>
+                    <p>Friendly staff interactions, community ride shots, warm showroom interiors, visuals conveying connection and belonging.</p>
+                </div>
+                <div class="tone-voice">
+                    <h4>Tone & Voice:</h4>
+                    <p>Warm, appreciative, friendly, community-focused, sincere.</p>
+                </div>
+                <div class="cta-variations">
+                    <h4>CTA Variations:</h4>
+                    <p>"Ride with Love. Join the Cit-E Cycles Community!"</p>
+                    <p>"Experience Our Appreciation. Visit Cit-E Cycles."</p>
+                </div>
+                <div class="themes">
+                    <h4>Content Themes:</h4>
+                    <p>Customer testimonials, community events, exceptional service, shared passion for cycling.</p>
+                </div>
+            </div>
+
+            <div id="emotion-content-jealous" class="emotion-content">
+                <h3>Jealous</h3>
+                <p><strong>Headline:</strong> See Them Ride? You Could Be Too.</p>
+                <p><strong>Body Copy:</strong> Watching others explore BC's incredible gravel trails with ease? The Moustache Dimanche 29 Gravel from Cit-E Cycles puts that capability within your reach. Stop wishing, start riding. Your adventure awaits.</p>
+                <div class="visual-style">
+                    <h4>Visual Style:</h4>
+                    <p>Aspirational shots of riders in desirable locations, focus on sleek design and premium features, visuals conveying success and advantage.</p>
+                </div>
+                <div class="tone-voice">
+                    <h4>Tone & Voice:</h4>
+                    <p>Aspirational, motivational, achievement-oriented, highlighting desirability.</p>
+                </div>
+                <div class="cta-variations">
+                    <h4>CTA Variations:</h4>
+                    <p>"Be the Envy of the Trail. Test Ride the Moustache Dimanche 29!"</p>
+                    <p>"Achieve Your Cycling Goals. Visit Cit-E Cycles & Get Inspired."</p>
+                </div>
+                <div class="themes">
+                    <h4>Content Themes:</h4>
+                    <p>Aspirational lifestyle, envy-inducing capabilities, premium quality, achieving cycling dreams.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="business-impact">
+        <div class="container">
+            <h2>Business Impact & KPIs</h2>
+            <p>This campaign is meticulously designed to deliver measurable business results, driving growth and strengthening Cit-E Cycles' market position.</p>
+            <div class="data-viz">
+                <h3>Projected Performance Metrics</h3>
+                <div class="metric"><strong>Website Traffic Increase:</strong> 20-30%</div>
+                <div class="metric"><strong>Test Ride Bookings:</strong> 50-75 (Target)</div>
+                <div class="metric"><strong>Social Media Reach:</strong> 100,000+ Impressions (BC Target Demographic)</div>
+                <div class="metric"><strong>Qualified Leads:</strong> 100+ (Target)</div>
+                <div class="metric"><strong>Showroom Foot Traffic Increase:</strong> 15-20%</div>
+
+                <h3>Projected ROI</h3>
+                <p>With a conservative 5% conversion rate from test rides to sales (avg. $6,700 sale), just 5 sales would generate ~$33,500, yielding over 570% ROI on the $5,000 investment. Long-term benefits include brand loyalty and sustained customer acquisition.</p>
+
+                <h3>Key Performance Indicators (KPIs)</h3>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="kpi-progress-bar" style="width: 0%;">0%</div>
+                </div>
+                <p><em>Tracking progress towards campaign goals.</em></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="visual-assets">
+        <div class="container">
+            <h2>Visual Assets & Creative Direction</h2>
+            <p>Our visual strategy is centered around the stunning Moustache Dimanche 29 Gravel, showcased in the breathtaking context of British Columbia's diverse landscapes, and within the welcoming environment of Cit-E Cycles showrooms.</p>
+
+            <div class="concept-item">
+                <div class="concept-image">
+                    <img src="https://placehold.co/600x350/007bff/ffffff?text=Concept+1:+Unpaved+Potential" alt="Concept 1 Visual">
+                </div>
+                <div class="concept-text">
+                    <h3>Concept 1: "Unpaved Potential"</h3>
+                    <p><strong>Creative Direction:</strong> Evoke a sense of freedom, adventure, and discovery. Utilize cinematic, golden-hour lighting to highlight the bike's capability in diverse BC terrains, from forests to coastal paths. The rider embodies exploration and the potential unlocked by the e-bike.</p>
+                    <p><strong>Image Prompt:</strong> A wide, cinematic, golden-hour shot of a Moustache Dimanche 29 Gravel e-bike, with a confident rider in athletic but casual outdoor gear, paused on a scenic, sun-dappled gravel forest service road in British Columbia. The road winds gently ahead, disappearing into a lush, green temperate rainforest. In the background, distant, majestic snow-capped mountains are visible through a light, atmospheric haze. The rider is looking off into the distance, a subtle smile on their face, embodying a sense of freedom and discovery. The bike's e-assist display is subtly visible. The overall mood is adventurous, serene, and full of potential. The lighting is warm and inviting, highlighting the textures of the gravel, the foliage, and the bike's frame.</p>
+                </div>
+            </div>
+
+            <div class="concept-item reverse">
+                <div class="concept-image">
+                    <img src="https://placehold.co/600x350/28a745/ffffff?text=Concept+2:+Effortless+Elevation" alt="Concept 2 Visual">
+                </div>
+                <div class="concept-text">
+                    <h3>Concept 2: "Effortless Elevation"</h3>
+                    <p><strong>Creative Direction:</strong> Focus on the bike's performance and the rider's ease in conquering challenging terrain. Dynamic shots emphasizing smooth power delivery on climbs, with bright lighting and clear views of the BC landscape, conveying accomplishment and enjoyment.</p>
+                    <p><strong>Image Prompt:</strong> A dynamic, slightly low-angle, mid-action shot of a Moustache Dimanche 29 Gravel e-bike ascending a moderately steep, scenic gravel trail in British Columbia. The rider, looking focused but comfortable, is pedaling with ease, their expression one of quiet accomplishment. The trail is flanked by vibrant green foliage and offers a glimpse of a stunning, expansive valley view unfolding in the background. The sunlight is bright, casting dappled shadows. The bike's rear wheel is slightly blurred to convey motion and the smooth power transfer of the e-assist. The overall feel is one of overcoming a challenge with grace and enjoying the journey.</p>
+                </div>
+            </div>
+
+            <div class="concept-item">
+                <div class="concept-image">
+                    <img src="https://placehold.co/600x350/6c757d/ffffff?text=Concept+3:+Your+BC+Cycling+Hub" alt="Concept 3 Visual">
+                </div>
+                <div class="concept-text">
+                    <h3>Concept 3: "Your BC Cycling Hub"</h3>
+                    <p><strong>Creative Direction:</strong> Highlight the welcoming and expert environment of Cit-E Cycles showrooms. Clean, bright visuals showcasing the Moustache Dimanche 29 Gravel alongside a diverse selection of bikes, with friendly staff interactions that build trust and emphasize customer service.</p>
+                    <p><strong>Image Prompt:</strong> A clean, bright, and inviting shot of the interior of a modern, well-organized Cit-E Cycles e-bike showroom. The Moustache Dimanche 29 Gravel e-bike is prominently displayed in the foreground, showcasing its design. In the mid-ground, a friendly, knowledgeable Cit-E Cycles staff member, wearing a branded polo shirt, is engaging with a customer, gesturing towards the Moustache bike with a helpful smile. The background features a diverse array of other high-quality e-bikes neatly arranged, suggesting a wide selection. The lighting is soft and professional, highlighting the clean lines of the bikes and the welcoming atmosphere of the store.</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <p><em>These visual assets are designed to be aspirational, informative, and emotionally resonant, driving engagement and conversions.</em></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="recommendations">
+        <div class="container">
+            <h2>Recommendations</h2>
+            <p>To ensure the success of the Cit-E Cycles 2025 Gravel Campaign, we recommend the following:</p>
+            <ul>
+                <li><strong>Prioritize High-Quality Visuals:</strong> Invest in professional photography and videography that truly captures the Moustache Dimanche 29 Gravel and the beauty of BC.</li>
+                <li><strong>Optimize Landing Pages:</strong> Ensure all campaign links lead to mobile-friendly, conversion-focused landing pages with clear CTAs for test ride bookings and prominent QR code integration.</li>
+                <li><strong>Leverage Customer Testimonials:</strong> Actively collect and showcase positive customer feedback across all channels to build trust and social proof.</li>
+                <li><strong>Consistent Brand Messaging:</strong> Maintain a unified brand voice and visual identity across all campaign materials and platforms.</li>
+                <li><strong>Data-Driven Optimization:</strong> Continuously monitor campaign performance metrics and adjust targeting, creative, and budget allocation based on real-time data.</li>
+                <li><strong>In-Store Experience Excellence:</strong> Ensure showroom staff are fully briefed on the campaign, knowledgeable about the Moustache Dimanche 29 Gravel, and equipped to provide exceptional customer service during test rides.</li>
+                <li><strong>Active Community Engagement:</strong> Foster a sense of community by actively responding to comments, engaging with UGC, and promoting local cycling culture.</li>
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-nav">
+                <a href="#executive-summary">Executive Summary</a> |
+                <a href="#campaign-strategy">Campaign Strategy</a> |
+                <a href="#audience-analysis">Audience Analysis</a> |
+                <a href="#creative-concepts">Creative Concepts</a> |
+                <a href="#copy-content">Copy & Messaging</a> |
+                <a href="#cta-optimization">CTA Optimization</a> |
+                <a href="#media-plan">Media Plan</a> |
+                <a href="#social-media-campaign">Social Media Campaign</a> |
+                <a href="#emotion-personalization">Emotion Personalization</a> |
+                <a href="#business-impact">Business Impact</a> |
+                <a href="#visual-assets">Visual Assets</a> |
+                <a href="#recommendations">Recommendations</a>
+            </div>
+            <div class="contact-info">
+                <i class="fas fa-envelope"></i> info@citecycles.com |
+                <i class="fas fa-phone"></i> (604) 555-BIKE |
+                <i class="fas fa-map-marker-alt"></i> Multiple BC Showroom Locations
+            </div>
+            <div class="copywrite">&copy; 2025 Cit-E Cycles. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleDropdown() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Close the dropdown menu if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.dropdown-content a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                // Close dropdown after clicking a link
+                document.getElementById("myDropdown").classList.remove('show');
+            });
+        });
+
+        // Emotion Tab Functionality
+        const tabs = document.querySelectorAll('.emotion-tab');
+        const contents = document.querySelectorAll('.emotion-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+
+                // Add active class to clicked tab and its corresponding content
+                tab.classList.add('active');
+                document.getElementById(`emotion-content-${tab.dataset.emotion}`).classList.add('active');
+            });
+        });
+
+        // Animate KPI Progress Bar
+        document.addEventListener('DOMContentLoaded', () => {
+            const progressBar = document.getElementById('kpi-progress-bar');
+            if (progressBar) {
+                // Simulate progress for demonstration (e.g., 75% achieved)
+                const progressWidth = 75;
+                progressBar.style.width = `${progressWidth}%`;
+                progressBar.textContent = `${progressWidth}%`;
+            }
+        });
+
+    </script>
+</body>
+</html>

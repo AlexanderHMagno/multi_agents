@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Campaign for DynamoDB - Presentation</title>
+    <meta name="description" content="Comprehensive presentation for the Test Campaign for DynamoDB, detailing strategy, audience, creative concepts, media plan, and social media execution.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --accent-color: #28a745; /* Example accent */
+            --background-color: #f8f9fa;
+            --card-background: #ffffff;
+            --text-color: #333;
+            --heading-color: #111;
+            --gradient-start: #007bff;
+            --gradient-end: #0056b3;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --hover-shadow: rgba(0, 0, 0, 0.2);
+            --border-radius: 8px;
+        }
+
+        /* General Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            color: var(--heading-color);
+            margin-bottom: 1rem;
+        }
+
+        h1 { font-size: 2.8rem; }
+        h2 { font-size: 2.2rem; }
+        h3 { font-size: 1.8rem; }
+        h4 { font-size: 1.4rem; }
+
+        p {
+            margin-bottom: 1.5rem;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--gradient-end);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--gradient-end);
+            box-shadow: 0 4px 15px var(--hover-shadow);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+        }
+        .btn-accent:hover {
+            background-color: #1e7e34;
+        }
+
+        .section {
+            padding: 60px 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            border-radius: 2px;
+        }
+
+        .card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            height: 100%; /* Ensure cards in a row have equal height */
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--hover-shadow);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--heading-color);
+        }
+
+        .card ul {
+            padding-left: 20px;
+        }
+
+        .card ul li {
+            margin-bottom: 10px;
+        }
+
+        .gradient-box {
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            color: #fff;
+            padding: 40px 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: 0 4px 15px var(--shadow-color);
+            margin-bottom: 30px;
+        }
+
+        .gradient-box h3 {
+            color: #fff;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .gradient-box p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Hero Section */
+        #hero {
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end)), url('https://placehold.co/1920x1080/007bff/ffffff?text=DynamoDB+Campaign') center center/cover no-repeat;
+            color: #fff;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4); /* Overlay for text readability */
+        }
+
+        #hero .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        #hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            line-height: 1.2;
+        }
+
+        #hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        /* Navigation */
+        .dropdown-nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .dropdown-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-button:hover {
+            background-color: var(--gradient-end);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--card-background);
+            min-width: 200px;
+            box-shadow: 0 8px 16px var(--hover-shadow);
+            z-index: 1;
+            border-radius: var(--border-radius);
+            top: 100%;
+            right: 0;
+            margin-top: 5px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .dropdown-content a {
+            color: var(--text-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+            color: var(--primary-color);
+        }
+
+        .dropdown-menu.active .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Section Specific Styles */
+
+        /* Executive Summary */
+        #executive-summary .summary-box {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        #executive-summary h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        #executive-summary p {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+        }
+
+        /* Strategy */
+        #strategy h3 {
+            margin-top: 2rem;
+            color: var(--primary-color);
+        }
+
+        #strategy ul {
+            list-style: disc;
+            padding-left: 25px;
+        }
+
+        #strategy li {
+            margin-bottom: 15px;
+        }
+
+        #strategy .key-takeaway {
+            font-style: italic;
+            color: var(--secondary-color);
+            margin-top: 20px;
+            padding-left: 20px;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        /* Audience Analysis */
+        .persona-card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .persona-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--hover-shadow);
+        }
+
+        .persona-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .persona-card h4 {
+            color: var(--heading-color);
+            margin-bottom: 10px;
+            border-bottom: 1px dashed var(--secondary-color);
+            padding-bottom: 5px;
+        }
+
+        .persona-card ul {
+            padding-left: 20px;
+        }
+
+        .persona-card li {
+            margin-bottom: 8px;
+        }
+
+        /* Creative Concepts */
+        .concept-card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .concept-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--hover-shadow);
+        }
+
+        .concept-card img {
+            width: 100%;
+            height: 250px; /* Fixed height for consistency */
+            object-fit: cover; /* Cover to maintain aspect ratio */
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .concept-card:hover img {
+            transform: scale(1.03);
+        }
+
+        .concept-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .concept-theme {
+            font-weight: 600;
+            color: var(--heading-color);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .concept-message {
+            font-style: italic;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .concept-cta {
+            display: block;
+            font-weight: 500;
+            margin-top: auto; /* Pushes CTA to the bottom */
+        }
+
+        /* Copy Content */
+        .copy-block {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .copy-block h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .copy-block .ad-example {
+            border-left: 3px solid var(--accent-color);
+            padding-left: 15px;
+            margin-bottom: 25px;
+            background-color: #eaf6ec; /* Light green for accent */
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .copy-block .ad-example .ad-headline {
+            font-weight: 600;
+            color: var(--text-color);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .copy-block .ad-example .ad-body {
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .copy-block .ad-example .ad-cta {
+            font-weight: 500;
+            color: var(--accent-color);
+            display: block;
+            font-size: 0.9rem;
+        }
+
+        /* CTA Optimization */
+        .cta-section .cta-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+        }
+
+        .cta-card .cta-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .cta-card .cta-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--heading-color);
+            margin-bottom: 10px;
+        }
+
+        .cta-card .cta-why {
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        /* Media Plan */
+        .media-plan-item {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .media-plan-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--hover-shadow);
+        }
+
+        .media-plan-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .media-plan-item h4 i {
+            margin-right: 15px;
+            color: var(--accent-color);
+        }
+
+        .media-plan-item .budget-allocation {
+            font-weight: 600;
+            color: var(--heading-color);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .media-plan-item .reasoning {
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .media-plan-item ul {
+            padding-left: 20px;
+        }
+
+        .media-plan-item li {
+            margin-bottom: 8px;
+        }
+
+        /* Social Media Campaign */
+        .social-platform {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .social-platform h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .social-platform h3 i {
+            margin-right: 15px;
+            font-size: 1.8rem;
+        }
+
+        .social-platform h4 {
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: var(--heading-color);
+        }
+
+        .social-platform ul {
+            padding-left: 20px;
+        }
+
+        .social-platform li {
+            margin-bottom: 10px;
+        }
+
+        .social-platform .content-example {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            font-size: 0.9rem;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .social-platform .content-example .example-title {
+            font-weight: 600;
+            color: var(--text-color);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .social-platform .content-example .example-text {
+            color: var(--secondary-color);
+        }
+
+        /* Emotion Personalization */
+        .emotion-section {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .emotion-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .emotion-tab-button {
+            background-color: #e9ecef;
+            color: var(--text-color);
+            padding: 10px 18px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border: none;
+            font-weight: 500;
+        }
+
+        .emotion-tab-button:hover {
+            background-color: #d6d8db;
+        }
+
+        .emotion-tab-button.active {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .emotion-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .emotion-content.active {
+            display: block;
+        }
+
+        .emotion-content h4 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .emotion-content .copy-variation {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .emotion-content .copy-variation .variation-title {
+            font-weight: 500;
+            color: var(--text-color);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .emotion-content .copy-variation .variation-text {
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+        }
+
+        .emotion-content .visual-recommendation,
+        .emotion-content .tone-voice {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--secondary-color);
+        }
+
+        .emotion-content .visual-recommendation h5,
+        .emotion-content .tone-voice h5 {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: var(--heading-color);
+        }
+
+        .emotion-content .visual-recommendation ul,
+        .emotion-content .tone-voice ul {
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+        }
+
+        /* Data Visualization / Metrics */
+        .metrics-section .metric-card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .metrics-section .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--hover-shadow);
+        }
+
+        .metrics-section .metric-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .metrics-section .metric-label {
+            font-size: 1rem;
+            color: var(--secondary-color);
+            display: block;
+        }
+
+        .metrics-section .progress-bar-container {
+            margin-top: 25px;
+        }
+
+        .metrics-section .progress-bar-label {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            text-align: left;
+            margin-bottom: 5px;
+        }
+
+        .metrics-section .progress-bar {
+            background-color: #e9ecef;
+            border-radius: var(--border-radius);
+            height: 15px;
+            overflow: hidden;
+        }
+
+        .metrics-section .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            width: 0%; /* Will be set by JS */
+            transition: width 1s ease;
+        }
+
+        /* Visual Assets / Creative Assets */
+        .visual-assets .asset-card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px var(--shadow-color);
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .visual-assets .asset-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--hover-shadow);
+        }
+
+        .visual-assets .asset-card img {
+            max-width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+        }
+
+        .visual-assets .asset-card h5 {
+            font-size: 1.2rem;
+            color: var(--heading-color);
+            margin-bottom: 5px;
+        }
+
+        .visual-assets .asset-card p {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+
+        /* Image Carousel */
+        .image-carousel {
+            position: relative;
+            max-width: 800px;
+            margin: 40px auto;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 25px var(--hover-shadow);
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 450px; /* Adjusted height for better visibility */
+            object-fit: cover;
+            display: block;
+        }
+
+        .carousel-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            z-index: 10;
+        }
+
+        .carousel-control {
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: none;
+            font-size: 2rem;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 50%;
+            margin: 0 15px;
+            transition: background 0.3s ease;
+        }
+
+        .carousel-control:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Hero Image Specifics */
+        #hero .hero-image-container {
+            position: relative;
+            margin: 40px auto 0;
+            max-width: 800px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 8px 25px var(--hover-shadow);
+        }
+
+        #hero .hero-image-container img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+        }
+
+        #hero .hero-image-caption {
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 15px;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        footer .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        footer .footer-section {
+            margin-bottom: 30px;
+            flex: 1;
+            min-width: 200px;
+            text-align: left;
+            padding: 0 15px;
+        }
+
+        footer .footer-section h4 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        footer .footer-section p,
+        footer .footer-section ul {
+            font-size: 0.95rem;
+            color: #ccc;
+            line-height: 1.8;
+        }
+
+        footer .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        footer .footer-section ul li a {
+            color: #ccc;
+            transition: color 0.3s ease;
+        }
+
+        footer .footer-section ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        footer .social-links a {
+            color: #ccc;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        footer .social-links a:hover {
+            color: var(--primary-color);
+        }
+
+        footer .footer-bottom {
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-top: 30px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.9rem; }
+            h3 { font-size: 1.6rem; }
+
+            #hero {
+                min-height: 60vh;
+            }
+            #hero h1 {
+                font-size: 2.8rem;
+            }
+            #hero p {
+                font-size: 1.2rem;
+            }
+
+            .dropdown-nav {
+                top: 15px;
+                right: 15px;
+            }
+
+            .section {
+                padding: 40px 0;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            .concept-card, .media-plan-item, .social-platform, .emotion-section, .metrics-section .metric-card, .visual-assets .asset-card {
+                padding: 20px;
+            }
+
+            .gradient-box {
+                padding: 30px 20px;
+            }
+            .gradient-box h3 {
+                font-size: 1.8rem;
+            }
+
+            /* Emotion Tabs */
+            .emotion-tab-button {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+
+            /* Carousel */
+            .carousel-item img {
+                height: 300px;
+            }
+            .carousel-caption {
+                font-size: 0.8rem;
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+                padding: 10px;
+            }
+            .carousel-control {
+                font-size: 1.5rem;
+                padding: 8px 12px;
+                margin: 0 10px;
+            }
+
+            /* Footer */
+            footer .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            footer .footer-section {
+                text-align: center;
+                padding: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.7rem; }
+            h3 { font-size: 1.4rem; }
+
+            #hero h1 {
+                font-size: 2.4rem;
+            }
+            #hero p {
+                font-size: 1.1rem;
+            }
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .carousel-item img {
+                height: 250px;
+            }
+
+            /* Emotion Tabs */
+            .emotion-tabs {
+                justify-content: flex-start; /* Align left on smaller screens */
+            }
+            .emotion-tab-button {
+                width: auto; /* Reset width */
+            }
+
+            /* Social Media */
+            .social-platform h3 i {
+                font-size: 1.5rem;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tooltip Styling */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted var(--secondary-color);
+            cursor: help;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 280px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -140px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent #555;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Dropdown -->
+    <div class="dropdown-nav">
+        <div class="dropdown-menu">
+            <button class="dropdown-button">Menu <i class="fas fa-bars"></i></button>
+            <div class="dropdown-content">
+                <a href="#executive-summary">Executive Summary</a>
+                <a href="#strategy">Campaign Strategy</a>
+                <a href="#audience-analysis">Audience Analysis</a>
+                <a href="#creative-concepts">Creative Concepts</a>
+                <a href="#copy-content">Copy & Messaging</a>
+                <a href="#cta-optimization">CTA Optimization</a>
+                <a href="#media-plan">Media Plan</a>
+                <a href="#social-media-campaign">Social Media Campaign</a>
+                <a href="#emotion-personalization">Emotion Personalization</a>
+                <a href="#visual-assets">Visual Assets</a>
+                <a href="#campaign-impact">Business Impact</a>
+                <a href="#metrics">Campaign Metrics</a>
+                <a href="#recommendations">Recommendations</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="container hero-content">
+            <h1>Test Campaign for DynamoDB</h1>
+            <p>Driving Awareness & Lead Generation for Enhanced Database Solutions</p>
+            <a href="#executive-summary" class="btn">View Presentation</a>
+        </div>
+        <div class="hero-image-container">
+            <img src="https://placehold.co/800x400/007bff/ffffff?text=DynamoDB+Scalability+Visual" alt="DynamoDB Campaign Hero Visual">
+            <div class="hero-image-caption">Conceptual Visual: The Unseen Engine - Powering Seamless Scalability</div>
+        </div>
+    </section>
+
+    <!-- Executive Summary Section -->
+    <section id="executive-summary" class="section">
+        <div class="container">
+            <div class="summary-box">
+                <h2>Executive Summary</h2>
+                <p>This campaign is strategically designed to elevate awareness and drive lead generation for "Test Product," a solution leveraging or enhancing the capabilities of DynamoDB. Recognizing the need for precise targeting within a modest budget, our approach focuses on reaching **developers, technical leads, and engineering managers** who are actively seeking scalable, efficient, and reliable database solutions.</p>
+                <p>We will leverage a multi-channel digital strategy, prioritizing platforms that offer robust targeting and measurable results. Key channels include **Paid Search (Google Ads)** to capture high-intent users actively searching for database solutions, and **LinkedIn Ads** to engage professionals based on job title and industry. Supporting this will be **Content Marketing** that provides valuable insights into DynamoDB and its applications, distributed across relevant platforms. A targeted presence in **Developer Forums/Communities** will further amplify reach within niche technical circles.</p>
+                <p>The core messaging will emphasize the tangible benefits of "Test Product" in relation to DynamoDB, such as enhanced **scalability, improved performance, simplified development workflows, and potential cost efficiencies**. Specific calls-to-action like "Download Our Free Guide," "Request a Demo," and "Learn More" will guide prospects through the awareness and consideration funnel, ultimately driving lead acquisition.</p>
+                <p><strong>Expected Outcomes:</strong> Increased brand visibility, qualified lead generation, and a clear ROI demonstration.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Campaign Strategy Section -->
+    <section id="strategy" class="section">
+        <div class="container">
+            <h2 class="section-title">Campaign Strategy</h2>
+            <div class="card">
+                <h3>Strategic Recommendations for "Test Campaign for DynamoDB"</h3>
+                <p>This analysis provides strategic recommendations for targeting, messaging, and positioning to guide creative development for the "Test Campaign for DynamoDB."</p>
+
+                <h4>1. Campaign Overview & Initial Assessment</h4>
+                <ul>
+                    <li><strong>Campaign Name:</strong> Test Campaign for DynamoDB</li>
+                    <li><strong>Product:</strong> Test Product (DynamoDB-related offering)</li>
+                    <li><strong>Client:</strong> Test Client</li>
+                    <li><strong>Budget:</strong> $5,000</li>
+                    <li><strong>Timeline:</strong> 3 Months</li>
+                    <li><strong>Goals:</strong> Increase awareness, Generate leads</li>
+                    <li><strong>Target Audience:</strong> Developers, Technical Leads, CTOs/Architects (Needs refinement)</li>
+                </ul>
+                <p class="key-takeaway"><strong>Initial Assessment:</strong> The brief is high-level; the primary challenge is deriving concrete strategies from limited information. The modest budget requires a focused and efficient approach.</p>
+
+                <h4>2. Strategic Recommendations</h4>
+                <h5>2.1. Target Audience Refinement</h5>
+                <p><strong>Recommendation:</strong> Conduct rapid audience segmentation. Potential segments include Developers, Technical Leads/Engineering Managers, CTOs/Architects. Each segment has unique needs and pain points.</p>
+                <p class="key-takeaway"><strong>Actionable Insight:</strong> Tailor messaging and visuals to specific segment pain points (e.g., code examples for dev, ROI for CTOs).</p>
+
+                <h5>2.2. Messaging Strategy</h5>
+                <p><strong>Recommendation:</strong> Focus on core benefits (Scalability, Simplicity, Cost-Effectiveness, Reliability) rather than just features. If "Feature 1" and "Feature 2" are specific differentiators, they must be defined.</p>
+                <p class="key-takeaway"><strong>Actionable Insight:</strong> Use clear headlines, storytelling, and strong CTAs aligned with lead generation goals.</p>
+
+                <h5>2.3. Positioning Strategy</h5>
+                <p><strong>Recommendation:</strong> Position the client's offering as a facilitator, enhancer, or specialized solution for DynamoDB (e.g., "Your expert partner for unlocking DynamoDB's potential").</p>
+                <p class="key-takeaway"><strong>Actionable Insight:</strong> Ensure all campaign assets consistently reflect this chosen positioning.</p>
+
+                <h5>2.4. Channel Strategy (Budget-Conscious)</h5>
+                <p><strong>Recommendation:</strong> Prioritize digital channels with strong targeting: LinkedIn Ads, Google Search Ads. Consider Content Marketing/SEO and Developer Communities cautiously.</p>
+                <p class="key-takeaway"><strong>Actionable Insight:</strong> Create tailored creatives for each platform (e.g., professional visuals for LinkedIn, benefit-driven copy for Google Search).</p>
+
+                <h4>3. Key Considerations & Next Steps</h4>
+                <ul>
+                    <li>Define "Test Product" and "Key Features."</li>
+                    <li>Clarify "Test Audience" and create detailed personas.</li>
+                    <li>Establish SMART KPIs.</li>
+                    <li>Obtain client branding.</li>
+                    <li>Optimize landing pages for conversion.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Audience Analysis Section -->
+    <section id="audience-analysis" class="section">
+        <div class="container">
+            <h2 class="section-title">Audience Analysis</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="persona-card">
+                        <h3><strong>Persona 1:</strong> The Scalability Seeker</h3>
+                        <h4>"The Growing Startup CTO"</h4>
+                        <p><strong>Demographics:</strong> 30-45, CTO/VP Eng/Lead Dev, Tech Industry, Startup to Mid-sized.</p>
+                        <p><strong>Psychographics:</strong> Values efficiency, innovation, reliability. Seeks future-proofing and cost-effectiveness.</p>
+                        <p><strong>Pain Points:</strong> Scalability limitations, operational overhead, cost unpredictability, complexity of implementation.</p>
+                        <p><strong>Motivations:</strong> Seamless scalability, reduced operational burden, optimized costs, improved performance, future-proofing.</p>
+                        <p><strong>Preferred Channels:</strong> Technical blogs, developer forums, LinkedIn, industry publications, whitepapers, webinars.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="persona-card">
+                        <h3><strong>Persona 2:</strong> The Efficiency-Focused Developer</h3>
+                        <h4>"The Busy Application Developer"</h4>
+                        <p><strong>Demographics:</strong> 25-35, Software/Backend Developer, Tech Industry.</p>
+                        <p><strong>Psychographics:</strong> Values productivity, simplicity, ease of use, good documentation.</p>
+                        <p><strong>Pain Points:</strong> Time spent on database tasks, complex queries, integration challenges, lack of flexibility, poor developer experience.</p>
+                        <p><strong>Motivations:</strong> Accelerate development, focus on application logic, write cleaner code, benefit from managed services.</p>
+                        <p><strong>Preferred Channels:</strong> Developer blogs, GitHub, Stack Overflow, Reddit, official documentation, YouTube tutorials.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Creative Concepts Section -->
+    <section id="creative-concepts" class="section">
+        <div class="container">
+            <h2 class="section-title">Creative Concepts</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="concept-card">
+                        <img src="https://placehold.co/600x400/007bff/ffffff?text=Concept+1:+Unseen+Engine" alt="Concept 1: The Unseen Engine">
+                        <div>
+                            <h3 class="concept-title">1. The Unseen Engine</h3>
+                            <span class="concept-theme">Strategy: Scalability & Performance</span>
+                            <p class="concept-message">Visualizing the hidden power of DynamoDB.</p>
+                            <span class="concept-cta">Target: Developers, Tech Leads</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="concept-card">
+                        <img src="https://placehold.co/600x400/6c757d/ffffff?text=Concept+2:+Architect's+Blueprint" alt="Concept 2: The Architect's Blueprint">
+                        <div>
+                            <h3 class="concept-title">2. The Architect's Blueprint</h3>
+                            <span class="concept-theme">Strategy: Cost-Effectiveness & Strategy</span>
+                            <p class="concept-message">Emphasizing strategic planning and predictable power.</p>
+                            <span class="concept-cta">Target: CTOs, Architects</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="concept-card">
+                        <img src="https://placehold.co/600x400/28a745/ffffff?text=Concept+3:+Dev+Toolkit" alt="Concept 3: The Agile Developer's Toolkit">
+                        <div>
+                            <h3 class="concept-title">3. Agile Developer's Toolkit</h3>
+                            <span class="concept-theme">Strategy: Simplicity & Ease of Use</span>
+                            <p class="concept-message">Focusing on developer productivity and streamlined workflows.</p>
+                            <span class="concept-cta">Target: Developers</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="gradient-box">
+                        <h3>Visual Storytelling: The Unseen Engine</h3>
+                        <p>Our hero visual embodies "The Unseen Engine." It's an abstract, high-tech representation of DynamoDB's power. Imagine flowing lines of luminous data against a dark, professional background, subtly hinting at the underlying complexity and immense capability. This visual was chosen to resonate with our technical audience, evoking a sense of quiet power, seamless operation, and the potential for limitless application growth. It speaks to the core benefit of scalability and performance without being overly literal, maintaining a sophisticated and aspirational feel.</p>
+                        <img src="https://placehold.co/1024x500/007bff/ffffff?text=Hero+Visual:+The+Unseen+Engine" alt="Hero Visual: The Unseen Engine" style="max-width: 100%; height: auto; border-radius: var(--border-radius); margin-top: 20px;">
+                        <p style="margin-top: 15px; font-size: 0.9rem;"><em>This visual aims to capture the essence of DynamoDB's power as an underlying, robust engine for applications.</em></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Copy & Messaging Section -->
+    <section id="copy-content" class="section">
+        <div class="container">
+            <h2 class="section-title">Copy & Messaging Highlights</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="copy-block">
+                        <h3>Concept 1: The Unseen Engine</h3>
+                        <div class="ad-example">
+                            <span class="ad-headline">Your Code, Limitless.</span>
+                            <span class="ad-body">Stop worrying about database bottlenecks. Focus on building what matters. Our solution helps you harness DynamoDB's unparalleled scalability and performance...</span>
+                            <span class="ad-cta">Discover Seamless Scalability</span>
+                        </div>
+                        <p class="key-takeaway" style="margin-top: 15px;">Focuses on abstract power and limitless potential for developers.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="copy-block">
+                        <h3>Concept 2: The Architect's Blueprint</h3>
+                        <div class="ad-example">
+                            <span class="ad-headline">Build for Tomorrow, Today.</span>
+                            <span class="ad-body">Your database is your foundation. Ensure it's built for lasting growth and predictable costs. Leverage DynamoDB's power with intelligent design...</span>
+                            <span class="ad-cta">Request a Strategic Consultation</span>
+                        </div>
+                        <p class="key-takeaway" style="margin-top: 15px;">Appeals to strategic thinking and long-term vision for leaders.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="copy-block">
+                        <h3>Concept 3: Agile Developer's Toolkit</h3>
+                        <div class="ad-example">
+                            <span class="ad-headline">Build Faster. Scale Smarter. Effortlessly.</span>
+                            <span class="ad-body">Tired of wrestling with database configurations? Our solution integrates seamlessly with DynamoDB, providing the intuitive tools developers need...</span>
+                            <span class="ad-cta">See a Quick Demo</span>
+                        </div>
+                        <p class="key-takeaway" style="margin-top: 15px;">Highlights ease of use and developer productivity.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Optimization Section -->
+    <section id="cta-optimization" class="section">
+        <div class="container">
+            <h2 class="section-title">CTA Optimization</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="cta-card">
+                        <i class="fas fa-info-circle cta-icon"></i>
+                        <h4 class="cta-name">Learn More / Discover How</h4>
+                        <p class="cta-why">Effective for increasing awareness and attracting early-stage prospects. Low commitment, drives traffic to informational pages.</p>
+                        <a href="#" class="btn btn-secondary">Learn More</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cta-card">
+                        <i class="fas fa-download cta-icon"></i>
+                        <h4 class="cta-name">Download Our Free Guide</h4>
+                        <p class="cta-why">Directly addresses lead generation. Offers value in exchange for contact information, capturing qualified leads.</p>
+                        <a href="#" class="btn btn-accent">Download Guide</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cta-card">
+                        <i class="fas fa-play-circle cta-icon"></i>
+                        <h4 class="cta-name">Request a Demo</h4>
+                        <p class="cta-why">Targets high-intent prospects. Allows direct product evaluation and engagement, ideal for sales qualification.</p>
+                        <a href="#" class="btn">Request Demo</a>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center" style="margin-top: 30px;"><strong>Recommendation:</strong> A combination of "Learn More" for awareness and "Download Our Free Guide" or "Request a Demo" for lead generation will be most strategic for this campaign.</p>
+        </div>
+    </section>
+
+    <!-- Media Plan Section -->
+    <section id="media-plan" class="section">
+        <div class="container">
+            <h2 class="section-title">Media Plan</h2>
+            <div class="media-plan-item">
+                <h4><i class="fab fa-google"></i> Paid Search (Google Ads)</h4>
+                <span class="budget-allocation">Budget: $2,000 (40%)</span>
+                <p class="reasoning">Crucial for lead generation due to high user intent. Targets users actively searching for database solutions.</p>
+                <ul>
+                    <li><strong>Keywords:</strong> "DynamoDB alternatives," "scalable databases," "managed NoSQL," "cloud database solutions."</li>
+                    <li><strong>Ad Copy:</strong> Benefit-driven, clear CTAs.</li>
+                    <li><strong>Landing Pages:</strong> Optimized for lead capture.</li>
+                </ul>
+            </div>
+            <div class="media-plan-item">
+                <h4><i class="fab fa-linkedin"></i> LinkedIn Ads</h4>
+                <span class="budget-allocation">Budget: $1,500 (30%)</span>
+                <p class="reasoning">Ideal for B2B targeting professionals by job title, industry, and skills. Supports awareness and lead generation.</p>
+                <ul>
+                    <li><strong>Campaign Types:</strong> Sponsored Content, Lead Gen Forms.</li>
+                    <li><strong>Targeting:</strong> CTOs, VPs, Leads, Architects, relevant industries.</li>
+                    <li><strong>Creative:</strong> Professional visuals, concise copy.</li>
+                </ul>
+            </div>
+            <div class="media-plan-item">
+                <h4><i class="fas fa-file-alt"></i> Content Marketing & Distribution</h4>
+                <span class="budget-allocation">Budget: $1,000 (20%)</span>
+                <p class="reasoning">Attracts both personas, builds authority, and serves as lead magnets. Focus on guides, whitepapers, case studies.</p>
+                <ul>
+                    <li><strong>Themes:</strong> Scaling guides, developer efficiency, cost optimization.</li>
+                    <li><strong>Distribution:</strong> Promote via LinkedIn, organic social, guest posts.</li>
+                </ul>
+            </div>
+            <div class="media-plan-item">
+                <h4><i class="fas fa-comments"></i> Developer Forums & Communities</h4>
+                <span class="budget-allocation">Budget: $500 (10%)</span>
+                <p class="reasoning">Direct access to developers on platforms like Reddit & Stack Overflow. Niche targeting, cost-effective.</p>
+                <ul>
+                    <li><strong>Platforms:</strong> Targeted ads in relevant subreddits (r/devops, r/databases), Stack Overflow placements.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media Campaign Section -->
+    <section id="social-media-campaign" class="section">
+        <div class="container">
+            <h2 class="section-title">Social Media Campaign</h2>
+
+            <div class="social-platform">
+                <h3><i class="fab fa-tiktok"></i> TikTok Strategy</h3>
+                <h4>Goal: Awareness & Brand Recall</h4>
+                <p>Focus on quick, engaging videos simplifying DynamoDB concepts, highlighting pain points/solutions, and showcasing developer life. Energetic, informative tone.</p>
+                <h4>Content Examples:</h4>
+                <div class="content-example">
+                    <span class="example-title">Video: "DynamoDB Explained in 60 Seconds"</span>
+                    <span class="example-text">Visually break down NoSQL vs. SQL with text overlays and fast-paced voiceovers.</span>
+                </div>
+                <div class="content-example">
+                    <span class="example-title">Video: "Dev Pain Point vs. DynamoDB Solution"</span>
+                    <span class="example-text">Quick cuts showing database frustration vs. a clean visual of your product solving it.</span>
+                </div>
+                <h4>Hashtags:</h4>
+                <p>#TechTok #DevTok #CodingTips #AWSCommunity #DynamoDB</p>
+            </div>
+
+            <div class="social-platform">
+                <h3><i class="fab fa-instagram"></i> Instagram Strategy</h3>
+                <h4>Goal: Awareness, Brand Building, Lead Generation</h4>
+                <p>Visually appealing infographics, carousels, and short videos. Professional and insightful tone.</p>
+                <h4>Content Examples:</h4>
+                <div class="content-example">
+                    <span class="example-title">Infographic: DynamoDB Scalability Benefits</span>
+                    <span class="example-text">Visually explain how DynamoDB and your product enhance scalability using the professional color scheme.</span>
+                </div>
+                <div class="content-example">
+                    <span class="example-title">Carousel: "How Feature 1 Simplifies X"</span>
+                    <span class="example-text">Step-by-step visual breakdown of a key feature's benefit.</span>
+                </div>
+                <div class="content-example">
+                    <span class="example-title">Story: "Swipe Up to Download Whitepaper"</span>
+                    <span class="example-text">Drive traffic directly to lead magnet landing pages.</span>
+                </div>
+                <h4>Hashtags:</h4>
+                <p>#InstaTech #TechGram #DeveloperCommunity #CloudSolutions #DynamoDB #AWSCloud</p>
+            </div>
+
+            <div class="gradient-box">
+                <h3>Key Social Media Tactics</h3>
+                <p><strong>Engagement:</strong> Respond promptly, ask questions, run polls/Q&As. <br> <strong>Influencers:</strong> Collaborate with micro-influencers in the AWS/DevOps space. <br> <strong>UGC:</strong> Run "Show Us Your DynamoDB Setup" contests. <br> <strong>Paid Promotion:</strong> Focus budget on LinkedIn for lead gen, use TikTok/IG for targeted awareness.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emotion Personalization Section -->
+    <section id="emotion-personalization" class="section">
+        <div class="container">
+            <h2 class="section-title">Emotion Personalization</h2>
+            <div class="emotion-section">
+                <div class="emotion-tabs">
+                    <button class="emotion-tab-button active" data-emotion="happy">Happy</button>
+                    <button class="emotion-tab-button" data-emotion="excited">Excited</button>
+                    <button class="emotion-tab-button" data-emotion="calm">Calm</button>
+                    <button class="emotion-tab-button" data-emotion="anxious">Anxious</button>
+                    <button class="emotion-tab-button" data-emotion="confident">Confident</button>
+                    <button class="emotion-tab-button" data-emotion="curious">Curious</button>
+                    <button class="emotion-tab-button" data-emotion="sad">Sad</button>
+                    <button class="emotion-tab-button" data-emotion="angry">Angry</button>
+                    <button class="emotion-tab-button" data-emotion="scared">Scared</button>
+                    <button class="emotion-tab-button" data-emotion="disgusted">Disgusted</button>
+                    <button class="emotion-tab-button" data-emotion="surprised">Surprised</button>
+                    <button class="emotion-tab-button" data-emotion="loved">Loved</button>
+                    <button class="emotion-tab-button" data-emotion="jealous">Jealous</button>
+                </div>
+
+                <!-- Happy Emotion -->
+                <div id="happy" class="emotion-content active">
+                    <h4>Happy: Joyful Growth & Effortless Success</h4>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 1 (Joyful Growth):</span>
+                        <span class="variation-text">Feeling the joy of seamless scaling? 🎉 Your applications can now grow as effortlessly as your ambitions, powered by our DynamoDB enhancements. Celebrate peak performance!</span>
+                    </div>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 2 (Achievement Unlocked):</span>
+                        <span class="variation-text">You've hit your performance goals! ✨ Our solution makes harnessing DynamoDB's power a delight. Enjoy the satisfaction of a perfectly optimized, scalable database.</span>
+                    </div>
+                    <div class="visual-recommendation">
+                        <h5>Visual Style:</h5>
+                        <ul>
+                            <li>Bright, optimistic imagery (sunrise, celebrating teams).</li>
+                            <li>Subtle celebratory graphics (confetti, stars).</li>
+                            <li>Joyful accent colors (teal, yellow) within professional palette.</li>
+                        </ul>
+                    </div>
+                    <div class="tone-voice">
+                        <h5>Tone & Voice:</h5>
+                        <ul>
+                            <li>Upbeat, positive, friendly, enthusiastic.</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn btn-accent" style="margin-top: 20px;">Celebrate Peak Performance!</a>
+                </div>
+
+                <!-- Excited Emotion -->
+                <div id="excited" class="emotion-content">
+                    <h4>Excited: Ignite Performance & Unleash Potential</h4>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 1 (Future Unleashed):</span>
+                        <span class="variation-text">Get ready to ignite your applications! 🔥 We're bringing you next-level DynamoDB performance and scalability. The future of your code starts NOW!</span>
+                    </div>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 2 (Power Up!):</span>
+                        <span class="variation-text">Unleash the full potential of DynamoDB! 💪 Our tools are designed to give you the speed and power you need to dominate your market. Let's build something incredible!</span>
+                    </div>
+                    <div class="visual-recommendation">
+                        <h5>Visual Style:</h5>
+                        <ul>
+                            <li>Dynamic, high-energy visuals (lightning, rockets).</li>
+                            <li>Bold, sharp lines and energetic animations.</li>
+                            <li>Energetic accent colors (electric blue, vibrant orange).</li>
+                        </ul>
+                    </div>
+                    <div class="tone-voice">
+                        <h5>Tone & Voice:</h5>
+                        <ul>
+                            <li>Energetic, motivational, bold, action-oriented.</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn" style="margin-top: 20px;">Ignite Your Performance!</a>
+                </div>
+
+                <!-- Calm Emotion -->
+                <div id="calm" class="emotion-content">
+                    <h4>Calm: Peaceful Productivity & Steady Operations</h4>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 1 (Peaceful Productivity):</span>
+                        <span class="variation-text">Find your flow. Achieve database tranquility. Our solution brings a sense of calm to DynamoDB management, letting you focus on what truly matters.</span>
+                    </div>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 2 (Steady & Secure):</span>
+                        <span class="variation-text">Build with confidence, operate with peace of mind. Experience the serenity of predictable performance and seamless scalability with our DynamoDB expertise.</span>
+                    </div>
+                    <div class="visual-recommendation">
+                        <h5>Visual Style:</h5>
+                        <ul>
+                            <li>Serene, minimalist visuals (calm water, soft gradients).</li>
+                            <li>Gentle curves, soft transitions.</li>
+                            <li>Calming color palette (blues, greens, soft grays).</li>
+                        </ul>
+                    </div>
+                    <div class="tone-voice">
+                        <h5>Tone & Voice:</h5>
+                        <ul>
+                            <li>Peaceful, reassuring, serene, stable, supportive.</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn btn-secondary" style="margin-top: 20px;">Discover Your Database Calm.</a>
+                </div>
+
+                <!-- Anxious Emotion -->
+                <div id="anxious" class="emotion-content">
+                    <h4>Anxious: Reassurance & Support for Your Concerns</h4>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 1 (We've Got You Covered):</span>
+                        <span class="variation-text">Worried about database bottlenecks? Feeling the pressure of scaling? We understand. Our solution provides the support and stability you need to overcome these challenges.</span>
+                    </div>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 2 (Solutions for Your Concerns):</span>
+                        <span class="variation-text">Anxious about performance dips or unexpected costs? Let us help. We offer practical solutions and expert guidance to ease your DynamoDB concerns.</span>
+                    </div>
+                    <div class="visual-recommendation">
+                        <h5>Visual Style:</h5>
+                        <ul>
+                            <li>Reassuring visuals (helping hands, clear pathways).</li>
+                            <li>Step-by-step guides, solution-oriented icons.</li>
+                            <li>Calming, trustworthy colors (muted blues, greens).</li>
+                        </ul>
+                    </div>
+                    <div class="tone-voice">
+                        <h5>Tone & Voice:</h5>
+                        <ul>
+                            <li>Supportive, reassuring, empathetic, patient, trustworthy.</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn" style="margin-top: 20px;">Let Us Ease Your Concerns.</a>
+                </div>
+
+                <!-- Confident Emotion -->
+                <div id="confident" class="emotion-content">
+                    <h4>Confident: Own Your Performance & Lead the Pack</h4>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 1 (Own Your Performance):</span>
+                        <span class="variation-text">You know your code is powerful. Now, ensure your database keeps pace. Unleash your confidence with DynamoDB's ultimate scalability and performance.</span>
+                    </div>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 2 (Lead the Pack):</span>
+                        <span class="variation-text">Lead the pack with a database that matches your vision. Our solution empowers you to achieve ambitious goals with unwavering confidence in your infrastructure.</span>
+                    </div>
+                    <div class="visual-recommendation">
+                        <h5>Visual Style:</h5>
+                        <ul>
+                            <li>Authoritative visuals (leaders, sleek designs).</li>
+                            <li>Bold typography, premium finishes.</li>
+                            <li>Aspirational colors (deep blues, metallic accents).</li>
+                        </ul>
+                    </div>
+                    <div class="tone-voice">
+                        <h5>Tone & Voice:</h5>
+                        <ul>
+                            <li>Empowering, assertive, authoritative, visionary.</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn btn-accent" style="margin-top: 20px;">Own Your Performance Goals.</a>
+                </div>
+
+                <!-- Curious Emotion -->
+                <div id="curious" class="emotion-content">
+                    <h4>Curious: Uncover Potential & Explore Possibilities</h4>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 1 (Uncover the Potential):</span>
+                        <span class="variation-text">Ever wondered how to truly unlock DynamoDB's scalability? 🤔 We've discovered some fascinating insights. Let's explore together.</span>
+                    </div>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 2 (What If...):</span>
+                        <span class="variation-text">What if your database could be faster, more efficient, and easier to manage? Explore the possibilities with our innovative approach to DynamoDB.</span>
+                    </div>
+                    <div class="visual-recommendation">
+                        <h5>Visual Style:</h5>
+                        <ul>
+                            <li>Intriguing visuals (magnifying glasses, question marks).</li>
+                            <li>Clean layouts with hints of mystery.</li>
+                            <li>Intriguing accent colors (deep purple, emerald green).</li>
+                        </ul>
+                    </div>
+                    <div class="tone-voice">
+                        <h5>Tone & Voice:</h5>
+                        <ul>
+                            <li>Inquisitive, educational, discovery-oriented.</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn btn-secondary" style="margin-top: 20px;">Discover How It Works.</a>
+                </div>
+
+                <!-- Sad Emotion -->
+                <div id="sad" class="emotion-content">
+                    <h4>Sad: Hope & Support for Performance Issues</h4>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 1 (Turning Downtime Around):</span>
+                        <span class="variation-text">Feeling the frustration of slow applications or unexpected downtime? We're here to help lift your spirits and optimize your DynamoDB performance.</span>
+                    </div>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 2 (A Brighter Path Forward):</span>
+                        <span class="variation-text">Don't let database issues dim your progress. Discover a more reliable and efficient way to scale with our supportive DynamoDB solutions.</span>
+                    </div>
+                    <div class="visual-recommendation">
+                        <h5>Visual Style:</h5>
+                        <ul>
+                            <li>Hopeful visuals (sprouts, sunrise, helping hands).</li>
+                            <li>Gradual transition from darker to lighter tones.</li>
+                            <li>Calming, trustworthy colors.</li>
+                        </ul>
+                    </div>
+                    <div class="tone-voice">
+                        <h5>Tone & Voice:</h5>
+                        <ul>
+                            <li>Empathetic, supportive, hopeful, gentle.</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn btn-secondary" style="margin-top: 20px;">Find Your Path to Better Performance.</a>
+                </div>
+
+                <!-- Angry Emotion -->
+                <div id="angry" class="emotion-content">
+                    <h4>Angry: Channel Frustration into Action & Take Control</h4>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 1 (Channeling Frustration):</span>
+                        <span class="variation-text">Tired of your database holding you back? 😠 We understand the frustration. Let's channel that energy into powerful, scalable solutions with our DynamoDB enhancements.</span>
+                    </div>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 2 (Enough is Enough):</span>
+                        <span class="variation-text">Stop tolerating poor performance and complex management! It's time for a change. Empower yourself with the tools to conquer your DynamoDB challenges.</span>
+                    </div>
+                    <div class="visual-recommendation">
+                        <h5>Visual Style:</h5>
+                        <ul>
+                            <li>Focused, determined visuals (controlled power, clear paths).</li>
+                            <li>Strong, clear lines, bold typography.</li>
+                            <li>Decisive accent color (deep red, powerful navy).</li>
+                        </ul>
+                    </div>
+                    <div class="tone-voice">
+                        <h5>Tone & Voice:</h5>
+                        <ul>
+                            <li>Empowering, assertive, solution-oriented, direct.</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn" style="margin-top: 20px;">Channel Your Frustration into Action.</a>
+                </div>
+
+                <!-- Scared Emotion -->
+                <div id="scared" class="emotion-content">
+                    <h4>Scared: Navigating the Unknown with Security & Assurance</h4>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 1 (Navigating the Unknown):</span>
+                        <span class="variation-text">Feeling apprehensive about scaling your database? We'll guide you through it. Our solution provides a secure and reliable path to harness DynamoDB's power.</span>
+                    </div>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 2 (Your Safety Net):</span>
+                        <span class="variation-text">Worried about data integrity or unexpected failures? Our robust features act as your safety net, ensuring your applications and data are protected.</span>
+                    </div>
+                    <div class="visual-recommendation">
+                        <h5>Visual Style:</h5>
+                        <ul>
+                            <li>Reassuring, protective visuals (shields, safety nets).</li>
+                            <li>Clear, organized layouts, emphasis on security.</li>
+                            <li>Calming, trustworthy colors (deep blues, greens).</li>
+                        </ul>
+                    </div>
+                    <div class="tone-voice">
+                        <h5>Tone & Voice:</h5>
+                        <ul>
+                            <li>Reassuring, protective, trustworthy, calm.</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn btn-secondary" style="margin-top: 20px;">Find Your Security in Scaling.</a>
+                </div>
+
+                <!-- Disgusted Emotion -->
+                <div id="disgusted" class="emotion-content">
+                    <h4>Disgusted: Clean Slate & Superior Experience</h4>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 1 (Clean Slate, Better Performance):</span>
+                        <span class="variation-text">Is your current database setup a mess? 🤢 Let's clear the clutter and bring in a fresh, efficient solution for your DynamoDB needs.</span>
+                    </div>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 2 (Upgrade Your Experience):</span>
+                        <span class="variation-text">Tired of inefficient code and clunky database interactions? We offer a cleaner, more streamlined approach that will restore your faith in performance.</span>
+                    </div>
+                    <div class="visual-recommendation">
+                        <h5>Visual Style:</h5>
+                        <ul>
+                            <li>Clean, fresh visuals (sparkling surfaces, organized spaces).</li>
+                            <li>Before-and-after transformations.</li>
+                            <li>Crisp, bright colors (whites, blues, greens).</li>
+                        </ul>
+                    </div>
+                    <div class="tone-voice">
+                        <h5>Tone & Voice:</h5>
+                        <ul>
+                            <li>Solution-oriented, practical, focused on improvement.</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn btn-accent" style="margin-top: 20px;">Start Fresh with a Cleaner Solution.</a>
+                </div>
+
+                <!-- Surprised Emotion -->
+                <div id="surprised" class="emotion-content">
+                    <h4>Surprised: Astonishing Results & Unexpected Power</h4>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 1 (You Won't Believe It!):</span>
+                        <span class="variation-text">Prepare to be amazed! 🤯 We've pushed the boundaries of DynamoDB performance, and the results are astonishing. Discover what's possible.</span>
+                    </div>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 2 (The Unexpected Power):</span>
+                        <span class="variation-text">Surprise! Your applications can achieve levels of scalability and speed you never thought possible. Unlock the hidden potential with our innovative solution.</span>
+                    </div>
+                    <div class="visual-recommendation">
+                        <h5>Visual Style:</h5>
+                        <ul>
+                            <li>Eye-catching visuals (reveals, "aha!" moments).</li>
+                            <li>Bold contrasts, dynamic animations.</li>
+                            <li>Exciting color contrasts (vibrant blues with sharp oranges).</li>
+                        </ul>
+                    </div>
+                    <div class="tone-voice">
+                        <h5>Tone & Voice:</h5>
+                        <ul>
+                            <li>Exciting, revelatory, attention-grabbing.</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn" style="margin-top: 20px;">Prepare to Be Amazed!</a>
+                </div>
+
+                <!-- Loved Emotion -->
+                <div id="loved" class="emotion-content">
+                    <h4>Loved: Community Connection & Appreciation</h4>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 1 (Join Our Thriving Community):</span>
+                        <span class="variation-text">You're part of something special. We cherish our community of developers building amazing things with DynamoDB. Feel the love and support!</span>
+                    </div>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 2 (Appreciating Your Passion):</span>
+                        <span class="variation-text">Your dedication to innovation fuels us. We're here to support your passion for building incredible applications with DynamoDB, with love and gratitude.</span>
+                    </div>
+                    <div class="visual-recommendation">
+                        <h5>Visual Style:</h5>
+                        <ul>
+                            <li>Warm, community-focused visuals (collaboration, heart motifs).</li>
+                            <li>Soft, inviting designs.</li>
+                            <li>Warm color palette (soft oranges, gentle yellows).</li>
+                        </ul>
+                    </div>
+                    <div class="tone-voice">
+                        <h5>Tone & Voice:</h5>
+                        <ul>
+                            <li>Warm, appreciative, community-focused, caring.</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn btn-secondary" style="margin-top: 20px;">Join Our Cherished Community.</a>
+                </div>
+
+                <!-- Jealous Emotion -->
+                <div id="jealous" class="emotion-content">
+                    <h4>Jealous: Aspiration & Competitive Edge</h4>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 1 (Achieve What They Have):</span>
+                        <span class="variation-text">See how leading teams are effortlessly scaling with DynamoDB. You can achieve that level of performance too. Don't get left behind!</span>
+                    </div>
+                    <div class="copy-variation">
+                        <span class="variation-title">Variation 2 (The Competitive Edge):</span>
+                        <span class="variation-text">Wish you had their speed and agility? 🤔 Unlock the same competitive advantage. Our solution gives you the power to outperform the competition with DynamoDB.</span>
+                    </div>
+                    <div class="visual-recommendation">
+                        <h5>Visual Style:</h5>
+                        <ul>
+                            <li>Aspirational visuals (leaders, success stories).</li>
+                            <li>Polished, premium designs.</li>
+                            <li>Aspirational colors (deep blues, rich purples).</li>
+                        </ul>
+                    </div>
+                    <div class="tone-voice">
+                        <h5>Tone & Voice:</h5>
+                        <ul>
+                            <li>Aspirational, motivational, confident.</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="btn" style="margin-top: 20px;">Achieve Peak Performance Today.</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Assets Section -->
+    <section id="visual-assets" class="section">
+        <div class="container">
+            <h2 class="section-title">Visual Assets</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="visual-assets asset-card">
+                        <img src="https://placehold.co/600x400/007bff/ffffff?text=Hero+Visual" alt="Hero Visual">
+                        <h5>Hero Visual: The Unseen Engine</h5>
+                        <p>Abstract, flowing data lines conveying scalability and performance.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="visual-assets asset-card">
+                        <img src="https://placehold.co/600x400/6c757d/ffffff?text=Concept+2+Visual" alt="Concept 2 Visual">
+                        <h5>Concept 2 Visual: Architect's Blueprint</h5>
+                        <p>Stylized architectural blueprint highlighting strategic planning and cost efficiency.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="visual-assets asset-card">
+                        <img src="https://placehold.co/600x400/28a745/ffffff?text=Concept+3+Visual" alt="Concept 3 Visual">
+                        <h5>Concept 3 Visual: Dev Toolkit</h5>
+                        <p>Clean UI elements and code snippets showcasing ease of use and developer productivity.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="image-carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="https://placehold.co/1024x450/007bff/ffffff?text=Carousel+Image+1:+Scalability" alt="Carousel Image 1">
+                                <div class="carousel-caption">Visualizing Seamless Scalability: The core benefit of DynamoDB and our solution.</div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://placehold.co/1024x450/6c757d/ffffff?text=Carousel+Image+2:+Efficiency" alt="Carousel Image 2">
+                                <div class="carousel-caption">Streamlined Workflows: Demonstrating ease of use for developers.</div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://placehold.co/1024x450/28a745/ffffff?text=Carousel+Image+3:+Strategy" alt="Carousel Image 3">
+                                <div class="carousel-caption">Strategic Database Planning: Highlighting cost-effectiveness and future-proofing for leaders.</div>
+                            </div>
+                        </div>
+                        <button class="carousel-control prev" onclick="changeSlide(-1)">&#10094;</button>
+                        <button class="carousel-control next" onclick="changeSlide(1)">&#10095;</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="gradient-box">
+                        <h3>Image Analysis & Creative Insights</h3>
+                        <p>The chosen visual assets are designed to be professional, modern, and evocative. The "Unseen Engine" hero visual (abstract data flow) sets a sophisticated tone, appealing directly to the technical audience's appreciation for advanced concepts. The carousel dynamically showcases key campaign themes: scalability, efficiency, and strategy. By using high-quality, relevant imagery, we aim to build trust and convey the advanced nature of the "Test Product" and its synergy with DynamoDB.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Impact Section -->
+    <section id="campaign-impact" class="section">
+        <div class="container">
+            <h2 class="section-title">Business Impact & ROI</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <h3 class="card-title">Expected Outcomes</h3>
+                        <ul>
+                            <li><strong>Increased Brand Visibility:</strong> Establish "Test Product" as a recognized solution in the DynamoDB ecosystem.</li>
+                            <li><strong>Qualified Lead Generation:</strong> Capture a pipeline of interested prospects (developers, decision-makers).</li>
+                            <li><strong>Market Penetration:</strong> Reach a targeted technical audience actively seeking database solutions.</li>
+                            <li><strong>Foundation for Growth:</strong> Generate valuable data for future campaign optimization.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <h3 class="card-title">ROI Projection (Illustrative)</h3>
+                        <p><strong>Investment:</strong> $5,000</p>
+                        <p><strong>Strategy:</strong> Focused digital channels, high-intent targeting.</p>
+                        <p><strong>Targeted Outcome:</strong> Generate [X] qualified leads at an estimated Cost Per Lead (CPL) of $[Y].</p>
+                        <p>The ultimate ROI will be realized through lead-to-customer conversion, with this campaign serving as a crucial initial touchpoint.</p>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-label">Lead Generation Goal Progress</div>
+                            <div class="progress-bar">
+                                <div class="progress-bar-fill" id="lead-progress-bar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Campaign Metrics Section -->
+    <section id="metrics" class="section">
+        <div class="container">
+            <h2 class="section-title">Key Performance Indicators (KPIs)</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="metric-card">
+                        <span class="metric-value">100K+</span>
+                        <span class="metric-label">Impressions</span>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-label">Target: 150K</div>
+                            <div class="progress-bar">
+                                <div class="progress-bar-fill" id="impressions-progress-bar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="metric-card">
+                        <span class="metric-value">5K+</span>
+                        <span class="metric-label">Website Visits</span>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-label">Target: 7K</div>
+                            <div class="progress-bar">
+                                <div class="progress-bar-fill" id="visits-progress-bar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="metric-card">
+                        <span class="metric-value">150+</span>
+                        <span class="metric-label">Qualified Leads</span>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-label">Target: 200</div>
+                            <div class="progress-bar">
+                                <div class="progress-bar-fill" id="leads-progress-bar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center" style="margin-top: 30px;"><strong>Note:</strong> These are target metrics for a 3-month campaign. Actual performance will be tracked and reported weekly.</p>
+        </div>
+    </section>
+
+    <!-- Recommendations Section -->
+    <section id="recommendations" class="section">
+        <div class="container">
+            <h2 class="section-title">Recommendations & Next Steps</h2>
+            <div class="card">
+                <h3>Moving Forward</h3>
+                <ul>
+                    <li><strong>Product Definition:</strong> Crucially, finalize the specific details of "Test Product" and its "Key Features" to tailor messaging precisely.</li>
+                    <li><strong>Audience Prioritization:</strong> Confirm the primary target audience segments for initial campaign focus.</li>
+                    <li><strong>KPI Finalization:</strong> Define specific, measurable, achievable, relevant, and time-bound (SMART) KPIs.</li>
+                    <li><strong>Branding Assets:</strong> Obtain client logo and brand guidelines for consistent execution.</li>
+                    <li><strong>Landing Page Optimization:</strong> Ensure all landing pages are conversion-focused with clear value propositions.</li>
+                    <li><strong>Content Development:</strong> Prioritize creating high-value content (guides, whitepapers) that serves as lead magnets.</li>
+                    <li><strong>A/B Testing:</strong> Continuously test ad creatives, copy, and landing pages to optimize performance.</li>
+                    <li><strong>Budget Allocation:</strong> Monitor channel performance and reallocate budget to maximize ROI.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h4>About Us</h4>
+                <p>We are a digital marketing agency specializing in creating impactful campaign presentations and executing data-driven strategies for technology clients.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#executive-summary">Executive Summary</a></li>
+                    <li><a href="#strategy">Campaign Strategy</a></li>
+                    <li><a href="#audience-analysis">Audience Insights</a></li>
+                    <li><a href="#creative-concepts">Creative Concepts</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Information</h4>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Digital Avenue, Suite 456, Tech City</p>
+                <p><i class="fas fa-envelope"></i> info@youragency.com</p>
+                <p><i class="fas fa-phone"></i> (123) 456-7890</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2023 Your Digital Agency. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Navigation Dropdown Functionality
+        const dropdownButton = document.querySelector('.dropdown-button');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+
+        dropdownButton.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('active');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.remove('active');
+            }
+        });
+
+        // Smooth Scrolling for Navigation Links
+        document.querySelectorAll('.dropdown-content a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    dropdownMenu.classList.remove('active'); // Close menu after clicking
+                }
+            });
+        });
+
+        // Image Carousel Functionality
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function changeSlide(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("carousel-item");
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].classList.remove('active');
+            }
+            slides[slideIndex - 1].classList.add('active');
+        }
+
+        // Emotion Tab Functionality
+        const tabButtons = document.querySelectorAll('.emotion-tab-button');
+        const emotionContents = document.querySelectorAll('.emotion-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                // Hide all content divs
+                emotionContents.forEach(content => content.classList.remove('active'));
+                // Show the corresponding content div
+                document.getElementById(button.getAttribute('data-emotion')).classList.add('active');
+            });
+        });
+
+        // Progress Bar Animation (Example - would be dynamic in a real app)
+        document.addEventListener('DOMContentLoaded', () => {
+            const leadProgress = document.getElementById('lead-progress-bar');
+            const impressionsProgress = document.getElementById('impressions-progress-bar');
+            const visitsProgress = document.getElementById('visits-progress-bar');
+
+            // Set progress based on target metrics (e.g., 75% completion for example)
+            if (leadProgress) leadProgress.style.width = '75%';
+            if (impressionsProgress) impressionsProgress.style.width = '66%'; // Example for 100k/150k
+            if (visitsProgress) visitsProgress.style.width = '71%'; // Example for 5k/7k
+        });
+
+        // Ensure smooth scrolling for navigation links in the dropdown
+        document.querySelectorAll('.dropdown-content a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    dropdownMenu.classList.remove('active');
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>

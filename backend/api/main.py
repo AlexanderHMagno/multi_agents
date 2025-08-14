@@ -572,6 +572,19 @@ async def generate_campaign_background(campaign_id: str, campaign_brief: Campaig
         # Generate outputs
         website_filename = f"{campaign_id}_campaign_website.html"
         try:
+            # Debug: Print the structure of the result
+            print(f"🔍 Debug: Workflow result keys: {list(result.keys())}")
+            if 'web_developer' in result:
+                print(f"🔍 Debug: web_developer keys: {list(result['web_developer'].keys())}")
+                if 'campaign_website' in result['web_developer']:
+                    html_content = result['web_developer']['campaign_website']
+                    print(f"🔍 Debug: Found HTML content, length: {len(html_content)} characters")
+                    print(f"🔍 Debug: HTML content preview: {html_content[:200]}...")
+                else:
+                    print(f"🔍 Debug: No 'campaign_website' key found in web_developer")
+            else:
+                print(f"🔍 Debug: No 'web_developer' key found in result")
+            
             create_campaign_website(result, website_filename)
             print(f"🌐 Website generated: {website_filename}")
             _log_agent_interaction(campaign_id, "Output Generator", "completed", f"Website generated: {website_filename}")
@@ -581,37 +594,56 @@ async def generate_campaign_background(campaign_id: str, campaign_brief: Campaig
         
         # Store campaign data in AWS if available
         s3_urls = {}
+        s3_success = False
         if hasattr(app.state, 's3_service') and app.state.s3_service:
             try:
                 # Upload campaign files to S3
                 s3_urls = app.state.s3_service.upload_campaign_files(campaign_id, "outputs")
                 print(f"☁️ Campaign files uploaded to S3: {list(s3_urls.keys())}")
+                s3_success = True
                 
                 # Upload workflow state and artifacts
                 if result.get("artifacts"):
-                    artifacts_url = app.state.s3_service.upload_campaign_artifacts(campaign_id, result)
-                    s3_urls['artifacts'] = artifacts_url
+                    try:
+                        artifacts_url = app.state.s3_service.upload_campaign_artifacts(campaign_id, result)
+                        s3_urls['artifacts'] = artifacts_url
+                        print(f"✅ Artifacts uploaded to S3: {artifacts_url}")
+                    except Exception as e:
+                        print(f"⚠️ Warning: Failed to upload artifacts to S3: {e}")
+                        s3_urls['artifacts'] = None
                 
                 # Upload campaign metadata
-                metadata = {
-                    "campaign_brief": campaign_brief.dict(),
-                    "progress_log": campaign_progress.get(campaign_id, {}),
-                    "agent_interactions": agent_interactions.get(campaign_id, []),
-                    "final_state": result,
-                    "execution_time": execution_time,
-                    "quality_score": len(result.get("artifacts", {})),
-                    "revision_count": result.get("revision_count", 0)
-                }
-                metadata_url = app.state.s3_service.upload_campaign_metadata(campaign_id, metadata)
-                s3_urls['metadata'] = metadata_url
+                try:
+                    metadata = {
+                        "campaign_brief": campaign_brief.dict(),
+                        "progress_log": campaign_progress.get(campaign_id, {}),
+                        "agent_interactions": agent_interactions.get(campaign_id, []),
+                        "final_state": result,
+                        "execution_time": execution_time,
+                        "quality_score": len(result.get("artifacts", {})),
+                        "revision_count": result.get("revision_count", 0)
+                    }
+                    metadata_url = app.state.s3_service.upload_campaign_metadata(campaign_id, metadata)
+                    s3_urls['metadata'] = metadata_url
+                    print(f"✅ Metadata uploaded to S3: {metadata_url}")
+                except Exception as e:
+                    print(f"⚠️ Warning: Failed to upload metadata to S3: {e}")
+                    s3_urls['metadata'] = None
                 
-                _log_agent_interaction(campaign_id, "AWS Storage", "completed", "Campaign data stored in S3 successfully")
+                if s3_success:
+                    _log_agent_interaction(campaign_id, "AWS Storage", "completed", "Campaign data stored in S3 successfully")
+                else:
+                    _log_agent_interaction(campaign_id, "AWS Storage", "partial", "Some S3 uploads failed")
                 
             except Exception as e:
                 print(f"⚠️ Warning: Failed to upload to S3: {e}")
                 _log_agent_interaction(campaign_id, "AWS Storage", "error", f"Failed to upload to S3: {e}")
+                # Continue with DynamoDB storage even if S3 fails
+        else:
+            print("ℹ️ S3 service not available, skipping S3 uploads")
         
         # Store campaign metadata in DynamoDB if available
+        dynamodb_success = False
         if hasattr(app.state, 'dynamodb_service') and app.state.dynamodb_service:
             try:
                 campaign_data = {
@@ -626,19 +658,40 @@ async def generate_campaign_background(campaign_id: str, campaign_brief: Campaig
                     "s3_pdf_url": s3_urls.get("pdf"),
                     "s3_artifacts_url": s3_urls.get("artifacts"),
                     "s3_metadata_url": s3_urls.get("metadata"),
-                    "campaign_brief": campaign_brief.dict(),
-                    "final_state": result,
-                    "progress_log": campaign_progress.get(campaign_id, {}),
-                    "agent_interactions": agent_interactions.get(campaign_id, [])
+                    "final_state": result
                 }
                 
+                print(f"🗄️ Campaign metadata: {campaign_data}")
                 app.state.dynamodb_service.store_campaign(campaign_data)
-                print(f"🗄️ Campaign metadata stored in DynamoDB")
+                dynamodb_success = True
+                print(f"🗄️ Campaign metadata stored in DynamoDB successfully")
                 _log_agent_interaction(campaign_id, "DynamoDB Storage", "completed", "Campaign metadata stored successfully")
                 
+                # Verify storage by retrieving the campaign
+                try:
+                    stored_campaign = app.state.dynamodb_service.get_campaign(campaign_id)
+                    if stored_campaign:
+                        print(f"✅ Campaign verification successful - stored in DynamoDB with ID: {stored_campaign.get('campaign_id')}")
+                    else:
+                        print(f"⚠️ Warning: Campaign stored but verification failed")
+                except Exception as e:
+                    print(f"⚠️ Warning: Campaign verification failed: {e}")
+                
             except Exception as e:
-                print(f"⚠️ Warning: Failed to store in DynamoDB: {e}")
+                print(f"❌ Error: Failed to store in DynamoDB: {e}")
                 _log_agent_interaction(campaign_id, "DynamoDB Storage", "error", f"Failed to store in DynamoDB: {e}")
+        else:
+            print("ℹ️ DynamoDB service not available, skipping DynamoDB storage")
+        
+        # Log overall AWS storage status
+        if s3_success and dynamodb_success:
+            print("🎉 All AWS storage operations completed successfully!")
+        elif dynamodb_success:
+            print("✅ DynamoDB storage completed, S3 storage had issues")
+        elif s3_success:
+            print("✅ S3 storage completed, DynamoDB storage had issues")
+        else:
+            print("❌ All AWS storage operations failed")
         
         # Update campaign results
         campaign_results[campaign_id].update({
