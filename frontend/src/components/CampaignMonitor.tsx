@@ -35,7 +35,13 @@ export const CampaignMonitor = () => {
 
   const downloadWebsite = async () => {
     try {
-      await apiClient.downloadWebsite(campaignId!);
+      const blob = await apiClient.downloadWebsite(campaignId!);
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${campaign?.campaign_id}.html`;
+      a.click();
+      window.URL.revokeObjectURL(url);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to download website');
     }

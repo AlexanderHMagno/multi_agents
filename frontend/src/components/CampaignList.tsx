@@ -211,7 +211,7 @@ export const CampaignList = () => {
                             </Link>
                             {campaign.status === 'completed' && (
                               <Link
-                                to={`/campaign/${campaign.campaign_id}/website`}
+                                to={`/campaign/view/${campaign.campaign_id}`}
                                 className="btn btn-sm btn-mm-secondary"
                               >
                                 Website
