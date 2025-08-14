@@ -47,6 +47,7 @@ except Exception:  # Fallback when running as a script without package context
 # Pydantic models for API requests and responses
 class CampaignBrief(BaseModel):
     """Campaign brief input model"""
+    campaign_name: Optional[str] = Field(None, description="Campaign name")
     product: str = Field(..., description="Product or service name")
     client: str = Field(..., description="Client company name")
     client_website: Optional[str] = Field(None, description="Client website URL")

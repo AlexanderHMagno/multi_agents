@@ -30,8 +30,8 @@ export const Login = () => {
       <div className="card w-full max-w-md bg-base-100 shadow-xl">
         <div className="card-body">
           <div className="text-center mb-6">
-            <img src="/Marketmind.png" alt="MarketMinds AI Logo" className="w-20 h-20 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-primary">MarketMinds AI</h1>
+            <img src="/Marketmind.png" alt="MarketMinds AI Logo" className="w-32 h-20 mx-auto mb-4" />
+            
             <p className="text-base-content/70">Sign in to your account</p>
           </div>
           
