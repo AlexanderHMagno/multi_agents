@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { apiClient } from '../api/client';
 import { CampaignListResponse } from '../types';
 
-export const CampaignList: React.FC = () => {
+export const CampaignList = () => {
   const [campaigns, setCampaigns] = useState<CampaignListResponse | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchCampaigns();
@@ -14,49 +14,34 @@ export const CampaignList: React.FC = () => {
 
   const fetchCampaigns = async () => {
     try {
-      setLoading(true);
       const data = await apiClient.listCampaigns();
       setCampaigns(data);
-    } catch (err: any) {
-      setError(err.detail || 'Failed to fetch campaigns');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch campaigns');
     } finally {
       setLoading(false);
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return 'success';
-      case 'running':
-        return 'warning';
-      case 'failed':
-        return 'error';
-      case 'initialized':
-        return 'info';
-      default:
-        return 'neutral';
-    }
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  const getStatusBadge = (status: string) => {
+    const statusClasses = {
+      completed: 'badge-success',
+      running: 'badge-warning',
+      failed: 'badge-error',
+      initialized: 'badge-info'
+    };
+    
+    return `badge ${statusClasses[status as keyof typeof statusClasses] || 'badge-neutral'}`;
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-base-200 p-6">
+      <div className="min-h-screen bg-[var(--mm-gray-50)] p-6">
         <div className="max-w-7xl mx-auto">
-          <div className="card bg-base-100 shadow-xl">
-            <div className="card-body text-center">
-              <span className="loading loading-spinner loading-lg text-primary"></span>
-              <h3 className="text-xl font-semibold mt-4">Loading campaigns...</h3>
+          <div className="card-mm">
+            <div className="p-6 text-center">
+              <div className="loading loading-spinner loading-lg text-mm-primary"></div>
+              <p className="mt-4 text-[var(--mm-gray-600)]">Loading campaigns...</p>
             </div>
           </div>
         </div>
@@ -66,36 +51,16 @@ export const CampaignList: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-base-200 p-6">
+      <div className="min-h-screen bg-[var(--mm-gray-50)] p-6">
         <div className="max-w-7xl mx-auto">
-          <div className="alert alert-error shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <div>
-              <h3 className="font-bold">Error</h3>
-              <div className="text-xs">{error}</div>
-            </div>
-            <button onClick={fetchCampaigns} className="btn btn-sm">
-              Try Again
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!campaigns || campaigns.campaigns.length === 0) {
-    return (
-      <div className="min-h-screen bg-base-200 p-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="card bg-base-100 shadow-xl">
-            <div className="card-body text-center">
-              <h2 className="text-2xl font-bold mb-4">No Campaigns Found</h2>
-              <p className="text-base-content/70 mb-6">You haven't created any campaigns yet.</p>
-              <Link to="/generate" className="btn btn-primary">
-                Create Your First Campaign
-              </Link>
+          <div className="card-mm">
+            <div className="p-6">
+              <div className="alert alert-error">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>{error}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -104,133 +69,178 @@ export const CampaignList: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-base-200 p-6">
+    <div className="min-h-screen bg-[var(--mm-gray-50)] p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div className="flex items-center gap-4">
             <img src="/Marketmind.png" alt="MarketMinds AI Logo" className="w-32 h-20" />
             <div>
-              <p className="text-base-content/70 mt-2">Monitor and manage your AI-generated campaigns</p>
+              <h1 className="text-3xl font-bold text-[var(--mm-gray-900)]">Campaigns</h1>
+              <p className="text-[var(--mm-gray-600)]">Monitor and manage all your marketing campaigns</p>
             </div>
           </div>
-          <Link to="/generate" className="btn btn-primary">
-            Create New Campaign
-          </Link>
+          <div className="flex gap-2">
+            <Link to="/generate" className="btn btn-mm-primary">
+              Create New Campaign
+            </Link>
+            <Link to="/dashboard" className="btn btn-mm-secondary">
+              Back to Dashboard
+            </Link>
+          </div>
         </div>
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="stat bg-base-100 shadow-lg rounded-box">
-            <div className="stat-figure text-success">
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
+        {/* Stats Overview */}
+        {campaigns && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="stat-mm">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-[var(--mm-gray-600)]">Total Campaigns</p>
+                  <p className="text-2xl font-bold text-mm-primary">{campaigns.total}</p>
+                </div>
+                <div className="text-mm-primary">
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                </div>
+              </div>
             </div>
-            <div className="stat-title">Total Campaigns</div>
-            <div className="stat-value text-success">{campaigns.total}</div>
-          </div>
-          
-          <div className="stat bg-base-100 shadow-lg rounded-box">
-            <div className="stat-figure text-success">
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+            
+            <div className="stat-mm">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-[var(--mm-gray-600)]">Completed</p>
+                  <p className="text-2xl font-bold text-[var(--mm-success)]">{campaigns.completed}</p>
+                </div>
+                <div className="text-[var(--mm-success)]">
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+              </div>
             </div>
-            <div className="stat-title">Completed</div>
-            <div className="stat-value text-success">{campaigns.completed}</div>
-          </div>
-          
-          <div className="stat bg-base-100 shadow-lg rounded-box">
-            <div className="stat-figure text-warning">
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+            
+            <div className="stat-mm">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-[var(--mm-gray-600)]">Running</p>
+                  <p className="text-2xl font-bold text-[var(--mm-warning)]">{campaigns.running}</p>
+                </div>
+                <div className="text-[var(--mm-warning)]">
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+              </div>
             </div>
-            <div className="stat-title">Running</div>
-            <div className="stat-value text-warning">{campaigns.running}</div>
-          </div>
-          
-          <div className="stat bg-base-100 shadow-lg rounded-box">
-            <div className="stat-figure text-error">
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+            
+            <div className="stat-mm">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-[var(--mm-gray-600)]">Failed</p>
+                  <p className="text-2xl font-bold text-[var(--mm-error)]">{campaigns.failed}</p>
+                </div>
+                <div className="text-[var(--mm-error)]">
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+              </div>
             </div>
-            <div className="stat-title">Failed</div>
-            <div className="stat-value text-error">{campaigns.failed}</div>
           </div>
-        </div>
+        )}
 
         {/* Campaigns Table */}
-        <div className="card bg-base-100 shadow-xl">
-          <div className="card-body p-0">
-            <div className="overflow-x-auto">
-              <table className="table table-zebra w-full">
-                <thead>
-                  <tr>
-                    <th className="bg-base-200">Campaign ID</th>
-                    <th className="bg-base-200">Status</th>
-                    <th className="bg-base-200">Created</th>
-                    <th className="bg-base-200">Execution Time</th>
-                    <th className="bg-base-200">Artifacts</th>
-                    <th className="bg-base-200">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {campaigns.campaigns.map((campaign) => (
-                    <tr key={campaign.campaign_id} className="hover">
-                      <td className="font-mono text-xs">
-                        {campaign.campaign_id}
-                      </td>
-                      <td>
-                        <div className={`badge badge-${getStatusColor(campaign.status)} badge-lg`}>
-                          {campaign.status.toUpperCase()}
-                        </div>
-                      </td>
-                      <td>
-                        {formatDate(campaign.created_at)}
-                      </td>
-                      <td>
-                        {campaign.execution_time 
-                          ? `${campaign.execution_time.toFixed(2)}s`
-                          : '-'
-                        }
-                      </td>
-                      <td>
-                        <div className="badge badge-outline">{campaign.artifacts_count}</div>
-                      </td>
-                      <td>
-                        <div className="flex gap-2">
-                          <Link 
-                            to={`/campaign/${campaign.campaign_id}`}
-                            className="btn btn-sm btn-ghost"
-                          >
-                            View
-                          </Link>
-                          {campaign.status === 'completed' && (
-                            <Link 
-                              to={`/campaign/view/${campaign.campaign_id}`}
-                              className="btn btn-sm btn-primary"
-                            >
-                              Preview
-                            </Link>
-                          )}
-                        </div>
-                      </td>
+        <div className="card-mm">
+          <div className="p-6">
+            <h2 className="text-xl font-semibold text-[var(--mm-gray-900)] mb-6">All Campaigns</h2>
+            
+            {campaigns && campaigns.campaigns.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="table table-zebra w-full">
+                  <thead>
+                    <tr>
+                      <th className="text-[var(--mm-gray-700)]">Campaign ID</th>
+                      <th className="text-[var(--mm-gray-700)]">Status</th>
+                      <th className="text-[var(--mm-gray-700)]">Created</th>
+                      <th className="text-[var(--mm-gray-700)]">Completed</th>
+                      <th className="text-[var(--mm-gray-700)]">Execution Time</th>
+                      <th className="text-[var(--mm-gray-700)]">Artifacts</th>
+                      <th className="text-[var(--mm-gray-700)]">Created By</th>
+                      <th className="text-[var(--mm-gray-700)]">Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {campaigns.campaigns.map((campaign) => (
+                      <tr key={campaign.campaign_id}>
+                        <td className="font-mono text-sm">{campaign.campaign_id}</td>
+                        <td>
+                          <span className={getStatusBadge(campaign.status)}>
+                            {campaign.status}
+                          </span>
+                        </td>
+                        <td className="text-sm">
+                          {new Date(campaign.created_at).toLocaleDateString()}
+                        </td>
+                        <td className="text-sm">
+                          {campaign.completed_at 
+                            ? new Date(campaign.completed_at).toLocaleDateString()
+                            : '-'
+                          }
+                        </td>
+                        <td className="text-sm">
+                          {campaign.execution_time 
+                            ? `${campaign.execution_time.toFixed(2)}s`
+                            : '-'
+                          }
+                        </td>
+                        <td className="text-sm">
+                          <span className="badge badge-mm-secondary">
+                            {campaign.artifacts_count}
+                          </span>
+                        </td>
+                        <td className="text-sm">{campaign.created_by}</td>
+                        <td>
+                          <div className="flex gap-2">
+                            <Link
+                              to={`/campaign/${campaign.campaign_id}`}
+                              className="btn btn-sm btn-mm-primary"
+                            >
+                              View
+                            </Link>
+                            {campaign.status === 'completed' && (
+                              <Link
+                                to={`/campaign/${campaign.campaign_id}/website`}
+                                className="btn btn-sm btn-mm-secondary"
+                              >
+                                Website
+                              </Link>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <div className="text-[var(--mm-gray-400)] mb-4">
+                  <svg className="w-24 h-24 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-[var(--mm-gray-600)] mb-2">No Campaigns Yet</h3>
+                <p className="text-[var(--mm-gray-500)] mb-6">
+                  Get started by creating your first marketing campaign
+                </p>
+                <Link to="/generate" className="btn btn-mm-primary">
+                  Create Your First Campaign
+                </Link>
+              </div>
+            )}
           </div>
-        </div>
-
-        {/* Refresh Button */}
-        <div className="text-center mt-8">
-          <button onClick={fetchCampaigns} className="btn btn-secondary btn-wide">
-            Refresh Campaigns
-          </button>
         </div>
       </div>
     </div>

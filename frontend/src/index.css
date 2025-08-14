@@ -1,3 +1,113 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities; 
+@tailwind utilities;
+
+/* MarketMinds AI Custom Theme */
+:root {
+  /* Primary Brand Colors */
+  --mm-primary: #EA580C; /* orange-600 */
+  --mm-primary-hover: #C2410C; /* orange-700 */
+  --mm-primary-light: #FED7AA; /* orange-200 */
+  --mm-primary-bg: #FFF7ED; /* orange-50 */
+  
+  /* Secondary Brand Colors */
+  --mm-secondary: #1D4ED8; /* blue-700 */
+  --mm-secondary-hover: #1E40AF; /* blue-800 */
+  --mm-secondary-light: #BFDBFE; /* blue-200 */
+  --mm-secondary-bg: #EFF6FF; /* blue-50 */
+  
+  /* Neutral Colors */
+  --mm-gray-50: #F9FAFB;
+  --mm-gray-100: #F3F4F6;
+  --mm-gray-200: #E5E7EB;
+  --mm-gray-300: #D1D5DB;
+  --mm-gray-400: #9CA3AF;
+  --mm-gray-500: #6B7280;
+  --mm-gray-600: #4B5563;
+  --mm-gray-700: #374151;
+  --mm-gray-800: #1F2937;
+  --mm-gray-900: #111827;
+  
+  /* Status Colors */
+  --mm-success: #059669; /* green-600 */
+  --mm-warning: #D97706; /* amber-600 */
+  --mm-error: #DC2626; /* red-600 */
+  --mm-info: #0891B2; /* cyan-600 */
+}
+
+/* Custom Component Classes */
+@layer components {
+  /* Primary Button */
+  .btn-mm-primary {
+    @apply bg-[var(--mm-primary)] hover:bg-[var(--mm-primary-hover)] border-[var(--mm-primary)] text-white;
+  }
+  
+  /* Secondary Button */
+  .btn-mm-secondary {
+    @apply border-[var(--mm-secondary)] text-[var(--mm-secondary)] hover:bg-[var(--mm-secondary-bg)];
+  }
+  
+  /* Primary Text */
+  .text-mm-primary {
+    color: var(--mm-primary);
+  }
+  
+  /* Secondary Text */
+  .text-mm-secondary {
+    color: var(--mm-secondary);
+  }
+  
+  /* Primary Background */
+  .bg-mm-primary {
+    background-color: var(--mm-primary);
+  }
+  
+  /* Secondary Background */
+  .bg-mm-secondary {
+    background-color: var(--mm-secondary);
+  }
+  
+  /* Primary Light Background */
+  .bg-mm-primary-light {
+    background-color: var(--mm-primary-light);
+  }
+  
+  /* Secondary Light Background */
+  .bg-mm-secondary-light {
+    background-color: var(--mm-secondary-light);
+  }
+  
+  /* Primary Border */
+  .border-mm-primary {
+    border-color: var(--mm-primary);
+  }
+  
+  /* Secondary Border */
+  .border-mm-secondary {
+    border-color: var(--mm-secondary);
+  }
+  
+  /* Card with MarketMinds styling */
+  .card-mm {
+    @apply bg-white rounded-lg shadow-sm border border-[var(--mm-gray-200)];
+  }
+  
+  /* Stats card with MarketMinds styling */
+  .stat-mm {
+    @apply bg-white rounded-lg shadow-sm border border-[var(--mm-gray-200)] p-6;
+  }
+  
+  /* Input with MarketMinds styling */
+  .input-mm {
+    @apply border-[var(--mm-gray-300)] focus:border-[var(--mm-primary)] focus:ring-[var(--mm-primary)];
+  }
+  
+  /* Badge with MarketMinds styling */
+  .badge-mm-primary {
+    @apply bg-[var(--mm-primary-light)] text-[var(--mm-primary)];
+  }
+  
+  .badge-mm-secondary {
+    @apply bg-[var(--mm-secondary-light)] text-[var(--mm-secondary)];
+  }
+} 

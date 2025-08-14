@@ -23,17 +23,14 @@ export interface UserCreate {
 }
 
 export interface CampaignBrief {
-  product: string;
-  client: string;
-  client_website?: string;
-  client_logo?: string;
-  color_scheme?: string;
+  campaign_name: string;
   target_audience: string;
-  goals: string[];
+  industry: string;
+  campaign_goals: string;
   key_features: string[];
-  budget?: string;
-  timeline?: string;
-  additional_requirements?: string;
+  tone: string;
+  budget_range: string;
+  timeline: string;
 }
 
 export interface CampaignResponse {
