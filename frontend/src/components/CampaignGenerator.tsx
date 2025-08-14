@@ -21,28 +21,57 @@ const commonCampaignGoals = [
   'Competitive positioning'
 ];
 
-// Predefined key features for quick selection
+// Predefined target audience ideas for quick selection
+const commonTargetAudiences = [
+  'Young professionals (25-35)',
+  'Small business owners',
+  'Enterprise decision makers',
+  'Tech-savvy millennials',
+  'Baby boomers (55+)',
+  'Working parents',
+  'Students and recent graduates',
+  'Remote workers',
+  'Urban professionals',
+  'Suburban families',
+  'Creative professionals',
+  'Healthcare professionals',
+  'Financial services clients',
+  'E-commerce shoppers',
+  'B2B decision makers',
+  'Startup founders',
+  'Non-profit organizations',
+  'Government agencies',
+  'Educational institutions',
+  'Healthcare organizations'
+];
+
+// Predefined key features for marketing campaigns
 const commonFeatures = [
-  'User-friendly interface',
-  'Mobile responsive design',
-  'Fast loading speed',
-  'SEO optimization',
   'Social media integration',
-  'Analytics and tracking',
-  'Customer support system',
-  'Payment processing',
-  'Multi-language support',
-  'Accessibility features',
-  'Security measures',
-  'Cloud-based solution',
-  'API integration',
-  'Custom branding',
-  'Performance optimization',
-  'Content management system',
-  'Email marketing tools',
+  'Email marketing automation',
   'Lead generation forms',
-  'Customer testimonials',
-  'Product showcase'
+  'Analytics and tracking',
+  'A/B testing capabilities',
+  'Customer segmentation',
+  'Personalized messaging',
+  'Multi-channel campaigns',
+  'Retargeting strategies',
+  'Influencer partnerships',
+  'Content marketing tools',
+  'SEO optimization',
+  'PPC campaign management',
+  'Marketing automation',
+  'CRM integration',
+  'Customer journey mapping',
+  'Conversion rate optimization',
+  'Mobile-first design',
+  'Video marketing tools',
+  'Interactive content features',
+  'Social proof elements',
+  'Urgency and scarcity tactics',
+  'Referral programs',
+  'Loyalty programs',
+  'Gamification elements'
 ];
 
 export const CampaignGenerator = () => {
@@ -64,8 +93,10 @@ export const CampaignGenerator = () => {
   const [error, setError] = useState('');
   const [showGoalsModal, setShowGoalsModal] = useState(false);
   const [showFeaturesModal, setShowFeaturesModal] = useState(false);
+  const [showAudienceModal, setShowAudienceModal] = useState(false);
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+  const [selectedAudience, setSelectedAudience] = useState<string[]>([]);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -83,43 +114,11 @@ export const CampaignGenerator = () => {
     }
   };
 
-  const addGoal = () => {
-    setBrief(prev => ({
-      ...prev,
-      goals: [...prev.goals, '']
-    }));
-  };
-
-  const removeGoal = (index: number) => {
-    if (brief.goals.length > 1) {
-      setBrief(prev => ({
-        ...prev,
-        goals: prev.goals.filter((_, i) => i !== index)
-      }));
-    }
-  };
-
   const updateGoal = (index: number, value: string) => {
     setBrief(prev => ({
       ...prev,
       goals: prev.goals.map((goal, i) => i === index ? value : goal)
     }));
-  };
-
-  const addFeature = () => {
-    setBrief(prev => ({
-      ...prev,
-      key_features: [...prev.key_features, '']
-    }));
-  };
-
-  const removeFeature = (index: number) => {
-    if (brief.key_features.length > 1) {
-      setBrief(prev => ({
-        ...prev,
-        key_features: prev.key_features.filter((_, i) => i !== index)
-      }));
-    }
   };
 
   const updateFeature = (index: number, value: string) => {
@@ -145,6 +144,14 @@ export const CampaignGenerator = () => {
     }
   };
 
+  const handleAudienceSelection = (audience: string) => {
+    if (selectedAudience.includes(audience)) {
+      setSelectedAudience(prev => prev.filter(a => a !== audience));
+    } else {
+      setSelectedAudience(prev => [...prev, audience]);
+    }
+  };
+
   const applySelectedGoals = () => {
     const goalsList = selectedGoals.length > 0 ? selectedGoals : brief.goals.filter(g => g.trim() !== '');
     setBrief(prev => ({ ...prev, goals: goalsList }));
@@ -157,6 +164,12 @@ export const CampaignGenerator = () => {
     setShowFeaturesModal(false);
   };
 
+  const applySelectedAudience = () => {
+    const audienceText = selectedAudience.length > 0 ? selectedAudience.join(', ') : brief.target_audience;
+    setBrief(prev => ({ ...prev, target_audience: audienceText }));
+    setShowAudienceModal(false);
+  };
+
   const addCustomGoal = (customGoal: string) => {
     if (customGoal.trim() && !selectedGoals.includes(customGoal.trim())) {
       setSelectedGoals(prev => [...prev, customGoal.trim()]);
@@ -166,6 +179,12 @@ export const CampaignGenerator = () => {
   const addCustomFeature = (customFeature: string) => {
     if (customFeature.trim() && !selectedFeatures.includes(customFeature.trim())) {
       setSelectedFeatures(prev => [...prev, customFeature.trim()]);
+    }
+  };
+
+  const addCustomAudience = (customAudience: string) => {
+    if (customAudience.trim() && !selectedAudience.includes(customAudience.trim())) {
+      setSelectedAudience(prev => [...prev, customAudience.trim()]);
     }
   };
 
@@ -235,6 +254,16 @@ export const CampaignGenerator = () => {
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text font-medium text-[var(--mm-gray-700)]">Target Audience *</span>
+                    <button
+                      type="button"
+                      onClick={() => setShowAudienceModal(true)}
+                      className="btn btn-sm btn-mm-secondary ml-2"
+                    >
+                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                      Pick Ideas
+                    </button>
                   </label>
                   <input
                     type="text"
@@ -303,7 +332,12 @@ export const CampaignGenerator = () => {
                       {brief.goals.length > 1 && (
                         <button
                           type="button"
-                          onClick={() => removeGoal(index)}
+                          onClick={() => {
+                            setBrief(prev => ({
+                              ...prev,
+                              goals: prev.goals.filter((_, i) => i !== index)
+                            }));
+                          }}
                           className="btn btn-circle btn-sm text-[var(--mm-error)] hover:bg-red-50"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -359,7 +393,12 @@ export const CampaignGenerator = () => {
                       {brief.key_features.length > 1 && (
                         <button
                           type="button"
-                          onClick={() => removeFeature(index)}
+                          onClick={() => {
+                            setBrief(prev => ({
+                              ...prev,
+                              key_features: prev.key_features.filter((_, i) => i !== index)
+                            }));
+                          }}
                           className="btn btn-circle btn-sm text-[var(--mm-error)] hover:bg-red-50"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -610,6 +649,75 @@ export const CampaignGenerator = () => {
                 onClick={applySelectedFeatures}
               >
                 Apply Selected Features
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Target Audience Modal */}
+      {showAudienceModal && (
+        <div className="modal modal-open">
+          <div className="modal-box max-w-4xl">
+            <h3 className="font-bold text-lg text-[var(--mm-gray-900)] mb-4">Select Target Audience</h3>
+            <div className="mb-4">
+              <label className="label">
+                <span className="label-text font-medium text-[var(--mm-gray-700)]">Add Custom Audience:</span>
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Enter custom audience"
+                  className="input input-mm flex-1"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      addCustomAudience((e.target as HTMLInputElement).value);
+                      (e.target as HTMLInputElement).value = '';
+                    }
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const input = document.querySelector('input[placeholder="Enter custom audience"]') as HTMLInputElement;
+                    if (input) {
+                      addCustomAudience(input.value);
+                      input.value = '';
+                    }
+                  }}
+                  className="btn btn-mm-primary"
+                >
+                  Add
+                </button>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto">
+              {commonTargetAudiences.map((audience) => (
+                <label key={audience} className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-[var(--mm-gray-100)]">
+                  <input
+                    type="checkbox"
+                    className="checkbox checkbox-mm-primary"
+                    checked={selectedAudience.includes(audience)}
+                    onChange={() => handleAudienceSelection(audience)}
+                  />
+                  <span className="text-[var(--mm-gray-700)]">{audience}</span>
+                </label>
+              ))}
+            </div>
+            <div className="modal-action">
+              <button
+                type="button"
+                className="btn btn-mm-secondary"
+                onClick={() => setShowAudienceModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn-mm-primary"
+                onClick={applySelectedAudience}
+              >
+                Apply Selected Audience
               </button>
             </div>
           </div>
