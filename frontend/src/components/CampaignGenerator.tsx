@@ -48,13 +48,17 @@ const commonFeatures = [
 export const CampaignGenerator = () => {
   const [brief, setBrief] = useState({
     campaign_name: '',
+    product: '',
+    client: '',
+    client_website: '',
+    client_logo: '',
+    color_scheme: 'professional',
     target_audience: '',
-    industry: '',
-    campaign_goals: '',
+    goals: [''],
     key_features: [''],
-    tone: 'professional',
-    budget_range: 'medium',
-    timeline: '1-2 weeks'
+    budget: '$5,000',
+    timeline: '3 months',
+    additional_requirements: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -79,6 +83,29 @@ export const CampaignGenerator = () => {
     }
   };
 
+  const addGoal = () => {
+    setBrief(prev => ({
+      ...prev,
+      goals: [...prev.goals, '']
+    }));
+  };
+
+  const removeGoal = (index: number) => {
+    if (brief.goals.length > 1) {
+      setBrief(prev => ({
+        ...prev,
+        goals: prev.goals.filter((_, i) => i !== index)
+      }));
+    }
+  };
+
+  const updateGoal = (index: number, value: string) => {
+    setBrief(prev => ({
+      ...prev,
+      goals: prev.goals.map((goal, i) => i === index ? value : goal)
+    }));
+  };
+
   const addFeature = () => {
     setBrief(prev => ({
       ...prev,
@@ -87,10 +114,12 @@ export const CampaignGenerator = () => {
   };
 
   const removeFeature = (index: number) => {
-    setBrief(prev => ({
-      ...prev,
-      key_features: prev.key_features.filter((_, i) => i !== index)
-    }));
+    if (brief.key_features.length > 1) {
+      setBrief(prev => ({
+        ...prev,
+        key_features: prev.key_features.filter((_, i) => i !== index)
+      }));
+    }
   };
 
   const updateFeature = (index: number, value: string) => {
@@ -117,8 +146,8 @@ export const CampaignGenerator = () => {
   };
 
   const applySelectedGoals = () => {
-    const goalsText = selectedGoals.join('. ');
-    setBrief(prev => ({ ...prev, campaign_goals: goalsText }));
+    const goalsList = selectedGoals.length > 0 ? selectedGoals : brief.goals.filter(g => g.trim() !== '');
+    setBrief(prev => ({ ...prev, goals: goalsList }));
     setShowGoalsModal(false);
   };
 
@@ -147,7 +176,7 @@ export const CampaignGenerator = () => {
           <div className="p-6">
             <div className="text-center mb-6">
               <div className="text-mm-primary mb-4">
-                <svg className="w-20 h-20 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
@@ -175,6 +204,36 @@ export const CampaignGenerator = () => {
                 
                 <div className="form-control">
                   <label className="label">
+                    <span className="label-text font-medium text-[var(--mm-gray-700)]">Product/Service *</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g., Eco-Friendly Water Bottle"
+                    className="input input-mm w-full"
+                    value={brief.product}
+                    onChange={(e) => setBrief(prev => ({ ...prev, product: e.target.value }))}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium text-[var(--mm-gray-700)]">Client Company *</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g., GreenLife Inc"
+                    className="input input-mm w-full"
+                    value={brief.client}
+                    onChange={(e) => setBrief(prev => ({ ...prev, client: e.target.value }))}
+                    required
+                  />
+                </div>
+                
+                <div className="form-control">
+                  <label className="label">
                     <span className="label-text font-medium text-[var(--mm-gray-700)]">Target Audience *</span>
                   </label>
                   <input
@@ -188,18 +247,32 @@ export const CampaignGenerator = () => {
                 </div>
               </div>
 
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium text-[var(--mm-gray-700)]">Industry *</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g., Technology, Healthcare, Finance"
-                  className="input input-mm w-full"
-                  value={brief.industry}
-                  onChange={(e) => setBrief(prev => ({ ...prev, industry: e.target.value }))}
-                  required
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium text-[var(--mm-gray-700)]">Client Website (Optional)</span>
+                  </label>
+                  <input
+                    type="url"
+                    placeholder="https://example.com"
+                    className="input input-mm w-full"
+                    value={brief.client_website}
+                    onChange={(e) => setBrief(prev => ({ ...prev, client_website: e.target.value }))}
+                  />
+                </div>
+                
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium text-[var(--mm-gray-700)]">Client Logo URL (Optional)</span>
+                  </label>
+                  <input
+                    type="url"
+                    placeholder="https://example.com/logo.png"
+                    className="input input-mm w-full"
+                    value={brief.client_logo}
+                    onChange={(e) => setBrief(prev => ({ ...prev, client_logo: e.target.value }))}
+                  />
+                </div>
               </div>
 
               <div className="form-control">
@@ -216,22 +289,41 @@ export const CampaignGenerator = () => {
                     Quick Select
                   </button>
                 </label>
-                <textarea
-                  placeholder="Describe your campaign objectives and what you want to achieve"
-                  className="textarea textarea-mm w-full h-24"
-                  value={brief.campaign_goals}
-                  onChange={(e) => setBrief(prev => ({ ...prev, campaign_goals: e.target.value }))}
-                  required
-                />
-                {brief.campaign_goals && (
+                <div className="space-y-3">
+                  {brief.goals.map((goal, index) => (
+                    <div key={index} className="flex gap-2">
+                      <input
+                        type="text"
+                        placeholder={`Goal ${index + 1}`}
+                        className="input input-mm flex-1"
+                        value={goal}
+                        onChange={(e) => updateGoal(index, e.target.value)}
+                        required
+                      />
+                      {brief.goals.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => removeGoal(index)}
+                          className="btn btn-circle btn-sm text-[var(--mm-error)] hover:bg-red-50"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  ))}
+          
+                </div>
+                {brief.goals.filter(g => g.trim()).length > 0 && (
                   <div className="mt-2">
                     <label className="label">
                       <span className="label-text text-sm text-[var(--mm-gray-500)]">Selected Goals:</span>
                     </label>
                     <div className="flex flex-wrap gap-2">
-                      {brief.campaign_goals.split('.').filter(goal => goal.trim()).map((goal, index) => (
+                      {brief.goals.filter(g => g.trim()).map((goal, index) => (
                         <span key={index} className="badge badge-mm-primary">
-                          {goal.trim()}
+                          {goal}
                         </span>
                       ))}
                     </div>
@@ -239,59 +331,9 @@ export const CampaignGenerator = () => {
                 )}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text font-medium text-[var(--mm-gray-700)]">Tone</span>
-                  </label>
-                  <select
-                    className="select select-mm w-full"
-                    value={brief.tone}
-                    onChange={(e) => setBrief(prev => ({ ...prev, tone: e.target.value }))}
-                  >
-                    <option value="professional">Professional</option>
-                    <option value="casual">Casual</option>
-                    <option value="friendly">Friendly</option>
-                    <option value="authoritative">Authoritative</option>
-                    <option value="creative">Creative</option>
-                  </select>
-                </div>
-                
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text font-medium text-[var(--mm-gray-700)]">Budget Range</span>
-                  </label>
-                  <select
-                    className="select select-mm w-full"
-                    value={brief.budget_range}
-                    onChange={(e) => setBrief(prev => ({ ...prev, budget_range: e.target.value }))}
-                  >
-                    <option value="low">Low ($1K - $5K)</option>
-                    <option value="medium">Medium ($5K - $20K)</option>
-                    <option value="high">High ($20K+)</option>
-                  </select>
-                </div>
-                
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text font-medium text-[var(--mm-gray-700)]">Timeline</span>
-                  </label>
-                  <select
-                    className="select select-mm w-full"
-                    value={brief.timeline}
-                    onChange={(e) => setBrief(prev => ({ ...prev, timeline: e.target.value }))}
-                  >
-                    <option value="1-2 weeks">1-2 weeks</option>
-                    <option value="1 month">1 month</option>
-                    <option value="2-3 months">2-3 months</option>
-                    <option value="3+ months">3+ months</option>
-                  </select>
-                </div>
-              </div>
-
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text font-medium text-[var(--mm-gray-700)]">Key Features</span>
+                  <span className="label-text font-medium text-[var(--mm-gray-700)]">Key Features *</span>
                   <button
                     type="button"
                     onClick={() => setShowFeaturesModal(true)}
@@ -312,6 +354,7 @@ export const CampaignGenerator = () => {
                         className="input input-mm flex-1"
                         value={feature}
                         onChange={(e) => updateFeature(index, e.target.value)}
+                        required
                       />
                       {brief.key_features.length > 1 && (
                         <button
@@ -326,16 +369,7 @@ export const CampaignGenerator = () => {
                       )}
                     </div>
                   ))}
-                  <button
-                    type="button"
-                    onClick={addFeature}
-                    className="btn btn-outline btn-sm text-mm-secondary border-mm-secondary hover:bg-mm-secondary-bg"
-                  >
-                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                    Add Feature
-                  </button>
+          
                 </div>
                 {brief.key_features.filter(f => f.trim()).length > 0 && (
                   <div className="mt-2">
@@ -347,10 +381,69 @@ export const CampaignGenerator = () => {
                         <span key={index} className="badge badge-mm-secondary">
                           {feature}
                         </span>
-                      ))}
+                    ))}
                     </div>
                   </div>
                 )}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium text-[var(--mm-gray-700)]">Color Scheme</span>
+                  </label>
+                  <select
+                    className="select select-mm w-full"
+                    value={brief.color_scheme}
+                    onChange={(e) => setBrief(prev => ({ ...prev, color_scheme: e.target.value }))}
+                  >
+                    <option value="professional">Professional</option>
+                    <option value="casual">Casual</option>
+                    <option value="friendly">Friendly</option>
+                    <option value="authoritative">Authoritative</option>
+                    <option value="creative">Creative</option>
+                    <option value="modern">Modern</option>
+                    <option value="vintage">Vintage</option>
+                  </select>
+                </div>
+                
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium text-[var(--mm-gray-700)]">Budget</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="$5,000"
+                    className="input input-mm w-full"
+                    value={brief.budget}
+                    onChange={(e) => setBrief(prev => ({ ...prev, budget: e.target.value }))}
+                  />
+                </div>
+                
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text font-medium text-[var(--mm-gray-700)]">Timeline</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="3 months"
+                    className="input input-mm w-full"
+                    value={brief.timeline}
+                    onChange={(e) => setBrief(prev => ({ ...prev, timeline: e.target.value }))}
+                  />
+                </div>
+              </div>
+
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text font-medium text-[var(--mm-gray-700)]">Additional Requirements</span>
+                </label>
+                <textarea
+                  placeholder="Any additional requirements or notes..."
+                  className="textarea textarea-mm w-full h-24"
+                  value={brief.additional_requirements}
+                  onChange={(e) => setBrief(prev => ({ ...prev, additional_requirements: e.target.value }))}
+                />
               </div>
 
               <div className="form-control mt-6">
