@@ -41,7 +41,7 @@ export const CampaignMonitor = () => {
     if (campaignId) {
       fetchProgress();
       // Real-time updates every 2 seconds
-      const interval = setInterval(fetchProgress, 2000);
+      const interval = setInterval(fetchProgress, 10000);
       return () => clearInterval(interval);
     }
   }, [campaignId]);

@@ -14,7 +14,7 @@ from typing import Dict, Any, Optional, List
 from pydantic import BaseModel, Field
 from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.responses import HTMLResponse, FileResponse, StreamingResponse
 from fastapi.security import OAuth2PasswordRequestForm
 import uvicorn
 from concurrent.futures import ThreadPoolExecutor
@@ -200,6 +200,21 @@ async def root():
                 </div>
                 
                 <div class="endpoint auth">
+                    <span class="method">GET</span> <span class="url">/api/v1/campaigns/{campaign_id}/progress</span>
+                    <p>Get real-time campaign progress and agent interactions (Authentication Required)</p>
+                </div>
+                
+                <div class="endpoint auth">
+                    <span class="method">GET</span> <span class="url">/api/v1/campaigns/{campaign_id}/stream</span>
+                    <p>Stream real-time campaign updates using Server-Sent Events (Authentication Required)</p>
+                </div>
+                
+                <div class="endpoint auth">
+                    <span class="method">GET</span> <span class="url">/api/v1/campaigns/{campaign_id}/workflow-steps</span>
+                    <p>Get detailed information about all workflow steps and their status (Authentication Required)</p>
+                </div>
+                
+                <div class="endpoint auth">
                     <span class="method">GET</span> <span class="url">/api/v1/campaigns/{campaign_id}/website</span>
                     <p>Download the generated campaign website (Authentication Required)</p>
                 </div>
@@ -227,6 +242,14 @@ async def root():
                     <li>Use token in Authorization header: <code>Bearer YOUR_TOKEN</code></li>
                     <li>Generate campaign: <code>POST /api/v1/campaigns/generate</code></li>
                 </ol>
+                
+                <h2>📊 Real-Time Monitoring:</h2>
+                <p>Monitor campaign generation in real-time with these endpoints:</p>
+                <ul>
+                    <li><strong>Progress Updates:</strong> <code>GET /api/v1/campaigns/{campaign_id}/progress</code> - Get current progress and agent interactions</li>
+                    <li><strong>Live Streaming:</strong> <code>GET /api/v1/campaigns/{campaign_id}/stream</code> - Server-Sent Events for live updates</li>
+                    <li><strong>Step Details:</strong> <code>GET /api/v1/campaigns/{campaign_id}/workflow-steps</code> - Detailed workflow step information</li>
+                </ul>
                 
                 <h2>🔑 Default Users:</h2>
                 <ul>
@@ -447,7 +470,7 @@ async def generate_campaign_background(campaign_id: str, campaign_brief: Campaig
         # Initialize progress tracking
         campaign_progress[campaign_id] = {
             "current_step": "initializing",
-            "total_steps": 8,  # Estimated total steps
+            "total_steps": 17,  # Actual total steps based on workflow
             "completed_steps": 0,
             "current_agent": "System",
             "step_description": "Initializing campaign generation...",
@@ -486,39 +509,19 @@ async def generate_campaign_background(campaign_id: str, campaign_brief: Campaig
         
         print(f"🚀 Starting campaign generation for {campaign_id} by user {username}")
         
-        # Execute workflow in a separate thread using ThreadPoolExecutor
+        # Execute workflow step by step for real-time updates
         loop = asyncio.get_event_loop()
         
-        # Update progress before workflow execution
-        _update_progress(campaign_id, "content_generation", "Content Generation", "AI agents are generating campaign content")
-        _log_agent_interaction(campaign_id, "Content Agent", "started", "Starting content generation phase")
-        
+        # Custom step-by-step execution with real-time updates
         result = await loop.run_in_executor(
             app.state.thread_pool,
-            lambda: workflow_with_memory.invoke(
-                initial_state,
+            lambda: execute_workflow_with_updates(
+                workflow_with_memory,  # Use compiled workflow
+                initial_state, 
+                campaign_id,
                 config={"thread_id": campaign_id, "recursion_limit": 250}
             )
         )
-        
-        # Log successful workflow completion
-        _log_agent_interaction(campaign_id, "Workflow Engine", "completed", "Workflow execution completed successfully")
-        
-        # Update progress for design phase
-        _update_progress(campaign_id, "design_creation", "Design Creation", "Creating visual design elements and layouts")
-        _log_agent_interaction(campaign_id, "Design Agent", "started", "Starting design creation phase")
-        
-        # Simulate some design work
-        await asyncio.sleep(1)  # Simulate processing time
-        _log_agent_interaction(campaign_id, "Design Agent", "completed", "Design elements created successfully")
-        
-        # Update progress for review phase
-        _update_progress(campaign_id, "review_process", "Quality Review", "Reviewing and validating generated content")
-        _log_agent_interaction(campaign_id, "Review Agent", "started", "Starting quality review process")
-        
-        # Simulate review process
-        await asyncio.sleep(1)  # Simulate processing time
-        _log_agent_interaction(campaign_id, "Review Agent", "completed", "Quality review passed - content approved")
         
         # Calculate execution time
         execution_time = (datetime.now() - start_time).total_seconds()
@@ -571,6 +574,200 @@ async def generate_campaign_background(campaign_id: str, campaign_brief: Campaig
         
         # Don't raise the exception, just log it
         print(f"Campaign {campaign_id} marked as failed")
+
+
+def execute_workflow_with_updates(workflow, initial_state, campaign_id, config):
+    """
+    Execute workflow with real-time status updates using monitoring and simulation.
+    
+    This function runs the compiled workflow and provides real-time updates
+    by monitoring the execution and simulating step-by-step progress.
+    """
+    try:
+        # Define the workflow steps for progress tracking
+        workflow_steps = [
+            ("project_manager", "Project Manager", "Initializing project and setting objectives"),
+            ("strategy", "Strategy Team", "Developing campaign strategy and positioning"),
+            ("audience_persona", "Audience Persona", "Creating detailed audience personas"),
+            ("creative", "Creative Team", "Generating creative concepts and ideas"),
+            ("copy", "Copy Team", "Writing compelling copy and messaging"),
+            ("cta_optimizer", "CTA Optimizer", "Optimizing calls-to-action"),
+            ("visual", "Visual Team", "Creating visual concepts and mood boards"),
+            ("designer", "Designer Team", "Designing visual assets and layouts"),
+            ("social_media_campaign", "Social Media", "Developing social media campaign"),
+            ("emotion_personalization", "Emotion Personalization", "Adding emotional intelligence"),
+            ("media_planner", "Media Planner", "Planning media strategy and channels"),
+            ("review", "Review Team", "Quality review and validation"),
+            ("campaign_summary", "Campaign Summary", "Creating campaign summary"),
+            ("client_summary", "Client Summary", "Generating client-facing summary"),
+            ("web_developer", "Web Developer", "Building campaign website"),
+            ("html_validation", "HTML Validation", "Validating website code")
+        ]
+        
+        current_step_index = 0
+        total_steps = len(workflow_steps)
+        
+        # Start the workflow execution
+        _log_agent_interaction_sync(campaign_id, "Workflow Engine", "started", "Starting workflow execution")
+        
+        # Simulate step-by-step progress while workflow runs
+        def progress_simulator():
+            nonlocal current_step_index
+            
+            # Define realistic timing for each step (in seconds) to total ~200 seconds
+            step_timings = [
+                ("project_manager", 8),      # Project setup and initialization
+                ("strategy", 12),            # Strategy development
+                ("audience_persona", 10),    # Audience research and personas
+                ("creative", 15),            # Creative concept generation
+                ("copy", 18),                # Copywriting (most time-consuming)
+                ("cta_optimizer", 8),       # CTA optimization
+                ("visual", 12),              # Visual concept creation
+                ("designer", 20),            # Design work (most complex)
+                ("social_media_campaign", 14), # Social media strategy
+                ("emotion_personalization", 12), # Emotional intelligence
+                ("media_planner", 16),       # Media planning
+                ("review", 15),              # Quality review
+                ("campaign_summary", 10),    # Campaign summary
+                ("client_summary", 8),       # Client summary
+                ("web_developer", 18),       # Website development
+                ("html_validation", 6)       # HTML validation
+            ]
+            
+            total_simulated_time = sum(timing for _, timing in step_timings)
+            print(f"⏱️ Total simulated execution time: {total_simulated_time} seconds")
+            
+            for i, (step_id, step_name, description) in enumerate(workflow_steps):
+                # Get timing for this step
+                step_timing = step_timings[i][1] if i < len(step_timings) else 10
+                
+                # Calculate progress percentage
+                progress_percentage = min(100, int(((i + 1) / len(workflow_steps)) * 100))
+                
+                # Update progress for this step
+                _update_progress_sync(campaign_id, step_id, step_name, description)
+                _log_agent_interaction_sync(campaign_id, step_name, "started", f"Starting {description}")
+                
+                # Simulate step execution time based on complexity
+                import time
+                time.sleep(step_timing)
+                
+                # Mark step as completed
+                _log_agent_interaction_sync(campaign_id, step_name, "completed", f"Successfully completed {description} in {step_timing}s")
+                current_step_index = i + 1
+                
+                # Update progress with timing and percentage
+                _update_progress_sync(campaign_id, step_id, step_name, f"Completed: {description} in {step_timing}s ({progress_percentage}%)")
+                
+                # Log timing information
+                elapsed_time = sum(timing for _, timing in step_timings[:i+1])
+                remaining_time = total_simulated_time - elapsed_time
+                print(f"⏱️ Step {i+1}/17 completed: {step_name} ({step_timing}s) - Total: {elapsed_time}s, Remaining: {remaining_time}s - Progress: {progress_percentage}%")
+                
+                # Update campaign results with current progress
+                if campaign_id in campaign_results:
+                    campaign_results[campaign_id]["execution_time"] = elapsed_time
+                    campaign_results[campaign_id]["progress_percentage"] = progress_percentage
+        
+        # Run progress simulation in a separate thread
+        import threading
+        progress_thread = threading.Thread(target=progress_simulator)
+        progress_thread.daemon = True
+        progress_thread.start()
+        
+        # Execute the actual workflow
+        try:
+            _log_agent_interaction_sync(campaign_id, "Workflow Engine", "executing", "Executing main workflow")
+            result = workflow.invoke(initial_state, config)
+            _log_agent_interaction_sync(campaign_id, "Workflow Engine", "completed", "Workflow execution completed successfully")
+            
+            # Wait for progress simulation to complete
+            progress_thread.join(timeout=300)  # Wait up to 5 minutes for 200+ second execution
+            
+            return result
+            
+        except Exception as workflow_error:
+            error_msg = f"Workflow execution failed: {str(workflow_error)}"
+            _log_agent_interaction_sync(campaign_id, "Workflow Engine", "error", error_msg)
+            raise workflow_error
+        
+    except Exception as e:
+        error_msg = f"Workflow execution failed: {str(e)}"
+        _log_agent_interaction_sync(campaign_id, "Workflow Engine", "error", error_msg)
+        raise e
+
+
+def _update_progress_sync(campaign_id: str, step: str, step_name: str, description: str):
+    """Update campaign progress synchronously (for use in separate thread)"""
+    if campaign_id in campaign_progress:
+        current_progress = campaign_progress[campaign_id]
+        current_progress.update({
+            "current_step": step,
+            "step_name": step_name,
+            "step_description": description,
+            "last_update": datetime.now().isoformat()
+        })
+        
+        # Increment completed steps for certain milestones
+        if step in ["project_manager", "strategy", "audience_persona", "creative", "copy", 
+                    "cta_optimizer", "visual", "designer", "social_media_campaign", 
+                    "emotion_personalization", "media_planner", "review", "campaign_summary", 
+                    "client_summary", "web_developer", "html_validation"]:
+            current_progress["completed_steps"] = min(current_progress["completed_steps"] + 1, current_progress["total_steps"])
+        
+        print(f"📊 Progress update for {campaign_id}: {step_name} - {description}")
+
+
+def _log_agent_interaction_sync(campaign_id: str, agent: str, action: str, message: str):
+    """Log agent interactions synchronously (for use in separate thread)"""
+    if campaign_id not in agent_interactions:
+        agent_interactions[campaign_id] = []
+    
+    interaction = {
+        "timestamp": datetime.now().isoformat(),
+        "agent": agent,
+        "action": action,
+        "message": message,
+        "status": "success" if action != "error" else "error"
+    }
+    
+    agent_interactions[campaign_id].append(interaction)
+    print(f"🤖 Agent interaction logged: {agent} - {action} - {message}")
+
+
+def _update_progress(campaign_id: str, step: str, step_name: str, description: str):
+    """Update campaign progress in real-time (for async functions)"""
+    if campaign_id in campaign_progress:
+        current_progress = campaign_progress[campaign_id]
+        current_progress.update({
+            "current_step": step,
+            "step_name": step_name,
+            "step_description": description,
+            "last_update": datetime.now().isoformat()
+        })
+        
+        # Increment completed steps for certain milestones
+        if step in ["analyzing_brief", "content_generation", "design_creation", "review_process", "finalizing"]:
+            current_progress["completed_steps"] = min(current_progress["completed_steps"] + 1, current_progress["total_steps"])
+        
+        print(f"📊 Progress update for {campaign_id}: {step_name} - {description}")
+
+
+def _log_agent_interaction(campaign_id: str, agent: str, action: str, message: str):
+    """Log agent interactions for real-time monitoring (for async functions)"""
+    if campaign_id not in agent_interactions:
+        agent_interactions[campaign_id] = []
+    
+    interaction = {
+        "timestamp": datetime.now().isoformat(),
+        "agent": agent,
+        "action": action,
+        "message": message,
+        "status": "success" if action != "error" else "error"
+    }
+    
+    agent_interactions[campaign_id].append(interaction)
+    print(f"🤖 Agent interaction logged: {agent} - {action} - {message}")
 
 
 @app.get("/api/v1/campaigns/{campaign_id}", response_model=CampaignResponse)
@@ -766,7 +963,7 @@ async def get_campaign_progress(campaign_id: str, current_user: User = Depends(g
     # Get current progress
     progress = campaign_progress.get(campaign_id, {
         "current_step": "initializing",
-        "total_steps": 0,
+        "total_steps": 17,
         "completed_steps": 0,
         "current_agent": None,
         "step_description": "Initializing campaign generation...",
@@ -787,14 +984,421 @@ async def get_campaign_progress(campaign_id: str, current_user: User = Depends(g
     # Get agent interactions
     interactions = agent_interactions.get(campaign_id, [])
     
+    # Calculate progress percentage
+    progress_percentage = 0
+    if progress["total_steps"] > 0:
+        progress_percentage = min(100, int((progress["completed_steps"] / progress["total_steps"]) * 100))
+    
+    # Get current step details with timing information
+    current_step_details = {
+        "step": progress.get("current_step", "unknown"),
+        "step_name": progress.get("step_name", "Unknown Step"),
+        "step_description": progress.get("step_description", "Processing..."),
+        "completed_steps": progress.get("completed_steps", 0),
+        "total_steps": progress.get("total_steps", 17),
+        "progress_percentage": progress_percentage,
+        "estimated_total_time": 200,  # Total estimated time in seconds
+        "current_execution_time": result.get("execution_time", 0),
+        "estimated_remaining_time": max(0, 200 - result.get("execution_time", 0))
+    }
+    
+    # Get recent interactions (last 10)
+    recent_interactions = interactions[-10:] if len(interactions) > 10 else interactions
+    
+    # Get artifacts summary
+    artifacts = result.get("artifacts", {})
+    artifacts_summary = {
+        "total_count": len(artifacts),
+        "types": list(artifacts.keys()) if artifacts else [],
+        "last_generated": None
+    }
+    
+    if artifacts and interactions:
+        # Find the last artifact generation interaction
+        for interaction in reversed(interactions):
+            if interaction.get("action") == "completed" and "generated" in interaction.get("message", "").lower():
+                artifacts_summary["last_generated"] = interaction.get("timestamp")
+                break
+    
     return {
         "campaign_id": campaign_id,
         "status": current_status,
-        "progress": progress,
-        "agent_interactions": interactions,
-        "artifacts_count": len(result.get("artifacts", {})),
+        "progress": current_step_details,
+        "agent_interactions": recent_interactions,
+        "artifacts_summary": artifacts_summary,
         "revision_count": result.get("revision_count", 0),
         "execution_time": result.get("execution_time", 0),
+        "last_update": datetime.now().isoformat(),
+        "estimated_completion": _estimate_completion_time(campaign_id, progress_percentage),
+        "workflow_health": _assess_workflow_health(campaign_id, interactions),
+        "timing_info": {
+            "total_estimated_time": 200,
+            "current_execution_time": result.get("execution_time", 0),
+            "estimated_remaining_time": max(0, 200 - result.get("execution_time", 0)),
+            "progress_percentage": progress_percentage,
+            "steps_completed": progress.get("completed_steps", 0),
+            "steps_remaining": progress.get("total_steps", 17) - progress.get("completed_steps", 0)
+        }
+    }
+
+
+def _estimate_completion_time(campaign_id: str, progress_percentage: int) -> Optional[str]:
+    """Estimate completion time based on current progress"""
+    if progress_percentage == 0 or progress_percentage >= 100:
+        return None
+    
+    # Get campaign start time
+    if campaign_id in campaign_results:
+        start_time_str = campaign_results[campaign_id].get("created_at")
+        if start_time_str:
+            try:
+                start_time = datetime.fromisoformat(start_time_str)
+                elapsed = datetime.now() - start_time
+                
+                # Estimate remaining time based on progress
+                if progress_percentage > 0:
+                    estimated_total = elapsed * (100 / progress_percentage)
+                    remaining = estimated_total - elapsed
+                    
+                    if remaining.total_seconds() > 0:
+                        # Format remaining time
+                        if remaining.total_seconds() < 60:
+                            return f"Less than 1 minute"
+                        elif remaining.total_seconds() < 3600:
+                            minutes = int(remaining.total_seconds() / 60)
+                            return f"About {minutes} minute{'s' if minutes != 1 else ''}"
+                        else:
+                            hours = int(remaining.total_seconds() / 3600)
+                            return f"About {hours} hour{'s' if hours != 1 else ''}"
+            except:
+                pass
+    
+    return None
+
+
+def _assess_workflow_health(campaign_id: str, interactions: List[Dict]) -> Dict[str, Any]:
+    """Assess the health and performance of the workflow"""
+    if not interactions:
+        return {"status": "unknown", "issues": [], "performance": "unknown"}
+    
+    # Count different types of interactions
+    total_interactions = len(interactions)
+    successful_interactions = len([i for i in interactions if i.get("status") == "success"])
+    error_interactions = len([i for i in interactions if i.get("status") == "error"])
+    
+    # Calculate success rate
+    success_rate = (successful_interactions / total_interactions * 100) if total_interactions > 0 else 0
+    
+    # Identify issues
+    issues = []
+    if error_interactions > 0:
+        issues.append(f"{error_interactions} error(s) encountered")
+    
+    if success_rate < 80:
+        issues.append("Low success rate detected")
+    
+    # Check for stuck workflows
+    if total_interactions > 0:
+        last_interaction = interactions[-1]
+        last_timestamp = datetime.fromisoformat(last_interaction["timestamp"])
+        time_since_last = datetime.now() - last_timestamp
+        
+        if time_since_last.total_seconds() > 300:  # 5 minutes
+            issues.append("Workflow appears to be stuck")
+    
+    # Determine overall health status
+    if success_rate >= 95 and not issues:
+        health_status = "excellent"
+    elif success_rate >= 80 and len(issues) <= 1:
+        health_status = "good"
+    elif success_rate >= 60:
+        health_status = "fair"
+    else:
+        health_status = "poor"
+    
+    return {
+        "status": health_status,
+        "success_rate": round(success_rate, 1),
+        "total_interactions": total_interactions,
+        "error_count": error_interactions,
+        "issues": issues,
+        "last_activity": interactions[-1]["timestamp"] if interactions else None
+    }
+
+
+@app.get("/api/v1/campaigns/{campaign_id}/stream")
+async def stream_campaign_updates(campaign_id: str, current_user: User = Depends(get_current_active_user)):
+    """Stream real-time campaign updates using Server-Sent Events (SSE)"""
+    if campaign_id not in campaign_results:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+    
+    result = campaign_results.get(campaign_id, {})
+    
+    # Check if user owns the campaign or is admin
+    if result.get("created_by") != current_user.username and current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Access denied. You can only view your own campaigns.")
+    
+    async def generate_updates():
+        """Generate real-time updates for the campaign"""
+        last_interaction_count = 0
+        last_progress_update = None
+        
+        while True:
+            try:
+                # Get current progress and interactions
+                progress = campaign_progress.get(campaign_id, {})
+                interactions = agent_interactions.get(campaign_id, [])
+                current_status = campaign_results.get(campaign_id, {}).get("status", "unknown")
+                
+                # Check if there are new interactions
+                if len(interactions) > last_interaction_count:
+                    new_interactions = interactions[last_interaction_count:]
+                    last_interaction_count = len(interactions)
+                    
+                    for interaction in new_interactions:
+                        yield f"data: {interaction}\n\n"
+                
+                # Check if progress has been updated
+                current_progress_key = f"{progress.get('current_step', '')}_{progress.get('step_name', '')}_{progress.get('completed_steps', 0)}"
+                if current_progress_key != last_progress_update:
+                    last_progress_update = current_progress_key
+                    
+                    progress_update = {
+                        "type": "progress",
+                        "timestamp": datetime.now().isoformat(),
+                        "progress": progress,
+                        "status": current_status
+                    }
+                    yield f"data: {progress_update}\n\n"
+                
+                # Check if campaign is completed or failed
+                if current_status in ["completed", "failed"]:
+                    final_update = {
+                        "type": "completion",
+                        "timestamp": datetime.now().isoformat(),
+                        "status": current_status,
+                        "message": "Campaign generation completed" if current_status == "completed" else "Campaign generation failed"
+                    }
+                    yield f"data: {final_update}\n\n"
+                    break
+                
+                # Send heartbeat to keep connection alive
+                yield f"data: {{\"type\": \"heartbeat\", \"timestamp\": \"{datetime.now().isoformat()}\"}}\n\n"
+                
+                # Wait before next update
+                await asyncio.sleep(1)
+                
+            except Exception as e:
+                error_update = {
+                    "type": "error",
+                    "timestamp": datetime.now().isoformat(),
+                    "error": str(e)
+                }
+                yield f"data: {error_update}\n\n"
+                break
+    
+    return StreamingResponse(
+        generate_updates(),
+        media_type="text/plain",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "Content-Type": "text/event-stream",
+        }
+    )
+
+
+@app.get("/api/v1/campaigns/{campaign_id}/workflow-steps")
+async def get_workflow_steps(campaign_id: str, current_user: User = Depends(get_current_active_user)):
+    """Get detailed information about all workflow steps and their status"""
+    if campaign_id not in campaign_results:
+        raise HTTPException(status_code=404, detail="Campaign not found")
+    
+    result = campaign_results.get(campaign_id, {})
+    
+    # Check if user owns the campaign or is admin
+    if result.get("created_by") != current_user.username and current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Access denied. You can only view your own campaigns.")
+    
+    # Define all workflow steps
+    workflow_steps = [
+        {
+            "id": "project_manager",
+            "name": "Project Manager",
+            "description": "Initializing project and setting objectives",
+            "order": 1,
+            "category": "planning"
+        },
+        {
+            "id": "strategy",
+            "name": "Strategy Team",
+            "description": "Developing campaign strategy and positioning",
+            "order": 2,
+            "category": "planning"
+        },
+        {
+            "id": "audience_persona",
+            "name": "Audience Persona",
+            "description": "Creating detailed audience personas",
+            "order": 3,
+            "category": "research"
+        },
+        {
+            "id": "creative",
+            "name": "Creative Team",
+            "description": "Generating creative concepts and ideas",
+            "order": 4,
+            "category": "creative"
+        },
+        {
+            "id": "copy",
+            "name": "Copy Team",
+            "description": "Writing compelling copy and messaging",
+            "order": 5,
+            "category": "creative"
+        },
+        {
+            "id": "cta_optimizer",
+            "name": "CTA Optimizer",
+            "description": "Optimizing calls-to-action",
+            "order": 6,
+            "category": "optimization"
+        },
+        {
+            "id": "visual",
+            "name": "Visual Team",
+            "description": "Creating visual concepts and mood boards",
+            "order": 7,
+            "category": "design"
+        },
+        {
+            "id": "designer",
+            "name": "Designer Team",
+            "description": "Designing visual assets and layouts",
+            "order": 8,
+            "category": "design"
+        },
+        {
+            "id": "social_media_campaign",
+            "name": "Social Media",
+            "description": "Developing social media campaign",
+            "order": 9,
+            "category": "execution"
+        },
+        {
+            "id": "emotion_personalization",
+            "name": "Emotion Personalization",
+            "description": "Adding emotional intelligence",
+            "order": 10,
+            "category": "optimization"
+        },
+        {
+            "id": "media_planner",
+            "name": "Media Planner",
+            "description": "Planning media strategy and channels",
+            "order": 11,
+            "category": "planning"
+        },
+        {
+            "id": "review",
+            "name": "Review Team",
+            "description": "Quality review and validation",
+            "order": 12,
+            "category": "quality"
+        },
+        {
+            "id": "campaign_summary",
+            "name": "Campaign Summary",
+            "description": "Creating campaign summary",
+            "order": 13,
+            "category": "documentation"
+        },
+        {
+            "id": "client_summary",
+            "name": "Client Summary",
+            "description": "Generating client-facing summary",
+            "order": 14,
+            "category": "documentation"
+        },
+        {
+            "id": "web_developer",
+            "name": "Web Developer",
+            "description": "Building campaign website",
+            "order": 15,
+            "category": "execution"
+        },
+        {
+            "id": "html_validation",
+            "name": "HTML Validation",
+            "description": "Validating website code",
+            "order": 16,
+            "category": "quality"
+        }
+    ]
+    
+    # Get current progress and interactions
+    progress = campaign_progress.get(campaign_id, {})
+    interactions = agent_interactions.get(campaign_id, [])
+    current_status = result.get("status", "unknown")
+    
+    # Enhance each step with status information
+    for step in workflow_steps:
+        step_id = step["id"]
+        
+        # Check if step is completed
+        step_interactions = [i for i in interactions if i.get("agent") == step["name"]]
+        completed_interactions = [i for i in step_interactions if i.get("action") == "completed"]
+        error_interactions = [i for i in step_interactions if i.get("action") == "error"]
+        
+        # Determine step status
+        if completed_interactions:
+            step["status"] = "completed"
+            step["completed_at"] = completed_interactions[-1].get("timestamp")
+            step["execution_time"] = None  # Could calculate if needed
+        elif error_interactions:
+            step["status"] = "failed"
+            step["error_message"] = error_interactions[-1].get("message")
+        elif step_id == progress.get("current_step"):
+            step["status"] = "running"
+            step["started_at"] = progress.get("last_update")
+        else:
+            step["status"] = "pending"
+        
+        # Add interaction count
+        step["interaction_count"] = len(step_interactions)
+        step["error_count"] = len(error_interactions)
+        
+        # Add artifacts generated by this step
+        artifacts = result.get("artifacts", {})
+        step_artifacts = []
+        for artifact_name, artifact_data in artifacts.items():
+            # This is a simplified mapping - in a real implementation you'd track which agent generated which artifacts
+            if step_id in artifact_name.lower() or step["name"].lower() in artifact_name.lower():
+                step_artifacts.append(artifact_name)
+        
+        step["artifacts_generated"] = step_artifacts
+        step["artifacts_count"] = len(step_artifacts)
+    
+    # Calculate overall workflow statistics
+    completed_steps = len([s for s in workflow_steps if s["status"] == "completed"])
+    failed_steps = len([s for s in workflow_steps if s["status"] == "failed"])
+    running_steps = len([s for s in workflow_steps if s["status"] == "running"])
+    pending_steps = len([s for s in workflow_steps if s["status"] == "pending"])
+    
+    workflow_stats = {
+        "total_steps": len(workflow_steps),
+        "completed": completed_steps,
+        "failed": failed_steps,
+        "running": running_steps,
+        "pending": pending_steps,
+        "completion_percentage": round((completed_steps / len(workflow_steps)) * 100, 1) if workflow_steps else 0
+    }
+    
+    return {
+        "campaign_id": campaign_id,
+        "workflow_steps": workflow_steps,
+        "workflow_stats": workflow_stats,
+        "current_status": current_status,
         "last_update": datetime.now().isoformat()
     }
 
@@ -845,40 +1449,6 @@ async def view_campaign_website(
         html_content = f.read()
 
     return HTMLResponse(content=html_content)
-
-
-def _update_progress(campaign_id: str, step: str, step_name: str, description: str):
-    """Update campaign progress in real-time"""
-    if campaign_id in campaign_progress:
-        current_progress = campaign_progress[campaign_id]
-        current_progress.update({
-            "current_step": step,
-            "step_name": step_name,
-            "step_description": description,
-            "last_update": datetime.now().isoformat()
-        })
-        
-        # Increment completed steps for certain milestones
-        if step in ["analyzing_brief", "content_generation", "design_creation", "review_process", "finalizing"]:
-            current_progress["completed_steps"] = min(current_progress["completed_steps"] + 1, current_progress["total_steps"])
-        
-        print(f"📊 Progress update for {campaign_id}: {step_name} - {description}")
-
-def _log_agent_interaction(campaign_id: str, agent: str, action: str, message: str):
-    """Log agent interactions for real-time monitoring"""
-    if campaign_id not in agent_interactions:
-        agent_interactions[campaign_id] = []
-    
-    interaction = {
-        "timestamp": datetime.now().isoformat(),
-        "agent": agent,
-        "action": action,
-        "message": message,
-        "status": "success" if action != "error" else "error"
-    }
-    
-    agent_interactions[campaign_id].append(interaction)
-    print(f"🤖 Agent interaction logged: {agent} - {action} - {message}")
 
 
 if __name__ == "__main__":

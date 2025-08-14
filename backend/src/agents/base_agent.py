@@ -64,7 +64,7 @@ class BaseAgent:
     def __init__(self, system_prompt: str, llm: ChatOpenAI = None):
         self.system_prompt = system_prompt
         self.llm = llm
-        self.max_retries = 3
+        self.max_retries = 2
         self.retry_delay = 2  # seconds
     
     def get_messages(self, content: str) -> List:
